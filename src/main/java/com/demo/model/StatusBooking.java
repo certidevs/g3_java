@@ -4,5 +4,9 @@ public enum StatusBooking {
     PENDING,
     CONFIRMED,
     CANCELLED,
-    COMPLETED
+    COMPLETED,
+    // Recomendado a alguien
+    RECOMMENDED,
+    RECOMMENDED_BY_OTHER
 }
+

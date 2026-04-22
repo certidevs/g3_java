@@ -17,10 +17,9 @@ public class G3JavaApplication {
         var context = SpringApplication.run(G3JavaApplication.class, args);
 
         BookingRepository repositoryBooking =context.getBean(BookingRepository.class);
-        Booking bookingTest = new Booking(1L);
+        // Se crea reserva de USUARIO y CASA ficticio.
+        Booking bookingTest = new Booking(1L,1L);
         repositoryBooking.save(bookingTest);
-
-
 
     }
 

@@ -20,6 +20,7 @@ public class Booking {
     private Long id;
 
     // ManyToOne cuando haya Usuarios
+    // A MEJORAR
     private Long userBooking;
 
     private LocalDate checkin;
@@ -32,11 +33,14 @@ public class Booking {
     private StatusBooking statusbooking;
 
     // ManyToOne a House
+    // A MEJORAR
+    private Long userHouse;
 
-    public Booking(Long userBooking)
+    public Booking(Long userBooking,Long userHouse)
     {
         this.userBooking=userBooking;
         this.statusbooking=StatusBooking.PENDING;
+        this.userHouse=userHouse;
     }
 
 }
