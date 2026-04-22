@@ -22,7 +22,7 @@ Cuando una de vuestras entidades necesite saber "quién es el dueño" o "quién 
 Cada alumno crea **una sola entidad** en `model/`. Como cada alumno toca archivos distintos, no hay conflictos de Git.
 
 ### House
-
+ 
 Una **casa** es un alojamiento que un anfitrión publica en la plataforma para alquilar. Es la entidad central de la aplicación: sin casaes no hay nada que reservar. Piensa en lo que ves al buscar en Airbnb: cada tarjeta es una House.
 
 Ejemplos reales: "Ático en Gran Vía — Madrid, 120 €/noche, hasta 4 huéspedes", "Casa rural con jardín — Segovia, 85 €/noche, hasta 6 huéspedes".
