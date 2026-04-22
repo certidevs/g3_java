@@ -4,8 +4,6 @@ Imagina que te encargan construir una plataforma de alquiler vacacional tipo Air
 
 La aplicación tiene **4 entidades principales**. Cada persona del grupo se encarga de una. A continuación se explica qué representa cada una, por qué la necesitamos y qué información guarda.
 
-
-
 ## La entidad User
 
 `User` ya existe en el proyecto base (no hay que crearla). En esta aplicación un User puede tener dos papeles:
