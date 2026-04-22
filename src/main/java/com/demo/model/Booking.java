@@ -17,4 +17,6 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    // ManyToOne a House
+
 }
