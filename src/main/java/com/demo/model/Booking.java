@@ -20,7 +20,7 @@ public class Booking {
     private Long id;
 
     @ManyToOne
-    private User usuario;
+    private User userBooking;
 
     @Column(nullable=false)
     private LocalDate checkin;
