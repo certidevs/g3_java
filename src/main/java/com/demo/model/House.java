@@ -1,5 +1,4 @@
 package com.demo.model;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +19,7 @@ public class House {
     private Double pricePerNight;
     private String location;
     private Integer maxGuests;
+
 //Constructor
     public House() {
     }
