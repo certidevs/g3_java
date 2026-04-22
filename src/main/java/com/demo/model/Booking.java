@@ -19,15 +19,12 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User userBooking;
+    // ManyToOne cuando haya Usuarios
+    private Long userBooking;
 
-    @Column(nullable=false)
     private LocalDate checkin;
 
-    @Column(nullable=true)
     private LocalDate checkout;
-
 
     private Double totalPrice;
 
@@ -35,5 +32,11 @@ public class Booking {
     private StatusBooking statusbooking;
 
     // ManyToOne a House
+
+    public Booking(Long userBooking)
+    {
+        this.userBooking=userBooking;
+        this.statusbooking=StatusBooking.PENDING;
+    }
 
 }
