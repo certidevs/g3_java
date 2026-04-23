@@ -1,9 +1,13 @@
-/bookings/{id}
-/bookings/recommend/{id}
-/bookings/recommended/{id}
-/bookings/viewalltypes/{id}
+/bookings/{id}                          Reservas de tipo confirmed del usuario
+
+// Para Usuarios y Anfitriones
+/bookings/viewalltypes/{id}             El anfitrion desde aqui puede cerrar la reserva.
 /bookings/viewbytype/pending/{id}
 /bookings/viewbytype/confirmed/{id}
 /bookings/viewbytype/canceled/{id}
 /bookings/viewbytype/completed/{id}
 /bookings/viewbydate/{id}
+
+// para Usuarios
+/bookings/recommend/{id}
+/bookings/recommended/{id}
