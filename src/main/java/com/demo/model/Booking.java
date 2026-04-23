@@ -71,11 +71,12 @@ public class Booking {
     // Se hace el checkinout (real)
     public void completedBooking(LocalDateTime completedmoment) {
         if
-        (this.statusbooking == StatusBooking.CONFIRMED) {
+        ((this.statusbooking == StatusBooking.CONFIRMED) ||
+           (this.statusbooking == StatusBooking.RECOMMENDED))
+        {
             this.statusbooking=StatusBooking.COMPLETED;
             this.checkout = completedmoment;
         }
-
     }
 
     // La reserva ha sido recomendada
