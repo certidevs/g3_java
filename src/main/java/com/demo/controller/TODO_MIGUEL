@@ -1,10 +1,11 @@
 /bookings/{id}
-/bookings/recomendar/{id}
-/bookings/recomendados/{id}
-/bookings/vistatodostipo/{id}
-/bookings/vistaportipo/pendiente/{íd}
-/bookings/vistaportipo/confirmada/{id}
-/bookings/vistaportipo/cancelada/{id}
-/bookings/vistaportipo/realizada/{id}
-/bookings/vistaporfecha/{id}
+/bookings/recommend/{id}
+/bookings/recommended/{id}
+/bookings/viewalltypes/{id}
+/bookings/viewbytype/pending/{id}
+/bookings/viewbytype/confirmed/{id}
+/bookings/viewbytype/canceled/{id}
+/bookings/viewbytype/completed/{id}
+/bookings/viewbydate/{id}
+
 
