@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "houses")
 public class House {
 
     @Id
@@ -24,4 +25,12 @@ public class House {
     public House() {
     }
 
+    public House(Long id, String title, String description, Double pricePerNight, String location, Integer maxGuests) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.pricePerNight = pricePerNight;
+        this.location = location;
+        this.maxGuests = maxGuests;
+    }
 }
