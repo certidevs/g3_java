@@ -47,14 +47,14 @@ public class Booking {
         this.userHouse=userHouse;
     }
 
-    public void ConfirmedBooking() {
+    public void confirmedBooking() {
         if
         (this.statusbooking == StatusBooking.PENDING) {
             this.statusbooking=StatusBooking.CONFIRMED;
         }
     }
 
-    public void CancelledBooking() {
+    public void cancelledBooking() {
         if
         ((this.statusbooking == StatusBooking.PENDING) ||
         (this.statusbooking == StatusBooking.CONFIRMED))
@@ -63,7 +63,7 @@ public class Booking {
         }
     }
 
-    public void CompletedBooking() {
+    public void completedBooking() {
         if
         (this.statusbooking == StatusBooking.CONFIRMED) {
             this.statusbooking=StatusBooking.COMPLETED;
