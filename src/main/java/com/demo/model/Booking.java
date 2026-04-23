@@ -33,7 +33,7 @@ public class Booking {
     private StatusBooking statusbooking;
 
     // ManyToOne a House
-    // A MEJORAR
+     // A MEJORAR
     private Long userHouse;
 
     public Booking(Long userBooking,Long userHouse)
