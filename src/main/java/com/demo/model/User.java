@@ -2,13 +2,12 @@ package com.demo.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@Table(name = "users")
 public class User {
 
     @Id
@@ -33,4 +32,7 @@ public class User {
 //    @Enumerated(EnumType.STRING)
 //    @Column(nullable = false)
 //    private Role role;
+
+    public User() {
+    }
 }

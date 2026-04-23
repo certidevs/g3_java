@@ -19,18 +19,19 @@ public class House {
     private Integer maxGuests;
 
     @ManyToOne
-    private User user;
+    private User host;
 
 //Constructor
     public House() {
     }
 
-    public House(Long id, String title, String description, Double pricePerNight, String location, Integer maxGuests) {
-        this.id = id;
+    public House( String title, String description, Double pricePerNight, String location, Integer maxGuests, User host) {
+
         this.title = title;
         this.description = description;
         this.pricePerNight = pricePerNight;
         this.location = location;
         this.maxGuests = maxGuests;
+        this.host = host;
     }
 }

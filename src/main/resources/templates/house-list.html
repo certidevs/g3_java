@@ -8,5 +8,30 @@
 
 <h1>LISTA DE CASA </h1>
 <!--listado de casaes mostrando título, ubicación, precio por noche y anfitrión-->
+
+<div th:each="house : ${houses}" class="card">
+    <h2 th:text="${house.title}">Título</h2>
+
+    <p th:text="${house.description}">Descripción</p>
+
+    <p>
+        📍 <span th:text="${house.location}">Ubicación</span>
+    </p>
+
+    <p>
+        👥 Máx huéspedes:
+        <span th:text="${house.maxGuests}">0</span>
+    </p>
+
+    <p class="price">
+        💶 <span th:text="${house.pricePerNight}">0</span> €/noche
+    </p>
+
+    <p>
+        👤 Anfitrión:
+        <span th:text="${house.host != null ? house.host.username : 'Sin anfitrión'}"></span>
+    </p>
+</div>
+
 </body>
 </html>
