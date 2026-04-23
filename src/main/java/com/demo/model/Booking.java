@@ -34,7 +34,7 @@ public class Booking {
     private Double totalPrice;
 
     @Enumerated(EnumType.STRING)
-    private StatusBooking statusbooking;
+    private StatusBooking statusbooking = StatusBooking.PENDING;
 
     // ManyToOne a House
      // A MEJORAR
@@ -46,5 +46,30 @@ public class Booking {
         this.statusbooking=StatusBooking.PENDING;
         this.userHouse=userHouse;
     }
+
+    public void ConfirmedBooking() {
+        if
+        (this.statusbooking == StatusBooking.PENDING) {
+            this.statusbooking=StatusBooking.CONFIRMED;
+        }
+    }
+
+    public void CancelledBooking() {
+        if
+        ((this.statusbooking == StatusBooking.PENDING) ||
+        (this.statusbooking == StatusBooking.CONFIRMED))
+        {
+            this.statusbooking=StatusBooking.CANCELLED;
+        }
+    }
+
+    public void CompletedBooking() {
+        if
+        (this.statusbooking == StatusBooking.CONFIRMED) {
+            this.statusbooking=StatusBooking.COMPLETED;
+        }
+
+    }
+
 
 }
