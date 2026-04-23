@@ -2,7 +2,7 @@
 /bookings/recomendar/{id}
 /bookings/recomendados/{id}
 /bookings/vistatodostipo/{id}
-/bookings/vistaportipo/pendiente/íd}
+/bookings/vistaportipo/pendiente/{íd}
 /bookings/vistaportipo/confirmada/{id}
 /bookings/vistaportipo/cancelada/{id}
 /bookings/vistaportipo/realizada/{id}
