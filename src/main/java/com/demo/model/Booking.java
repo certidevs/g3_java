@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,13 +24,15 @@ public class Booking {
     // A MEJORAR
     private Long userBooking;
 
-    private LocalDate estimatedCheckin;
-    private LocalDate estimatedCheckout;
+    // Tiempo de chequeo estimado
+    private LocalDateTime estimatedCheckin;
+    private LocalDateTime estimatedCheckout;
 
     private Integer numberNights;
 
-    private LocalDate checkin;
-    private LocalDate checkout;
+    // Tiempos de chequeos confirmados
+    private LocalDateTime checkin;
+    private LocalDateTime checkout;
 
     private Double totalPrice;
 
@@ -47,10 +50,12 @@ public class Booking {
         this.userHouse=userHouse;
     }
 
-    public void confirmedBooking() {
+    // Se hace el checkin (real)
+    public void confirmedBooking(LocalDateTime confirmationmoment ) {
         if
         (this.statusbooking == StatusBooking.PENDING) {
             this.statusbooking=StatusBooking.CONFIRMED;
+            this.checkin = confirmationmoment;
         }
     }
 
@@ -63,13 +68,23 @@ public class Booking {
         }
     }
 
-    public void completedBooking() {
+    // Se hace el checkinout (real)
+    public void completedBooking(LocalDateTime completedmoment) {
         if
         (this.statusbooking == StatusBooking.CONFIRMED) {
             this.statusbooking=StatusBooking.COMPLETED;
+            this.checkout = completedmoment;
         }
 
     }
 
+    // La reserva ha sido recomendada
+    public void putAsRecommeded() {
+        if
+        ((this.statusbooking == StatusBooking.CONFIRMED) ||
+           (this.statusbooking == StatusBooking.COMPLETED)) {
+            this.statusbooking=StatusBooking.RECOMMENDED;
+        }
+    }
 
 }
