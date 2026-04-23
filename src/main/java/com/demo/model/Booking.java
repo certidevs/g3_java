@@ -23,8 +23,12 @@ public class Booking {
     // A MEJORAR
     private Long userBooking;
 
-    private LocalDate checkin;
+    private LocalDate estimatedCheckin;
+    private LocalDate estimatedCheckout;
 
+    private Integer numberNights;
+
+    private LocalDate checkin;
     private LocalDate checkout;
 
     private Double totalPrice;
