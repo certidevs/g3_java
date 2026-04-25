@@ -57,6 +57,7 @@ public class Booking {
     }
 
     // Constructor para una nueva peticion de alquiler.
+    // Pone el estado en PENDING
     public Booking(User userBooking,House userHouse,
                    LocalDateTime estimatedCheckin,LocalDateTime estimatedCheckout)
     {
@@ -78,12 +79,11 @@ public class Booking {
         }
     }
 
-    // Se hace el checkin (real)
-    public void confirmedBooking(LocalDateTime confirmationmoment ) {
+    // Se confirma la peticion de alquiler
+    public void confirmedBooking() {
         if
         (this.statusbooking == StatusBooking.PENDING) {
             this.statusbooking=StatusBooking.CONFIRMED;
-            this.checkin = confirmationmoment;
         }
     }
 
@@ -97,15 +97,27 @@ public class Booking {
     }
 
     // Se hace el checkinout (real)
-    public void completedBooking(LocalDateTime completedmoment) {
+    public void completedBookingIn(LocalDateTime completedmoment) {
         if
         ((this.statusbooking == StatusBooking.CONFIRMED) ||
            (this.statusbooking == StatusBooking.RECOMMENDED))
+        {
+            this.checkin = completedmoment;
+        }
+    }
+
+    // Se hace el checkout (real)
+    public void completedBookingOut(LocalDateTime completedmoment) {
+        if
+        (((this.statusbooking == StatusBooking.CONFIRMED) ||
+                (this.statusbooking == StatusBooking.RECOMMENDED))
+            && (this.checkin != null))
         {
             this.statusbooking=StatusBooking.COMPLETED;
             this.checkout = completedmoment;
         }
     }
+
 
     // La reserva ha sido recomendada
     public void putAsRecommeded() {

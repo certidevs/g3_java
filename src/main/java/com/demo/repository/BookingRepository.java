@@ -12,6 +12,7 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     // LADO DEL ANFITRION HOST.
+    /////////////////////////
 
     // Listado de las reservas pendientes del lado del anfitrion
     @Query("""
@@ -19,7 +20,14 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     """)
     List<Booking> findPendingHost();
 
+    // Listado de las reservas confirmadas para cancelar,checkin,checkout
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.statusbooking='CONFIRMED' ORDER BY bk.checkin
+    """)
+    List<Booking> findConfirmedHost();
+
     // LADO DE HUESPED
+    //////////////////
 
     // Lista de las reservas de un usuario pendientes
     @Query ("""
@@ -27,6 +35,14 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                  AND bk.statusbooking='PENDING' ORDER BY bk.checkin
     """)
     List<Booking> findPendings(Long id);
+
+    // Lista de las reservas de un usuario confirmadas
+    @Query ("""
+        SELECT bk FROM Booking bk WHERE bk.userHouse.id=?1  
+                 AND bk.statusbooking='CONFIRMED' ORDER BY bk.checkin
+    """)
+    List<Booking> findConfirmed(Long id);
+
 
     ///////////////////////////////////////////////////
     ///

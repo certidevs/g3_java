@@ -8,6 +8,24 @@
     <h1>Sistema alquiler habitaciones</h1>
     <h2>Reservas pendientes de confirmación</h2>
 
+
+    <h2>Alquileres confirmados</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Casa</th>
+            <th>Localización</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iteración con th:each -->
+        <tr th:each="bookings : ${bookingsConfirmed}">
+            <td th:text="${bookings.getUserHouse().getTitle()}">Nombre</td>
+            <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
+        </tr>
+        </tbody>
+    </table>
+
     <h2>Previsión de alquileres</h2>
     <table>
         <thead>
@@ -24,5 +42,6 @@
         </tr>
         </tbody>
     </table>
+
 </body>
 </html>

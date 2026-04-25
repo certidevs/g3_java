@@ -16,7 +16,8 @@
       <th>Localización</th>
       <th>Usuario</th>
       <th>Email</th>
-      <th>Confirmar</th>
+      <th>Confirmar alquiler</th>
+      <th>Cancelar alquiler</th>
     </tr>
     </thead>
     <tbody>
@@ -26,7 +27,8 @@
       <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
       <td th:text="${bookings.getUserBooking().getUsername()}">Nombre</td>
       <td th:text="${bookings.getUserBooking().getEmail()}">Email</td>
-      <a th:href="@{/index}">Ir a Inicio</a>
+      <td><a th:href="@{/}">Confirmar</a></td>
+      <td><a th:href="@{/}">Cancelar</a></td>
     </tr>
     </tbody>
   </table>

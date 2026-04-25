@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vista de las reservas confirmadas</title>
+</head>
+<body>
+
+<h1>Sistema alquiler habitaciones</h1>
+<h2>Lista de alquileres confirmados</h2>
+
+<form>
+    <label for="entrada">Fecha de Entrada:</label>
+    <input type="date" id="entrada" name="fecha_entrada" required>
+
+    <label for="salida">Fecha de Salida:</label>
+    <input type="date" id="salida" name="fecha_salida" required>
+
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>Casa</th>
+        <th>Localización</th>
+        <th>Usuario</th>
+        <th>Email</th>
+
+        <th>Checking estimado</th>
+        <th>Checkout estimado</th>
+        <th>Checkin</th>
+        <th>Checkout</th>
+        <th>Cancelar alquiler</th>
+        <th>Checkin</th>
+        <th>Checkout</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iteración con th:each -->
+    <tr th:each="bookings : ${bookingsConfirmed}">
+        <td th:text="${bookings.getUserHouse().getTitle()}">Casa</td>
+        <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
+        <td th:text="${bookings.getUserBooking().getUsername()}">Nombre</td>
+        <td th:text="${bookings.getUserBooking().getEmail()}">Email</td>
+
+        <td th:text="${bookings.getEstimatedCheckin()}">Checking estimado</td>
+        <td th:text="${bookings.getEstimatedCheckout()}">Checkout estimado</td>
+        <td th:text="${bookings.getCheckin()}">Checking</td>
+        <td th:text="${bookings.getCheckout()}">Checkout</td>
+
+        <td><a th:href="@{/}">Cancelar</a></td>
+        <td><a th:href="@{/}">Checkin</a></td>
+        <td><a th:href="@{/}">Checkout</a></td>
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>

@@ -7,6 +7,7 @@ import com.demo.repository.BookingRepository;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.UserRepository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,13 +33,16 @@ public class BookingController {
         // Buscamos el Usuario por id.
         //Optional<User> user
         List<Booking> bookings = bookingRepository.findPendings(id);
+        List<Booking> bookingsConfirmed = bookingRepository.findConfirmed(id);
 
         model.addAttribute("bookingsPendings",bookings);
+        model.addAttribute("bookingsConfirmed",bookingsConfirmed);
 
-        //return "house-list";
         return "booking-list-pending";
 
     }
+
+
 
     // LADO ANFITRION . HOST
     @GetMapping("/bookings/host/pending")
@@ -52,7 +56,15 @@ public class BookingController {
 
     }
 
+    @GetMapping("/bookings/host/confirmed")
+    public String bookingConfirmedHost (Model model){
 
+        List<Booking> bookings = bookingRepository.findConfirmedHost();
 
+        model.addAttribute("bookingsConfirmed",bookings);
+
+        return "booking-list-confirmed-host";
+
+    }
 
 }

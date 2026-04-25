@@ -42,6 +42,18 @@ public class BookingDataInitializer implements CommandLineRunner {
         guest2_booking.setEmail("alba@test.com");
         userRepository.save(guest2_booking);
 
+        User guest3_booking = new User();
+        guest3_booking.setUsername("jose");
+        guest3_booking.setEmail("jose@test.com");
+        userRepository.save(guest3_booking);
+
+        User guest4_booking = new User();
+        guest4_booking.setUsername("carlos");
+        guest4_booking.setEmail("carlos@test.com");
+        userRepository.save(guest4_booking);
+
+
+
 
         // Crear casas con host asignados
         House house1_booking = new House(
@@ -50,7 +62,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 145.0,
                 "Toledo",
                 5,
-                guest2_booking
+                guest1_booking
         );
         houseRepository.save(house1_booking);
 
@@ -60,9 +72,31 @@ public class BookingDataInitializer implements CommandLineRunner {
                 100.0,
                 "Alicante",
                 3,
-                guest1_booking
+                guest2_booking
         );
         houseRepository.save(house2_booking);
+
+
+        House house3_booking = new House(
+                "Rural Torres",
+                "senderismo sierra",
+                48.0,
+                "Jaén",
+                4,
+                guest3_booking
+        );
+        houseRepository.save(house3_booking);
+
+        House house4_booking = new House(
+                "Camping",
+                "en playa con piscina",
+                100.0,
+                "Barcelona",
+                4,
+                guest4_booking
+        );
+        houseRepository.save(house4_booking);
+
 
 
         // Reserva pendiente
@@ -71,10 +105,30 @@ public class BookingDataInitializer implements CommandLineRunner {
         Booking reserva1 = new Booking(guest1_booking,house1_booking,timeIn,timeOut);
         bookingRepository.save(reserva1);
 
-        LocalDateTime timeIn1 =  LocalDateTime.of(2026,4,12,12,0);
-        LocalDateTime timeOut1 =  LocalDateTime.of(2026,4,15,12,0);
+        LocalDateTime timeIn1 =  LocalDateTime.of(2026,6,5,12,0);
+        LocalDateTime timeOut1 =  LocalDateTime.of(2026,6,15,12,0);
         Booking reserva2 = new Booking(guest2_booking,house2_booking,timeIn1,timeOut1);
         bookingRepository.save(reserva2);
+
+        // Reserva de tipo confirmada
+        LocalDateTime timeIn2 =  LocalDateTime.of(2026,8,5,12,0);
+        LocalDateTime timeOut2 =  LocalDateTime.of(2026,8,10,12,0);
+        Booking reserva3 = new Booking(guest3_booking,house3_booking,timeIn2,timeOut2);
+        // Modificamos el alquiler como confirmado
+        reserva3.confirmedBooking();
+        // y guardamos
+        bookingRepository.save(reserva3);
+
+        // Reserva de tipo confirmada
+        LocalDateTime timeIn3 =  LocalDateTime.of(2026,7,12,12,0);
+        LocalDateTime timeOut3 =  LocalDateTime.of(2026,7,15,12,0);
+        Booking reserva4 = new Booking(guest4_booking,house4_booking,timeIn3,timeOut3);
+        // Modificamos el alquiler como confirmado
+        reserva4.confirmedBooking();
+        // y guardamos
+        bookingRepository.save(reserva4);
+
+
 
     }
 
