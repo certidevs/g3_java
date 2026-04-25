@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.security.SecureRandom;
+
 @Entity
 @Getter
 @Setter
@@ -33,6 +35,18 @@ public class User {
 //    @Column(nullable = false)
 //    private Role role;
 
+    // Token para compartir entre usuarios bookings.
+    private String tokenforRecommended;
+
     public User() {
+        // Creamos un token propio del usuario.
+        SecureRandom scr = new SecureRandom();
+        StringBuilder sb = new StringBuilder(8);
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (int i = 0; i < 8; i++) {
+            int index = scr.nextInt(caracteres.length());
+            sb.append(caracteres.charAt(index));
+        }
+        this.tokenforRecommended = sb.toString();
     }
 }

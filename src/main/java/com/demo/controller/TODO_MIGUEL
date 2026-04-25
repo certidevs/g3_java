@@ -3,7 +3,7 @@
 // Para Usuarios
 /bookings/viewalltypes/{id}
 /bookings/viewbytype/pending/{id}               *1
-/bookings/viewbytype/confirmed/{id}             *
+/bookings/viewbytype/confirmed/{id}             *1
 /bookings/viewbytype/canceled/{id}
 /bookings/viewbytype/completed/{id}
 /bookings/viewbydate/{id}

@@ -15,6 +15,8 @@
         <tr>
             <th>Casa</th>
             <th>Localización</th>
+            <th>Fecha entrada</th>
+            <th>Fecha salida</th>
         </tr>
         </thead>
         <tbody>
@@ -22,6 +24,8 @@
         <tr th:each="bookings : ${bookingsConfirmed}">
             <td th:text="${bookings.getUserHouse().getTitle()}">Nombre</td>
             <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
+            <td th:text="${bookings.getEstimatedCheckin()}">Fecha checkin</td>
+            <td th:text="${bookings.getEstimatedCheckout()}">Fecha checkout</td>
         </tr>
         </tbody>
     </table>
@@ -42,6 +46,25 @@
         </tr>
         </tbody>
     </table>
+
+    <p th:text="|Nuestro token es : ${user.tokenforRecommended}"|></p>
+
+    <form action="/enviar-recomendacion" method="post">
+        <!-- Nombre del usuario -->
+        <label for="nombre">Token destino:</label><br>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+
+        <!-- Correo electrónico -->
+        <label for="email">Correo electrónico:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <!-- Recomendación o mensaje -->
+        <label for="mensaje">Tu Recomendación:</label><br>
+        <textarea id="mensaje" name="mensaje" rows="4" cols="50" required></textarea><br><br>
+
+        <!-- Botón de envío -->
+        <button type="submit">Enviar Recomendación</button>
+    </form>
 
 </body>
 </html>
