@@ -59,11 +59,19 @@ public class BookingController {
 
     }
 
+    @GetMapping("/bookings/viewbytype/cancelled/{id}")
+    public String bookingsCancelled (Model model, @PathVariable Long id) {
+        List<Booking> bookings = bookingRepository.findCancelled(id);
 
+        model.addAttribute("bookingsCancelled",bookings);
+
+        return "booking-list-cancelled";
+
+    }
 
     // LADO ANFITRION . HOST
-    @GetMapping("/bookings/host/pending")
-    public String bookingPendingsHost (Model model){
+    @GetMapping("/bookings/host/pending/{id}")
+    public String bookingPendingsHost (Model model, @PathVariable Long id){
 
         List<Booking> bookings = bookingRepository.findPendingHost();
 
@@ -73,8 +81,8 @@ public class BookingController {
 
     }
 
-    @GetMapping("/bookings/host/confirmed")
-    public String bookingConfirmedHost (Model model){
+    @GetMapping("/bookings/host/confirmed/{id}")
+    public String bookingConfirmedHost (Model model, @PathVariable Long id){
 
         List<Booking> bookings = bookingRepository.findConfirmedHost();
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservas canceladas</title>
+</head>
+<body>
+<h1>Sistema alquiler habitaciones</h1>
+<h2>Reservas canceladas</h2>
+
+<h2>Alquileres cancelados</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Casa</th>
+        <th>Localización</th>
+        <th>Fecha entrada</th>
+        <th>Fecha salida</th>
+        <th>Anfitrión</th>
+        <th>Email anfitrión</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iteración con th:each -->
+    <tr th:each="bookings : ${bookingsCancelled}">
+        <td th:text="${bookings.getUserHouse().getTitle()}">Nombre</td>
+        <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
+        <td th:text="${bookings.getEstimatedCheckin()}">Fecha checkin</td>
+        <td th:text="${bookings.getEstimatedCheckout()}">Fecha checkout</td>
+        <td th:text="${bookings.getUserHouse().getHost().getUsername()}">Anfitrión</td>
+        <td th:text="${bookings.getUserHouse().getHost().getEmail()}">Email anfitrión</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

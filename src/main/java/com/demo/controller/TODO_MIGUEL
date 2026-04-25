@@ -1,10 +1,10 @@
 /bookings/{id}                          Reservas de tipo confirmed del usuario
 
 // Para Usuarios
-/bookings/viewalltypes/{id}
+/bookings/viewalltype/{id}
 /bookings/viewbytype/pending/{id}               *1
-/bookings/viewbytype/confirmed/{id}             *1
-/bookings/viewbytype/canceled/{id}
+/bookings/viewbytype/pending/{id}               *1
+/bookings/viewbytype/canceled/{id}              *1
 /bookings/viewbytype/completed/{id}
 /bookings/viewbydate/{id}
 

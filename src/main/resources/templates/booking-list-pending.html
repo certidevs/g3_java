@@ -17,6 +17,8 @@
             <th>Localización</th>
             <th>Fecha entrada</th>
             <th>Fecha salida</th>
+            <th>Anfitrion</th>
+            <th>Email anfitrión</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +28,8 @@
             <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
             <td th:text="${bookings.getEstimatedCheckin()}">Fecha checkin</td>
             <td th:text="${bookings.getEstimatedCheckout()}">Fecha checkout</td>
+            <td th:text="${bookings.getUserHouse().getHost().getUsername()}">Usuario anfitrion</td>
+            <td th:text="${bookings.getUserHouse().getHost().getEmail()}">Email anfitrión</td>
         </tr>
         </tbody>
     </table>
@@ -36,6 +40,8 @@
         <tr>
             <th>Casa</th>
             <th>Localización</th>
+            <th>Anfitrión</th>
+            <th>Email anfitrión</th>
         </tr>
         </thead>
         <tbody>
@@ -43,6 +49,8 @@
         <tr th:each="bookings : ${bookingsPendings}">
             <td th:text="${bookings.getUserHouse().getTitle()}">Nombre</td>
             <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
+            <td th:text="${bookings.getUserHouse().getHost().getUsername()}">Usuario anfitrion</td>
+            <td th:text="${bookings.getUserHouse().getHost().getEmail()}">Email anfitrión</td>
         </tr>
         </tbody>
     </table>

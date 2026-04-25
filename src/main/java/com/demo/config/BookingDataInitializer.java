@@ -31,32 +31,58 @@ public class BookingDataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+
         // Crear usuarios (guest)
         User guest1_booking = new User();
-        guest1_booking.setUsername("luis");
-        guest1_booking.setEmail("luis@test.com");
-        guest1_booking.setTokenforRecommended("12345678");
+        guest1_booking.setUsername("luis1");
+        guest1_booking.setEmail("luis@test1.com");
         userRepository.save(guest1_booking);
 
         User guest2_booking = new User();
-        guest2_booking.setUsername("alba");
-        guest2_booking.setEmail("alba@test.com");
-        guest1_booking.setTokenforRecommended("34561234");
+        guest2_booking.setUsername("alba2");
+        guest2_booking.setEmail("alba@test2.com");
         userRepository.save(guest2_booking);
 
         User guest3_booking = new User();
-        guest3_booking.setUsername("jose");
-        guest3_booking.setEmail("jose@test.com");
-        guest1_booking.setTokenforRecommended("abdnbgrt");
+        guest3_booking.setUsername("jose3");
+        guest3_booking.setEmail("jose@test3.com");
         userRepository.save(guest3_booking);
 
         User guest4_booking = new User();
-        guest4_booking.setUsername("carlos");
-        guest4_booking.setEmail("carlos@test.com");
-        guest1_booking.setTokenforRecommended("556kkiio");
+        guest4_booking.setUsername("carlos4");
+        guest4_booking.setEmail("carlos@4test.com");
         userRepository.save(guest4_booking);
 
+        User guest5_booking = new User();
+        guest5_booking.setUsername("pedro5");
+        guest5_booking.setEmail("pedro@5test.com");
+        userRepository.save(guest5_booking);
 
+        // Crear usuarios (guest)
+        User host1_booking = new User();
+        host1_booking.setUsername("luis6");
+        host1_booking.setEmail("luis@test6.com");
+        userRepository.save(host1_booking);
+
+        User host2_booking = new User();
+        host2_booking.setUsername("alba7");
+        host2_booking.setEmail("alba@test7.com");
+        userRepository.save(host2_booking);
+
+        User host3_booking = new User();
+        host3_booking.setUsername("jose8");
+        host3_booking.setEmail("jose@test.8com");
+        userRepository.save(host3_booking);
+
+        User host4_booking = new User();
+        host4_booking.setUsername("carlos9");
+        host4_booking.setEmail("carlos@test9.com");
+        userRepository.save(host4_booking);
+
+        User host5_booking = new User();
+        host5_booking.setUsername("pedro10");
+        host5_booking.setEmail("pedro@test10.com");
+        userRepository.save(host5_booking);
 
 
         // Crear casas con host asignados
@@ -66,7 +92,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 145.0,
                 "Toledo",
                 5,
-                guest1_booking
+                host1_booking
         );
         houseRepository.save(house1_booking);
 
@@ -76,7 +102,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 100.0,
                 "Alicante",
                 3,
-                guest2_booking
+                host2_booking
         );
         houseRepository.save(house2_booking);
 
@@ -87,7 +113,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 48.0,
                 "Jaén",
                 4,
-                guest3_booking
+                host3_booking
         );
         houseRepository.save(house3_booking);
 
@@ -97,11 +123,19 @@ public class BookingDataInitializer implements CommandLineRunner {
                 100.0,
                 "Barcelona",
                 4,
-                guest4_booking
+                host4_booking
         );
         houseRepository.save(house4_booking);
 
-
+        House house5_booking = new House(
+                "Ático",
+                "centro ciudad",
+                250.6,
+                "Gijón",
+                2,
+                host5_booking
+        );
+        houseRepository.save(house5_booking);
 
         // Reserva pendiente
         LocalDateTime timeIn =  LocalDateTime.of(2026,4,12,12,0);
@@ -131,6 +165,18 @@ public class BookingDataInitializer implements CommandLineRunner {
         reserva4.confirmedBooking();
         // y guardamos
         bookingRepository.save(reserva4);
+
+
+
+        // Reserva cancelada
+        LocalDateTime timeIn4 =  LocalDateTime.of(2026,9,1,12,0);
+        LocalDateTime timeOut4 =  LocalDateTime.of(2026,12,1,12,0);
+        Booking reserva5 = new Booking(guest5_booking,house5_booking,timeIn4,timeOut4);
+        // Modificamos el alquiler como confirmado
+        reserva5.cancelledBooking();
+        // y guardamos
+        bookingRepository.save(reserva5);
+
 
 
 

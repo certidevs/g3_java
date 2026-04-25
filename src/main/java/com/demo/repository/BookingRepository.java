@@ -32,17 +32,23 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     // Lista de las reservas de un usuario pendientes
     @Query ("""
         SELECT bk FROM Booking bk WHERE bk.userHouse.id=?1  
-                 AND bk.statusbooking='PENDING' ORDER BY bk.checkin
+                 AND bk.statusbooking='PENDING' ORDER BY bk.checkin DESC
     """)
     List<Booking> findPendings(Long id);
 
     // Lista de las reservas de un usuario confirmadas
     @Query ("""
         SELECT bk FROM Booking bk WHERE bk.userHouse.id=?1  
-                 AND bk.statusbooking='CONFIRMED' ORDER BY bk.checkin
+                 AND bk.statusbooking='CONFIRMED' ORDER BY bk.checkin DESC
     """)
     List<Booking> findConfirmed(Long id);
 
+    // Lista de cancelaciones de un huesped
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userHouse.id=?1
+            AND bk.statusbooking='CANCELLED' ORDER BY bk.checkin DESC
+    """)
+    List<Booking> findCancelled(Long id);
 
     ///////////////////////////////////////////////////
     ///
