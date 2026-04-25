@@ -166,8 +166,6 @@ public class BookingDataInitializer implements CommandLineRunner {
         // y guardamos
         bookingRepository.save(reserva4);
 
-
-
         // Reserva cancelada
         LocalDateTime timeIn4 =  LocalDateTime.of(2026,9,1,12,0);
         LocalDateTime timeOut4 =  LocalDateTime.of(2026,12,1,12,0);

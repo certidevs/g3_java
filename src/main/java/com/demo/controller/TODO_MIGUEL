@@ -13,5 +13,6 @@
 /bookings/recommended/{id}
 
 // Para anfitriones
-/bookings/host/pending                          *1
-/bookings/host/confirmed                        *
+/bookings/host/pending                          *2
+/bookings/host/confirmed                        *2
+

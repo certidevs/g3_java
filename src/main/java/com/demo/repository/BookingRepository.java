@@ -16,15 +16,17 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     // Listado de las reservas pendientes del lado del anfitrion
     @Query("""
-        SELECT bk FROM Booking bk WHERE bk.statusbooking='PENDING' ORDER BY bk.checkin
+        SELECT bk FROM Booking bk WHERE bk.statusbooking='PENDING' AND 
+            bk.userHouse.host.id=?1 ORDER BY bk.checkin 
     """)
-    List<Booking> findPendingHost();
+    List<Booking> findPendingHost(Long id);
 
     // Listado de las reservas confirmadas para cancelar,checkin,checkout
     @Query("""
-        SELECT bk FROM Booking bk WHERE bk.statusbooking='CONFIRMED' ORDER BY bk.checkin
+        SELECT bk FROM Booking bk WHERE bk.statusbooking='CONFIRMED' AND 
+            bk.userHouse.host.id=?1 ORDER BY bk.checkin
     """)
-    List<Booking> findConfirmedHost();
+    List<Booking> findConfirmedHost(Long id);
 
     // LADO DE HUESPED
     //////////////////

@@ -73,7 +73,7 @@ public class BookingController {
     @GetMapping("/bookings/host/pending/{id}")
     public String bookingPendingsHost (Model model, @PathVariable Long id){
 
-        List<Booking> bookings = bookingRepository.findPendingHost();
+        List<Booking> bookings = bookingRepository.findPendingHost(id);
 
         model.addAttribute("bookingsPendings",bookings);
 
@@ -84,7 +84,7 @@ public class BookingController {
     @GetMapping("/bookings/host/confirmed/{id}")
     public String bookingConfirmedHost (Model model, @PathVariable Long id){
 
-        List<Booking> bookings = bookingRepository.findConfirmedHost();
+        List<Booking> bookings = bookingRepository.findConfirmedHost(id);
 
         model.addAttribute("bookingsConfirmed",bookings);
 
