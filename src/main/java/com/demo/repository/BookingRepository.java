@@ -2,6 +2,7 @@ package com.demo.repository;
 
 import com.demo.model.Booking;
 import com.demo.model.StatusBooking;
+import com.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,11 +11,26 @@ import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    // Listado de las reservas de un usuario ordenadas por Checking
-    List<Booking> findByUserBookingOrderByCheckin(Long id);
+    // LADO DEL ANFITRION HOST.
 
-    // Lista de las reservas de un usuario y de un tipo de estado ordenadas por Checking
-    List<Booking> findByUserBookingAndStatusbookingOrderByCheckin(Long userBooking, StatusBooking statusbooking);
+    // Listado de las reservas pendientes del lado del anfitrion
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.statusbooking='PENDING' ORDER BY bk.checkin
+    """)
+    List<Booking> findPendingHost();
+
+    // LADO DE HUESPED
+
+    // Lista de las reservas de un usuario pendientes
+    @Query ("""
+        SELECT bk FROM Booking bk WHERE bk.userHouse.id=?1  
+                 AND bk.statusbooking='PENDING' ORDER BY bk.checkin
+    """)
+    List<Booking> findPendings(Long id);
+
+    ///////////////////////////////////////////////////
+    ///
+    /// AMPLIACIONES
 
     // Lista de las reservas de un usuario de un tipo entre una fecha y otra ordenada por checking
     List<Booking> findByUserBookingAndCheckinBetweenAndStatusbookingOrderByCheckin(Long userBooking, LocalDate checkinAfter, LocalDate checkinBefore, StatusBooking statusbooking);

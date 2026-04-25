@@ -11,3 +11,6 @@
 // para Usuarios
 /bookings/recommend/{id}
 /bookings/recommended/{id}
+
+// Para anfitriones
+/bookings/host/pending

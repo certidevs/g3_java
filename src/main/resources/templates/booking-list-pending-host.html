@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vista de las reservas pendientes</title>
+</head>
+<body>
+  <h1>Sistema alquiler habitaciones</h1>
+  <h2>Lista de alquileres pendientes</h2>
+
+  <h2>Previsión de alquileres</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Casa</th>
+      <th>Localización</th>
+      <th>Usuario</th>
+      <th>Email</th>
+      <th>Confirmar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iteración con th:each -->
+    <tr th:each="bookings : ${bookingsPendings}">
+      <td th:text="${bookings.getUserHouse().getTitle()}">Casa</td>
+      <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
+      <td th:text="${bookings.getUserBooking().getUsername()}">Nombre</td>
+      <td th:text="${bookings.getUserBooking().getEmail()}">Email</td>
+      <a th:href="@{/index}">Ir a Inicio</a>
+    </tr>
+    </tbody>
+  </table>
+</body>
+</html>

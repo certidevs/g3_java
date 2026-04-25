@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Getter
@@ -22,13 +23,15 @@ public class Booking {
 
     // ManyToOne cuando haya Usuarios
     // A MEJORAR
-    private Long userBooking;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private User userBooking;
 
     // Tiempo de chequeo estimado
     private LocalDateTime estimatedCheckin;
     private LocalDateTime estimatedCheckout;
 
-    private Integer numberNights;
+    private Long numberNights;
 
     // Tiempos de chequeos confirmados
     private LocalDateTime checkin;
@@ -41,13 +44,38 @@ public class Booking {
 
     // ManyToOne a House
      // A MEJORAR
-    private Long userHouse;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private House userHouse;
 
-    public Booking(Long userBooking,Long userHouse)
+    private Long calculateNights (LocalDateTime tiempoin,LocalDateTime tiempoout)
     {
-        this.userBooking=userBooking;
-        this.statusbooking=StatusBooking.PENDING;
-        this.userHouse=userHouse;
+        // Calcular noches
+        Long noches = ChronoUnit.DAYS.between(tiempoin,tiempoout);
+        return  noches;
+
+    }
+
+    // Constructor para una nueva peticion de alquiler.
+    public Booking(User userBooking,House userHouse,
+                   LocalDateTime estimatedCheckin,LocalDateTime estimatedCheckout)
+    {
+        // Calculamos en nro. de noches
+        Long nroNights = calculateNights(estimatedCheckin,estimatedCheckout);
+
+        // Verificamos que al menos hay un dia entre las fechas.
+        if (nroNights>=1) {
+            // Tipos obligatorios
+            this.userBooking = userBooking;
+            this.statusbooking = StatusBooking.PENDING;
+            this.userHouse = userHouse;
+            // Tiempos estimados introducidos
+            this.estimatedCheckin = estimatedCheckin;
+            this.estimatedCheckout = estimatedCheckout;
+            // Nro de noches
+            this.numberNights = nroNights;
+            this.totalPrice = nroNights * this.userHouse.getPricePerNight();
+        }
     }
 
     // Se hace el checkin (real)
