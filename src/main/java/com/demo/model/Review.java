@@ -31,4 +31,9 @@ public class Review {
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt; // = LocalDateTime.now();
 
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "house_id")
+    private House house;
+
 }
