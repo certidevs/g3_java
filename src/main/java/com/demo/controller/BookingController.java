@@ -1,20 +1,15 @@
 package com.demo.controller;
 
 import com.demo.model.Booking;
-import com.demo.model.House;
-import com.demo.model.StatusBooking;
 import com.demo.model.User;
 import com.demo.repository.BookingRepository;
-import com.demo.repository.HouseRepository;
 import com.demo.repository.UserRepository;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +45,7 @@ public class BookingController {
             model.addAttribute("bookingsConfirmed",bookingsConfirmed);
             model.addAttribute("user",validUser);
 
-            return "booking-list-pending";
+            return "guest/booking-list-pending";
 
         }
         else {
@@ -65,7 +60,7 @@ public class BookingController {
 
         model.addAttribute("bookingsCancelled",bookings);
 
-        return "booking-list-cancelled";
+        return "guest/booking-list-cancelled";
 
     }
 
@@ -77,7 +72,7 @@ public class BookingController {
 
         model.addAttribute("bookingsPendings",bookings);
 
-        return "booking-list-pending-host";
+        return "host/booking-list-pending-host";
 
     }
 
@@ -88,7 +83,7 @@ public class BookingController {
 
         model.addAttribute("bookingsConfirmed",bookings);
 
-        return "booking-list-confirmed-host";
+        return "host/booking-list-confirmed-host";
 
     }
 
