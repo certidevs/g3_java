@@ -7,8 +7,6 @@ import lombok.*;
 @Table(name = "amenities")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class Amenity {
 
