@@ -23,10 +23,12 @@ public class Review {
 
     private Integer rating;
 
+    @Column(length = 1000)
     private String comment;
 
     @CreationTimestamp
+    // @Builder.Default // Checkear si es necesario, pues al hacerlo desde bdd da igual que el builder lo settee a NULL
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt; // = LocalDateTime.now();
 
 }
