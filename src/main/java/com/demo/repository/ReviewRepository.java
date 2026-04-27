@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     // TODO:
-    // - Filtrar reviews por restaurantes ordenados por date descendente, tipo:
-    //   List<Review> findByHouse_IdOrderByCreatedAtDesc(Long houseId);
-    // - Filtrar reviews de un restaurante y por rating (o rango de rating), ordenadas por creationDate desc
     // - Considerar filtrar por rango between, por ejemplo de fechas o de rating, ordenadas por creationDate desc
+
+    List<Review> findByHouse_IdOrderByCreatedAtDesc(Long id);
+
+    List<com.demo.model.Review> findByHouse_IdAndRatingOrderByCreatedAtDesc(Long id, Integer rating);
 }
