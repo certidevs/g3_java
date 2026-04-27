@@ -19,6 +19,12 @@ public class HouseController {
         this.houseRepository = houseRepository;
     }
 
+    @GetMapping("/")
+    public String home(){
+        return "index";
+
+    }
+
     @GetMapping("/houses")
     public String houseList(Model model){
         List <House>  houses = houseRepository.findAll();

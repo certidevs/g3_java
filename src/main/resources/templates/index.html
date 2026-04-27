@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ROADS</title>
 </head>
+
 <body>
-    Pagina inicial
+
+<!-- HERO -->
+<div class="hero">
+
+    <h1>🌍 Descubre tu próxima escapada</h1>
+    <p>Casas únicas para experiencias inolvidables</p>
+
+    <a class="btn" href="/houses">Explorar casas</a>
+
+</div>
+
+<!-- CASAS -->
+<div class="section">
+
+    <h2>🏡 Casas destacadas</h2>
+
+    <div class="grid">
+
+        <div class="card" th:each="house : ${houses}">
+
+            <h3 th:text="${house.title}"></h3>
+
+            <p>📍 <span th:text="${house.location}"></span></p>
+
+            <p th:text="${house.description}"></p>
+
+            <div class="price">
+                💰 <span th:text="${house.pricePerNight}"></span> €/noche
+            </div>
+
+            <!-- botón dinámico -->
+            <a th:href="@{'/houses/' + ${house.id}}" class="btn-small">
+                Ver detalle
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--&lt;!&ndash; NAVBAR FRAGMENT &ndash;&gt;-->
+<!--<div th:fragment="navbar">-->
+<!--    <header style="background:#1f2937; color:white; padding:20px; text-align:center;">-->
+
+<!--        <div style="font-size:28px; font-weight:bold; letter-spacing:2px;">-->
+<!--            ROADS-->
+<!--        </div>-->
+
+<!--        <nav style="margin-top:10px;">-->
+<!--            <a href="/" style="color:white; margin:0 12px; text-decoration:none;">Inicio</a>-->
+<!--            <a href="/houses" style="color:white; margin:0 12px; text-decoration:none;">Casas</a>-->
+<!--            <a href="/bookings" style="color:white; margin:0 12px; text-decoration:none;">Reservas</a>-->
+<!--            <a href="/amenities" style="color:white; margin:0 12px; text-decoration:none;">Amenities</a>-->
+<!--        </nav>-->
+
+<!--    </header>-->
+<!--</div>-->
+
+
 </body>
+
+
 </html>
