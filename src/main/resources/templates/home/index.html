@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>ROADS</title>
-</head>
+<head th:replace="~{layout/head :: head('Alquiler de casa')}"></head>
+
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+
+<!--</head>-->
 
 <body>
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
 
 <!-- HERO -->
 <div class="hero">
@@ -65,6 +70,8 @@
 <!--    </header>-->
 <!--</div>-->
 
+<footer th:replace="~{layout/footer :: footer}"></footer>
+<script th:replace="~{layout/footer :: scripts}"></script>
 
 </body>
 
