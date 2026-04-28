@@ -4,6 +4,7 @@ import com.demo.model.User;
 import com.demo.model.House;
 import com.demo.repository.BookingRepository;
 import com.demo.repository.UserRepository;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.Optional;
 
-public class ControlPanelController {
+@Controller
+public class  ControlPanelController {
 
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
