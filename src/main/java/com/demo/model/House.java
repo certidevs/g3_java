@@ -17,6 +17,8 @@ public class House {
     private Double pricePerNight;
     private String location;
     private Integer maxGuests;
+    @Enumerated(EnumType.STRING)
+    private StatusReserva reserva = StatusReserva.DISPONIBLE;
 
     @ManyToOne
     private User host;
