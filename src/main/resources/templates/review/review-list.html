@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head :: head('Review')"></head>
+<body>
+  <th:block th:replace="layout/navbar :: navbar"></th:block>
+
+  <h1>Vista de Reseñas</h1>
+
+  <ul>
+    <li th:each="review : ${reviews}">
+      <p>⭐ <span th:text="${review.rating}">0</span>/5</p>
+      <p th:text="${review.comment}">Comentario de la reseña</p>
+      <p>
+        🏠 Casa: <span th:text="${review.house != null ? review.house.title : 'Sin casa'}"></span>
+      </p>
+      <p>
+        👤 Usuario: <span>¡Usuario de prueba!</span>
+      </p>
+    </li>
+</body>
+</html>
