@@ -1,20 +1,62 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Panel de control de la aplicación</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--  <p>Datos de usuario</p>-->
+<!--  <p th:text="${user}"></p>-->
+<!--  <br>-->
+<!--  <p>Lista de casas en propiedad...</p>-->
+<!--  <br>-->
+<!--  <p>Acciones como host...</p>-->
+<!--  <br>-->
+<!--  <p>Lista de casas alquiladas...</p>-->
+<!--  <br>-->
+<!--  <p>Acciones como huesped...</p>-->
+<!--  <br>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Panel de control de la aplicación</title>
-</head>
-<body>
-  <p>Datos de usuario</p>
-  <p th:text="${user}"></p>
-  <br>
-  <p>Lista de casas en propiedad...</p>
-  <br>
-  <p>Acciones como host...</p>
-  <br>
-  <p>Lista de casas alquiladas...</p>
-  <br>
-  <p>Acciones como huesped...</p>
-  <br>
-</body>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/head :: head('PANEL DE CONTROL')}"></head>
+
+  <body>
+  <nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+  <main class="container flex-grow-1">
+
+  <div class="card" style="width: 50rem;">
+    <div class="card-body">
+<!--    Titulo del panel de control-->
+    <h2>
+      <i class="fa-brands fa-whmcs"></i>
+      <span th:text="|Panel de control del usuario &quot;${user.getUsername()}&quot;|">Panel de Control</span>
+    </h2>
+
+<!--      Datos de usuario  -->
+    <h4>
+      <i class="fa-regular fa-user"></i>
+      <span th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}"></span>
+    </h4>
+
+<!--      Email  -->
+    <h4>
+      <i class="fa-solid fa-envelope"></i>
+      <span th:text="${user.getEmail()}"></span>
+    </h4>
+
+    <h4>
+      <i class="fa-solid fa-square-share-nodes"></i>
+      <span th:text="${user.getTokenforRecommended()}"></span>
+    </h4>
+    </div>
+  </div>
+
+  <footer th:replace="~{layout/footer :: footer}"></footer>
+  <script th:replace="~{layout/footer :: scripts}"></script>
+  </main>
+  </body>
 </html>

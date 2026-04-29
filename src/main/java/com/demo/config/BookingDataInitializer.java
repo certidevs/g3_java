@@ -35,11 +35,15 @@ public class BookingDataInitializer implements CommandLineRunner {
         // Crear usuarios (guest)
         User guest1_booking = new User();
         guest1_booking.setUsername("luis1");
+        guest1_booking.setFirstName("Luis");
+        guest1_booking.setLastName("López");
         guest1_booking.setEmail("luis@test1.com");
         userRepository.save(guest1_booking);
 
         User guest2_booking = new User();
         guest2_booking.setUsername("alba2");
+        guest2_booking.setFirstName("Alba");
+        guest2_booking.setLastName("Martínez");
         guest2_booking.setEmail("alba@test2.com");
         userRepository.save(guest2_booking);
 
