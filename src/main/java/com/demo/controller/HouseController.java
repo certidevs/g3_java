@@ -5,7 +5,6 @@ import com.demo.repository.HouseRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -20,8 +19,10 @@ public class HouseController {
     }
 
     @GetMapping("/")
-    public String home(){
-        return "index";
+    public String home(Model model){
+//        List<House>  houses = houseRepository.findAll();
+//        model.addAttribute("houses", houses);
+        return "home/index";
 
     }
 
@@ -29,7 +30,7 @@ public class HouseController {
     public String houseList(Model model){
         List <House>  houses = houseRepository.findAll();
         model.addAttribute("houses", houses);
-        return "house-list";
+        return "house/house-list";
 
     }
 

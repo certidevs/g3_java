@@ -8,6 +8,8 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Amenity {
 
     @Id
@@ -22,5 +24,7 @@ public class Amenity {
 
     @Column(length = 100)
     private String icon;        // nombre del icono ("wifi", "pool", "parking")
+
+
 }
 
