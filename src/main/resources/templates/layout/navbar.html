@@ -4,25 +4,26 @@
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
-            <img th:src="@{/images/logo1.png}" alt="RODS"
-                 height="60" class="me-2">
+            <img th:src="@{/images/logo1.png}" alt="RODS" height="60" class="me-2">
             <span>ALQUILER VACACIONAL</span>
         </a>
+
         <button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse" data-bs-target="#mainNav"
                 aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav me-auto">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/}">
-                        <i class="fa-solid fa-store me-1"></i> Home
+                        <i class="fa-solid fa-house me-1"></i> Home
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/houses}">
-                        <i class="fa-regular fa-comments me-1"></i> Casas
+                        <i class="fa-solid fa-house-chimney me-1"></i> Casa
                     </a>
                 </li>
                 <li class="nav-item">
@@ -30,10 +31,17 @@
                         <i class="fa-regular fa-comments me-1"></i> Reseñas
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/amenities}">
+                        <i class="fa-solid fa-star me-1"></i> Amenities
+                    </a>
+                </li>
+                <li class="nav-item ms-lg-3">
+                    <a class="btn btn-outline-light btn-sm" th:href="@{/login}">
+                        Login / Registro
+                    </a>
+                </li>
             </ul>
-<!--            <a class="btn btn-outline-light btn-sm" th:href="@{/restaurants/create}">-->
-<!--                <i class="fa-solid fa-plus"></i> Nuevo restaurante-->
-<!--            </a>-->
         </div>
     </div>
 </nav>
