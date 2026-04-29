@@ -34,7 +34,7 @@ h1, h2, h3, .navbar-brand {
 }
 
 .navbar-custom .nav-link:hover {
-    color: #FFFFFF !important;
+    color: #28a745 !important;
 }
 
 .navbar-brand img {
@@ -62,7 +62,7 @@ h1, h2, h3, .navbar-brand {
 
 /* Botones */
 .btn {
-    background-color: #007bff;
+    background-color: #FF0000D7;
     color: white;
     padding: 12px 24px;
     text-decoration: none;
@@ -72,7 +72,7 @@ h1, h2, h3, .navbar-brand {
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: #28a745;
 }
 
 .btn-small {

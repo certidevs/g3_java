@@ -1,36 +1,76 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>House</title>
-</head>
+<head th:replace="~{layout/head :: head('CASAS')}"></head>
+
 <body>
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-<h1>LISTA DE CASA </h1>
-<!--listado de casaes mostrando título, ubicación, precio por noche y anfitrión-->
-<div th:each="house : ${houses}" class="card">
-    <h2 th:text="${house.title}">Título</h2>
+<main class="container flex-grow-1">
+<!--    <div class="d-flex justify-content-between align-items-center mb-4">-->
+<!--        <h1 class="mb-0" th:text="${title}">Restaurantes</h1>-->
+<!--        <span class="badge bg-secondary fs-6" th:text="|${numRestaurants} resultados|">0 resultados</span>-->
+<!--    </div>-->
 
-    <p th:text="${house.description}">Descripción</p>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        <div class="col" th:each="house : ${houses}">
+            <div class="card card-restaurant h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fa-solid fa-store text-primary me-2"></i>
+                        <span th:text="${house.title}">Nombre</span>
+                    </h5>
+                    <p class="card-text">
+                        <span class="badge bg-success">
+                            <i class="fa-solid fa-euro-sign me-1"></i>
+                            <span th:text="${house.pricePerNight}">0</span>
+                        </span>
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent border-0 pt-0">
+                    <a th:href="@{/house/{id}(id=${house.id})}"
+                       class="btn btn-outline-primary btn-sm w-100">
+                        <i class="fa-regular fa-eye me-1"></i> Ver Casa
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <p>
-        📍 <span th:text="${house.location}">Ubicación</span>
-    </p>
+<!--    <div class="mt-4">-->
+<!--        <a th:href="@{/restaurants/create}" class="btn btn-success">-->
+<!--            <i class="fa-solid fa-plus me-1"></i> Crear restaurante-->
+<!--        </a>-->
+<!--    </div>-->
+</main>
 
-    <p>
-        👥 Máx huéspedes:
-        <span th:text="${house.maxGuests}">0</span>
-    </p>
 
-    <p class="price">
-        💶 <span th:text="${house.pricePerNight}">0</span> €/noche
-    </p>
+<!--<h1>LISTA DE CASA </h1>-->
+<!--&lt;!&ndash;listado de casaes mostrando título, ubicación, precio por noche y anfitrión&ndash;&gt;-->
+<!--<div th:each="house : ${houses}" class="card">-->
+<!--    <h2 th:text="${house.title}">Título</h2>-->
 
-    <p>
-        👤 Anfitrión:
-        <span th:text="${house.host != null ? house.host.username : 'Sin anfitrión'}"></span>
-    </p>
-</div>
+<!--    <p th:text="${house.description}">Descripción</p>-->
 
+<!--    <p>-->
+<!--        📍 <span th:text="${house.location}">Ubicación</span>-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--        👥 Máx huéspedes:-->
+<!--        <span th:text="${house.maxGuests}">0</span>-->
+<!--    </p>-->
+
+<!--    <p class="price">-->
+<!--        💶 <span th:text="${house.pricePerNight}">0</span> €/noche-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--        👤 Anfitrión:-->
+<!--        <span th:text="${house.host != null ? house.host.username : 'Sin anfitrión'}"></span>-->
+<!--    </p>-->
+<!--</div>-->
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+<script th:replace="~{layout/footer :: scripts}"></script>
 </body>
 </html>
