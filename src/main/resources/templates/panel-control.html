@@ -27,8 +27,11 @@
   <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
   <main class="container flex-grow-1">
+      <div class="row">
+          <div class="col-sm-9 mb-3 mb-sm-0">
+<!--  Carta1    -->
 
-  <div class="card" style="width: 50rem;">
+  <div class="card shadow">
     <div class="card-body">
 <!--    Titulo del panel de control-->
     <h2>
@@ -52,6 +55,33 @@
       <i class="fa-solid fa-square-share-nodes"></i>
       <span th:text="${user.getTokenforRecommended()}"></span>
     </h4>
+    </div>
+  </div>
+  </div>
+
+<!--  Carta2    -->
+  <div class="col-sm-3">
+      <div class="card shadow">
+          <div class="card-body">
+              <!--    Titulo del panel de control-->
+              <h3>
+                  <div th:if="${nroCasasHost>0}">
+                    <span th:text="|${nroCasasHost} casas en propiedad|">Casas en propiedad</span>
+                  </div>
+                  <div th:unless="${nroCasasHost>0}">
+                    <span>Sin casas en propiedad</span>
+                  </div>
+              </h3>
+              <h3>
+                  <div th:if="${nroCasasGuest>0}">
+                    <span th:text="|${nroCasasGuest} casas alquiladas|">Casas alquiladas</span>
+                  </div>
+                  <div th:unless="${nroCasasGuest>0}">
+                      <span>Sin casas alquiladas</span>
+                  </div>
+              </h3>
+          </div>
+      </div>
     </div>
   </div>
 

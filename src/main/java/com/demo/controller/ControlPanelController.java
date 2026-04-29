@@ -41,6 +41,9 @@ public class  ControlPanelController {
             model.addAttribute("bookingHost",listHouseHost);
             model.addAttribute("bookingGuest",listHouseGuest);
 
+            model.addAttribute("nroCasasHost",listHouseHost.size());
+            model.addAttribute("nroCasasGuest",listHouseGuest.size());
+
             return "panel-control";
         }
         else {
