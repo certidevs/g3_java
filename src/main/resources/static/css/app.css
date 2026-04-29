@@ -1,20 +1,47 @@
+
 /* Roboto desde Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 :root {
     --brand-primary: #c0392b;
+    --brand-secondary: #2E91B3;
+    --brand-hover: #B32E8D;
+    --text-dark: #333;
+    --bg-main: #B2E895;
 }
+
 /* Estilos generales */
 body {
-
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: yellow;
-    color: #333;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
 }
 
-/* Sección Hero f8f9fa*/
+h1, h2, h3, .navbar-brand {
+    font-weight: 700;
+}
+
+/* Navbar */
+.navbar-custom {
+    background-color: #F77E48 !important;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color:  #FAFAFA !important;
+}
+
+.navbar-custom .nav-link:hover {
+    color: #FFFFFF !important;
+}
+
+.navbar-brand img {
+    object-fit: contain;
+}
+
+/* Hero */
 .hero {
     background: linear-gradient(to right, #4facfe, #00f2fe);
     color: white;
@@ -82,8 +109,9 @@ body {
     gap: 20px;
 }
 
-/* Tarjetas de casas */
-.card {
+/* Tarjetas */
+.card,
+.feature-card {
     background: white;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -92,7 +120,8 @@ body {
     transition: transform 0.3s;
 }
 
-.card:hover {
+.card:hover,
+.feature-card:hover {
     transform: translateY(-5px);
 }
 
@@ -112,9 +141,8 @@ body {
     color: #28a745;
     margin: 15px 0;
 }
-/*-----------------------------*/
 
-    /* Carrusel */
+/* Carrusel */
 .carousel-section {
     margin-bottom: 50px;
 }
@@ -151,17 +179,7 @@ body {
 }
 
 .feature-card {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-}
-
-.feature-card:hover {
-    transform: translateY(-5px);
 }
 
 .feature-card i {
@@ -175,26 +193,227 @@ body {
     color: #007bff;
 }
 
-
-
-/*---------------------------*/
-body {
-    font-family: 'Roboto', system-ui, -apple-system, sans-serif;
-    font-weight: 400;
-    background-color: #f8f9fa;
-}
-
-h1, h2, h3, .navbar-brand {
-    font-weight: 700;
-}
-
-.navbar-brand img {
-    object-fit: contain;
+/* Hover de tarjetas específicas */
+.card-restaurant {
+    transition: all .15s ease-in-out;
 }
 
 .card-restaurant:hover {
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
     transform: translateY(-2px);
-    transition: all .15s ease-in-out;
 }
 
+/*!* Roboto desde Google Fonts *!*/
+/*@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');*/
+
+/*:root {*/
+/*    --brand-primary: #c0392b;*/
+/*}*/
+/*!* Estilos generales *!*/
+/*body {*/
+
+/*    font-family: Arial, sans-serif;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    background-color: yellow;*/
+/*    color: #333;*/
+/*}*/
+
+/*!* Sección Hero f8f9fa*!*/
+/*.hero {*/
+/*    background: linear-gradient(to right, #4facfe, #00f2fe);*/
+/*    color: white;*/
+/*    text-align: center;*/
+/*    padding: 100px 20px;*/
+/*    margin-bottom: 50px;*/
+/*}*/
+
+/*.hero h1 {*/
+/*    font-size: 3em;*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+/*.hero p {*/
+/*    font-size: 1.2em;*/
+/*    margin-bottom: 30px;*/
+/*}*/
+
+/*!* Botones *!*/
+/*.btn {*/
+/*    background-color: #007bff;*/
+/*    color: white;*/
+/*    padding: 12px 24px;*/
+/*    text-decoration: none;*/
+/*    border-radius: 5px;*/
+/*    display: inline-block;*/
+/*    transition: background-color 0.3s;*/
+/*}*/
+
+/*.btn:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
+
+/*.btn-small {*/
+/*    background-color: #28a745;*/
+/*    color: white;*/
+/*    padding: 8px 16px;*/
+/*    text-decoration: none;*/
+/*    border-radius: 3px;*/
+/*    font-size: 0.9em;*/
+/*    transition: background-color 0.3s;*/
+/*}*/
+
+/*.btn-small:hover {*/
+/*    background-color: #218838;*/
+/*}*/
+
+/*!* Sección general *!*/
+/*.section {*/
+/*    max-width: 1200px;*/
+/*    margin: 0 auto;*/
+/*    padding: 40px 20px;*/
+/*}*/
+
+/*.section h2 {*/
+/*    text-align: center;*/
+/*    margin-bottom: 30px;*/
+/*    font-size: 2em;*/
+/*}*/
+
+/*!* Grid de casas *!*/
+/*.grid {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));*/
+/*    gap: 20px;*/
+/*}*/
+
+/*!* Tarjetas de casas *!*/
+/*.card {*/
+/*    background: white;*/
+/*    border: 1px solid #ddd;*/
+/*    border-radius: 8px;*/
+/*    padding: 20px;*/
+/*    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);*/
+/*    transition: transform 0.3s;*/
+/*}*/
+
+/*.card:hover {*/
+/*    transform: translateY(-5px);*/
+/*}*/
+
+/*.card h3 {*/
+/*    margin-top: 0;*/
+/*    color: #007bff;*/
+/*}*/
+
+/*.card p {*/
+/*    margin: 10px 0;*/
+/*}*/
+
+/*!* Precio *!*/
+/*.price {*/
+/*    font-weight: bold;*/
+/*    font-size: 1.1em;*/
+/*    color: #28a745;*/
+/*    margin: 15px 0;*/
+/*}*/
+/*!*-----------------------------*!*/
+
+/*    !* Carrusel *!*/
+/*.carousel-section {*/
+/*    margin-bottom: 50px;*/
+/*}*/
+
+/*.carousel-item img {*/
+/*    height: 500px;*/
+/*    object-fit: cover;*/
+/*}*/
+
+/*.carousel-caption {*/
+/*    background: rgba(0, 0, 0, 0.5);*/
+/*    border-radius: 5px;*/
+/*    padding: 10px;*/
+/*}*/
+
+/*!* Reseñas *!*/
+/*.review-card {*/
+/*    text-align: center;*/
+/*    font-style: italic;*/
+/*}*/
+
+/*.review-card cite {*/
+/*    display: block;*/
+/*    margin-top: 10px;*/
+/*    font-weight: bold;*/
+/*    color: #007bff;*/
+/*}*/
+
+/*!* Características *!*/
+/*.features-grid {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));*/
+/*    gap: 20px;*/
+/*}*/
+
+/*.feature-card {*/
+/*    background: white;*/
+/*    border: 1px solid #ddd;*/
+/*    border-radius: 8px;*/
+/*    padding: 20px;*/
+/*    text-align: center;*/
+/*    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);*/
+/*    transition: transform 0.3s;*/
+/*}*/
+
+/*.feature-card:hover {*/
+/*    transform: translateY(-5px);*/
+/*}*/
+
+/*.feature-card i {*/
+/*    font-size: 3em;*/
+/*    color: #28a745;*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
+/*.feature-card h4 {*/
+/*    margin: 10px 0;*/
+/*    color: #007bff;*/
+/*}*/
+
+
+
+/*!*---------------------------*!*/
+/*!*body {*!*/
+/*!*    font-family: 'Roboto', system-ui, -apple-system, sans-serif;*!*/
+/*!*    font-weight: 400;*!*/
+/*!*    background-color: #f8f9fa;*!*/
+/*!*}*!*/
+
+/*h1, h2, h3, .navbar-brand {*/
+/*    font-weight: 700;*/
+/*}*/
+
+/*.navbar-brand img {*/
+/*    object-fit: contain;*/
+/*}*/
+
+/*.card-restaurant:hover {*/
+/*    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);*/
+/*    transform: translateY(-2px);*/
+/*    transition: all .15s ease-in-out;*/
+/*}*/
+
+
+/*!*-------------navbarEstilos------------------*!*/
+/*.navbar-custom {*/
+/*    background-color: #2E91B3;*/
+/*}*/
+
+/*.navbar-custom .navbar-brand,*/
+/*.navbar-custom .nav-link {*/
+/*    color: #B3442E;*/
+/*}*/
+
+/*.navbar-custom .nav-link:hover {*/
+/*    color: #B32E8D;*/
+/*}*/
