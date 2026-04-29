@@ -1,10 +1,7 @@
 package com.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +12,9 @@ import java.time.temporal.ChronoUnit;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@ToString
+@Table(name="bookings")
 public class Booking {
 
     @Id
@@ -25,6 +25,7 @@ public class Booking {
     // A MEJORAR
     @ManyToOne
     @JoinColumn(nullable = false)
+    @ToString.Exclude
     private User userBooking;
 
     // Tiempo de chequeo estimado
@@ -39,6 +40,7 @@ public class Booking {
 
     private Double totalPrice;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     private StatusBooking statusbooking = StatusBooking.PENDING;
 
@@ -46,6 +48,7 @@ public class Booking {
      // A MEJORAR
     @ManyToOne
     @JoinColumn(nullable = false)
+    @ToString.Exclude
     private House userHouse;
 
     private Long calculateNights (LocalDateTime tiempoin,LocalDateTime tiempoout)
