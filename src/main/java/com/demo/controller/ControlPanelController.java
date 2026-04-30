@@ -38,8 +38,8 @@ public class  ControlPanelController {
 
             // Atributos pasados al HTML
             model.addAttribute("user",validUser);
-            model.addAttribute("bookingHost",listHouseHost);
-            model.addAttribute("bookingGuest",listHouseGuest);
+            model.addAttribute("listHouseHost",listHouseHost);
+            model.addAttribute("listHouseGuest",listHouseGuest);
 
             model.addAttribute("nroCasasHost",listHouseHost.size());
             model.addAttribute("nroCasasGuest",listHouseGuest.size());
