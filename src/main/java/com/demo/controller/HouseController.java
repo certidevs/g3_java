@@ -3,6 +3,7 @@ package com.demo.controller;
 import com.demo.model.House;
 import com.demo.model.Review;
 import com.demo.repository.HouseRepository;
+import com.demo.repository.ReviewRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,11 @@ import java.util.Optional;
 public class HouseController {
 
     private final HouseRepository houseRepository;
+    private final ReviewRepository reviewRepository;
 
-    public HouseController(HouseRepository houseRepository) {
+    public HouseController(HouseRepository houseRepository, ReviewRepository reviewRepository) {
         this.houseRepository = houseRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     @GetMapping("/")
@@ -48,15 +51,10 @@ public class HouseController {
             // casa sí existe
             House house = houseOptional.get();
             model.addAttribute("house", house);
-            // opcional:
-            // cargar los platos (Dish) de este restaurant en el model
-//            List<Dish> platos = dishRepository.findByRestaurantIdOrderByPrice(restaurant.getId());
-//            model.addAttribute("dishes", platos);
 
             // reviews
-            //List<Review> reviews = reviewRepository.findAll();
-//            List<Review> reviews = reviewRepository.findByRestaurant_IdOrderByCreationDateDesc(restaurant.getId());
-//            model.addAttribute("reviews", reviews); // accesibles desde HTML
+            List<Review> reviews = reviewRepository.findByHouse_IdOrderByCreatedAtDesc(house.getId());
+            model.addAttribute("reviews", reviews); // accesibles desde HTML
 
             return "house/house-detail";
 

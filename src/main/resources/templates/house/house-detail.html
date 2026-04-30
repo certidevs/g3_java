@@ -32,51 +32,12 @@
 
     <hr>
 
-    <!-- Carta de platos -->
-    <h2 class="mt-4">
-        <i class="fa-solid fa-utensils text-primary me-2"></i> Carta de platos
-    </h2>
-    <p class="text-muted" th:text="${dishes.size()} + ' platos'"></p>
-
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Tipo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="dish : ${dishes}">
-                    <td th:text="${dish.id}"></td>
-                    <td class="fw-semibold" th:text="${dish.name}"></td>
-                    <td class="text-muted small" th:text="${dish.description}"></td>
-                    <td>
-                        <span class="badge bg-success" th:text="${dish.price} + ' €'"></span>
-                    </td>
-                    <td>
-                        <span class="badge bg-light text-dark border" th:text="${dish.dishType.label}"></span>
-                    </td>
-                    <td>
-                        <a th:href="@{/dishes/{id}(id=${dish.id})}"
-                           class="btn btn-sm btn-outline-primary">
-                            <i class="fa-regular fa-eye me-1"></i> Ver
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
     <!-- Opiniones -->
     <h2 class="mt-5">
         <i class="fa-regular fa-comments text-primary me-2"></i> Opiniones de nuestros clientes
     </h2>
 
+    <!-- Esto está guapo, yo (Ángel) quería agregar algunas cositas de vista de Review, pero esto está superbién -->
     <div th:if="${reviews.isEmpty()}" class="alert alert-light border">
         <i class="fa-regular fa-face-smile me-1"></i>
         Nadie ha comentado todavía, sé el primero en escribir una opinión.
