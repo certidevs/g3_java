@@ -37,7 +37,7 @@ public class BookingController {
 
 
             // Reservas del Host
-            List<Booking> listBookingHost = bookingRepository.bookingsHost(id);
+            List<Booking> listBookingHost = bookingRepository.bookingsHostPending(id);
 
 
             // Atributos de listas pasados al HTML

@@ -9,12 +9,19 @@
 
   <h2>Reservas pendientes</h2>
 
-<table>
-  <tr th:each="booking : ${listBookingsHostPending}">
-    <td th:text="${booking.estimatedCheckin}">Nombre</td>
-  </tr>
-</table>
-
+  <div th:each="booking : ${listBookingsHostPending}"  class="card w-75 mb-3">
+      <h5 class="card-title" th:text="| ${booking.userHouse.getTitle()} : ${booking.userHouse.getLocation()} |" >Titulo</h5>
+      <p class="card-text" th:text="| ${booking.userHouse.getDescription()} , ${booking.userHouse.getMaxGuests()} personas |">Texto de explicaciones.</p>
+      <p class="card-text" th:text="| Precio por noche : ${booking.userHouse.getPricePerNight()} . Provincia : ${booking.userHouse.province}|">Texto de explicaciones.</p>
+      <h5 class="card-title" th:text="| Usuario : ${booking.userBooking.username} . ${booking.userBooking.email} |" >Titulo</h5>
+      <p class="card-text" th:text="| ${booking.userBooking.firstName} ${booking.userBooking.lastName} |">Texto de explicaciones.</p>
+      <h5 class="card-title">Datos reserva : </h5>
+      <p class="card-text" th:text="| Estimado checkin y checkout : ${booking.estimatedCheckin} / ${booking.estimatedCheckout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
+      <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |">Datos reserva</p>
+      <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|">Datos reserva</p>
+      <a href="#" class="btn btn-primary">Confirmar</a>
+      <a href="#" class="btn btn-primary">Cancelar</a>
+  </div>
 
   <footer th:replace="~{layout/footer :: footer}"></footer>
   <script th:replace="~{layout/footer :: scripts}"></script>
