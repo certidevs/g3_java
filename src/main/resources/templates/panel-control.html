@@ -207,8 +207,41 @@
               <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
+<!--    Tabla de Reservas como Anfitrion-->
 
-                      <p th:text="|Nro. de datos de alquileres como Host ${#lists.size(listBookingsHost)}|">
+
+<!--          <p th:text="|Nro. de datos de alquileres como Host ${#lists.size(listBookingsHost)}|">-->
+
+                      <div th:unless="${#lists.isEmpty(listBookingsHost)}">
+                          <table class="table table-striped table-bordered">
+                              <thead class="table-dark">
+                              <tr>
+                                  <th>Usuario</th>
+                                  <th>Est.checkin</th>
+                                  <th>Est.checkout</th>
+                                  <th>Checkin</th>
+                                  <th>Checkout</th>
+                                  <th>Precio</th>
+                                  <th>Estado</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <!-- 'usuarios' es la lista pasada desde el controlador -->
+                              <tr th:each="booking : ${listBookingsHost}">
+                                  <td th:text="${booking.userBooking.username}">1</td>
+                                  <td th:text="${booking.estimatedCheckin}">Titulo</td>
+                                  <td th:text="${booking.estimatedCheckout}">10</td>
+                                  <td th:text="${booking.checkin}">Madrid</td>
+                                  <td th:text="${booking.checkout}">1</td>
+                                  <td th:text="${booking.totalPrice}">Madrid</td>
+                                  <td th:text="${booking.statusbooking}">1</td>
+<!--         <td><a th:href="@{/houses/{id}(id=${casa.id})}" class="btn btn-primary btn-sm">Ver</a></td>-->
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
+
+<!--        Fin tabla de reservas como Anfitrion              -->
 
                   </div>
               </div>
