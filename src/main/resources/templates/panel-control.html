@@ -65,20 +65,21 @@
           <div class="card-body">
               <!--    Titulo del panel de control-->
               <h3>
-                  <div th:if="${nroCasasHost>0}">
-                    <span th:text="|${nroCasasHost} casas en propiedad|">Casas en propiedad</span>
+                  <div th:if="${#lists.isEmpty(listHouseHost)}">
+                      <span>Sin casas en propiedad</span>
                   </div>
-                  <div th:unless="${nroCasasHost>0}">
-                    <span>Sin casas en propiedad</span>
+                  <div th:unless="${#lists.isEmpty(listHouseHost)}">
+                    <span th:text="|${#lists.size(listBookingsHost)} casas en propiedad|">Casas en propiedad</span>
                   </div>
               </h3>
               <h3>
-                  <div th:if="${nroCasasGuest>0}">
-                    <span th:text="|${nroCasasGuest} casas alquiladas|">Casas alquiladas</span>
-                  </div>
-                  <div th:unless="${nroCasasGuest>0}">
+                  <div th:if="${#lists.isEmpty(listHouseGuest)}">
                       <span>Sin casas alquiladas</span>
                   </div>
+                  <div th:unless="${#lists.isEmpty(listHouseGuest)}">
+                    <span th:text="|${#lists.size(listBookingGuest)} casas alquiladas|">Casas alquiladas</span>
+                  </div>
+
               </h3>
           </div>
       </div>
