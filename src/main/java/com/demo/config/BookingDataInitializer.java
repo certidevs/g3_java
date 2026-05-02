@@ -142,21 +142,21 @@ public class BookingDataInitializer implements CommandLineRunner {
         houseRepository.save(house5_booking);
 
         House house6_booking = new House(
-                "Ático",
-                "centro ciudad",
-                250.6,
-                "Gijón",
-                2,
+                "Ático1",
+                "centro ciudad1",
+                167.6,
+                "Gijón1",
+                6,
                 host5_booking
         );
         houseRepository.save(house6_booking);
 
         House house7_booking = new House(
-                "Ático",
-                "centro ciudad",
-                250.6,
-                "Gijón",
-                2,
+                "Ático2",
+                "centro ciudad2",
+                280.6,
+                "Gijón2",
+                4,
                 host5_booking
         );
         houseRepository.save(house7_booking);
