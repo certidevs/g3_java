@@ -167,7 +167,7 @@
                   <div class="accordion-body">
 
 <!--  Tabla de casas Huesped                     -->
-
+                    <div th:unless="${#lists.isEmpty(listHouseGuest)}">
                       <table class="table table-striped table-bordered">
                           <thead class="table-dark">
                           <tr>
@@ -192,7 +192,7 @@
                           </tr>
                           </tbody>
                       </table>
-
+                    </div>
 
 <!--       Fin casas Huesped               -->
 
