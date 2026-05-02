@@ -16,13 +16,13 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     // Casas alquiladas por un (guest)
     @Query("""
-        SELECT bk.userHouse FROM Booking bk WHERE bk.userBooking.id=?1 
+        SELECT hs FROM House hs WHERE hs.host.id=?1 
     """)
     List<House> housesBookingGuest(Long id);
 
     // Casas alquiladas por un anfitrion (host)
     @Query("""
-        SELECT bk.userHouse FROM Booking bk WHERE bk.userHouse.host.id=?1
+        SELECT bk.userHouse FROM Booking bk WHERE bk.userBooking.id=?1
     """)
     List<House> houseBookingHost(Long id);
 

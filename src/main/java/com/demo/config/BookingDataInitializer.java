@@ -141,6 +141,26 @@ public class BookingDataInitializer implements CommandLineRunner {
         );
         houseRepository.save(house5_booking);
 
+        House house6_booking = new House(
+                "Ático",
+                "centro ciudad",
+                250.6,
+                "Gijón",
+                2,
+                host5_booking
+        );
+        houseRepository.save(house6_booking);
+
+        House house7_booking = new House(
+                "Ático",
+                "centro ciudad",
+                250.6,
+                "Gijón",
+                2,
+                host5_booking
+        );
+        houseRepository.save(house7_booking);
+
         // Reserva pendiente
         LocalDateTime timeIn =  LocalDateTime.of(2026,4,12,12,0);
         LocalDateTime timeOut =  LocalDateTime.of(2026,4,15,12,0);
@@ -179,7 +199,17 @@ public class BookingDataInitializer implements CommandLineRunner {
         // y guardamos
         bookingRepository.save(reserva5);
 
+        // Reserva pendiente
+        LocalDateTime timeIn5 =  LocalDateTime.of(2026,4,12,12,0);
+        LocalDateTime timeOut5 =  LocalDateTime.of(2026,4,15,12,0);
+        Booking reserva6 = new Booking(guest1_booking,house2_booking,timeIn,timeOut);
+        bookingRepository.save(reserva6);
 
+        // Reserva pendiente
+        LocalDateTime timeIn6 =  LocalDateTime.of(2026,4,12,12,0);
+        LocalDateTime timeOut6 =  LocalDateTime.of(2026,4,15,12,0);
+        Booking reserva7 = new Booking(guest1_booking,house3_booking,timeIn,timeOut);
+        bookingRepository.save(reserva7);
 
 
     }
