@@ -1,6 +1,7 @@
 package com.demo.controller;
 
 import com.demo.model.Booking;
+import com.demo.model.House;
 import com.demo.model.User;
 import com.demo.repository.BookingRepository;
 import com.demo.repository.UserRepository;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-
 public class BookingController {
 
     private final BookingRepository bookingRepository;
@@ -26,65 +26,29 @@ public class BookingController {
         this.userRepository = userRepository;
     }
 
-    // LADO HUESPED
-
-    @GetMapping("/bookings/viewbytype/pending/{id}")
-    public String bookingPendings (Model model, @PathVariable Long id){
+    // LADO ANFITRION
+    @GetMapping("/host/pending/{id}")
+    public String listaHostPendientes (Model model, @PathVariable Long id)
+    {
 
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-
             User validUser = user.get();
 
-            // Buscamos el Usuario por id.
-            //Optional<User> user
-            List<Booking> bookings = bookingRepository.findPendings(id);
-            List<Booking> bookingsConfirmed = bookingRepository.findConfirmed(id);
+
+            // Reservas del Host
+            List<Booking> listBookingHost = bookingRepository.bookingsHost(id);
 
 
-            model.addAttribute("bookingsPendings",bookings);
-            model.addAttribute("bookingsConfirmed",bookingsConfirmed);
+            // Atributos de listas pasados al HTML
             model.addAttribute("user",validUser);
+            model.addAttribute("listBookingsHostPending",listBookingHost);
 
-            return "guest/booking-list-pending";
-
+            return "/host/booking-list-pending-host";
         }
         else {
-            return"redirect:/index";
+            return "redirect:/index";
         }
-
-    }
-
-    @GetMapping("/bookings/viewbytype/cancelled/{id}")
-    public String bookingsCancelled (Model model, @PathVariable Long id) {
-        List<Booking> bookings = bookingRepository.findCancelled(id);
-
-        model.addAttribute("bookingsCancelled",bookings);
-
-        return "guest/booking-list-cancelled";
-
-    }
-
-    // LADO ANFITRION . HOST
-    @GetMapping("/bookings/host/pending/{id}")
-    public String bookingPendingsHost (Model model, @PathVariable Long id){
-
-        List<Booking> bookings = bookingRepository.findPendingHost(id);
-
-        model.addAttribute("bookingsPendings",bookings);
-
-        return "host/booking-list-pending-host";
-
-    }
-
-    @GetMapping("/bookings/host/confirmed/{id}")
-    public String bookingConfirmedHost (Model model, @PathVariable Long id){
-
-        List<Booking> bookings = bookingRepository.findConfirmedHost(id);
-
-        model.addAttribute("bookingsConfirmed",bookings);
-
-        return "host/booking-list-confirmed-host";
 
     }
 

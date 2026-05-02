@@ -77,7 +77,7 @@
           Acciones como Anfitrión
       </button>
       <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Reservas pendientes</a></li>
+          <li><a class="dropdown-item" th:href="@{/host/pending/{id}(id=${user.id})}">Reservas pendientes</a></li>
           <li><a class="dropdown-item" href="#">Reservas confirmadas</a></li>
           <li><a class="dropdown-item" href="#">Reservas canceladas</a></li>
       </ul>

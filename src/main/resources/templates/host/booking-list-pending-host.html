@@ -6,33 +6,16 @@
 <body>
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-  <h1>Sistema alquiler habitaciones</h1>
-  <h2>Lista de alquileres pendientes</h2>
 
-  <h2>Previsión de alquileres</h2>
-  <table>
-    <thead>
-    <tr>
-      <th>Casa</th>
-      <th>Localización</th>
-      <th>Usuario</th>
-      <th>Email</th>
-      <th>Confirmar alquiler</th>
-      <th>Cancelar alquiler</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Iteración con th:each -->
-    <tr th:each="bookings : ${bookingsPendings}">
-      <td th:text="${bookings.getUserHouse().getTitle()}">Casa</td>
-      <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
-      <td th:text="${bookings.getUserBooking().getUsername()}">Nombre</td>
-      <td th:text="${bookings.getUserBooking().getEmail()}">Email</td>
-      <td><a th:href="@{/}">Confirmar</a></td>
-      <td><a th:href="@{/}">Cancelar</a></td>
-    </tr>
-    </tbody>
-  </table>
+  <h2>Reservas pendientes</h2>
+
+<table>
+  <tr th:each="booking : ${listBookingsHostPending}">
+    <td th:text="${booking.estimatedCheckin}">Nombre</td>
+  </tr>
+</table>
+
+
   <footer th:replace="~{layout/footer :: footer}"></footer>
   <script th:replace="~{layout/footer :: scripts}"></script>
 </body>
