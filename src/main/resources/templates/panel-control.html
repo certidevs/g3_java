@@ -261,7 +261,47 @@
               <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
-                      <p th:text="|Nro. de datos de alquileres como Huesped ${#lists.size(listBookingGuest)}|">
+<!--    Inicio Tabla Alquileres como Huesped                      -->
+
+<!--         <p th:text="|Nro. de datos de alquileres como Huesped ${#lists.size(listBookingGuest)}|">-->
+
+                      <div th:unless="${#lists.isEmpty(listBookingGuest)}">
+                          <table class="table table-striped table-bordered">
+                              <thead class="table-dark">
+                              <tr>
+                                  <th>Usuario</th>
+                                  <th>Est.checkin</th>
+                                  <th>Est.checkout</th>
+                                  <th>Checkin</th>
+                                  <th>Checkout</th>
+                                  <th>Precio</th>
+                                  <th>Estado</th>
+                                  <th>Ver casa</th>
+                                  <th>Ver usuario</th>
+                                  <th>Ver reserva</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+
+                              <!-- 'usuarios' es la lista pasada desde el controlador -->
+                              <tr th:each="booking : ${listBookingGuest}">
+                                  <td th:text="${booking.userBooking.username}">1</td>
+                                  <td th:text="${#temporals.format(booking.estimatedCheckin,'dd-MM-yyyy HH:mm')}">EstCheckin</td>
+                                  <td th:text="${#temporals.format(booking.estimatedCheckout,'dd-MM-yyyy HH:mm')}">EstCheckout</td>
+                                  <td th:text="${booking.checkin}">Checkin</td>
+                                  <td th:text="${booking.checkout}">Checkout</td>
+                                  <td th:text="${booking.totalPrice}">0</td>
+                                  <td th:text="${booking.statusbooking}"></td>
+                                  <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver casa</a></td>
+                                  <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver usuario</a></td>
+                                  <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver reserva</a></td>
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
+
+
+<!--        Fin Tabla Alquileres como Huesped                      -->
 
                   </div>
               </div>
