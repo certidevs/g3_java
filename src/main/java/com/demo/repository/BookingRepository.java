@@ -31,9 +31,9 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     """)
     List<Booking> bookingsGuest(Long id);
 
-    @Query("""
-        SELECT bk FROM Booking bk WHERE bk.userHouse.host.id=?1
-    """)
+    @Query(value = """
+        SELECT * FROM BOOKINGS WHERE USER_HOUSE_ID=?1
+    """,nativeQuery = true)
     List<Booking> bookingsHost(Long id);
 
 
