@@ -102,8 +102,8 @@ public class Booking {
     // Se hace el checkinout (real)
     public void completedBookingIn(LocalDateTime completedmoment) {
         if
-        ((this.statusbooking == StatusBooking.CONFIRMED) ||
-           (this.statusbooking == StatusBooking.RECOMMENDED))
+        (this.statusbooking == StatusBooking.CONFIRMED)
+
         {
             this.checkin = completedmoment;
         }
@@ -112,22 +112,11 @@ public class Booking {
     // Se hace el checkout (real)
     public void completedBookingOut(LocalDateTime completedmoment) {
         if
-        (((this.statusbooking == StatusBooking.CONFIRMED) ||
-                (this.statusbooking == StatusBooking.RECOMMENDED))
+        ((this.statusbooking == StatusBooking.CONFIRMED)
             && (this.checkin != null))
         {
             this.statusbooking=StatusBooking.COMPLETED;
             this.checkout = completedmoment;
-        }
-    }
-
-
-    // La reserva ha sido recomendada
-    public void putAsRecommeded() {
-        if
-        ((this.statusbooking == StatusBooking.CONFIRMED) ||
-           (this.statusbooking == StatusBooking.COMPLETED)) {
-            this.statusbooking=StatusBooking.RECOMMENDED;
         }
     }
 

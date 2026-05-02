@@ -18,8 +18,13 @@ public class HouseRecommended {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String tokenFrom;
-    private String tokenTo;
+    @ToString.Exclude
+    @ManyToOne
+    private User tokenFrom;
+
+    @ToString.Exclude
+    @ManyToOne
+    private User tokenTo;
 
     private String message;
 

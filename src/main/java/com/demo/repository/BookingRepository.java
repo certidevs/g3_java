@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    // FILTROS GENERALES
+    // FILTROS GENERALES PARA EL PANEL DE CONTROL
 
     // Casas alquiladas por un (guest)
     @Query("""
@@ -25,6 +25,17 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
         SELECT bk.userHouse FROM Booking bk WHERE bk.userHouse.host.id=?1
     """)
     List<House> houseBookingHost(Long id);
+
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userBooking.id=?1
+    """)
+    List<Booking> bookingsGuest(Long id);
+
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userHouse.host.id=?1
+    """)
+    List<Booking> bookingsHost(Long id);
+
 
     // LADO DEL ANFITRION HOST.
     /////////////////////////

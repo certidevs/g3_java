@@ -1,5 +1,6 @@
 package com.demo.controller;
 
+import com.demo.model.Booking;
 import com.demo.model.User;
 import com.demo.model.House;
 import com.demo.repository.BookingRepository;
@@ -36,13 +37,23 @@ public class  ControlPanelController {
             // Casas alquiladas
             List<House> listHouseGuest = bookingRepository.housesBookingGuest(id);
 
-            // Atributos pasados al HTML
+            // Reservas del Host
+            List<Booking> listBookingHost = bookingRepository.bookingsHost(id);
+            // Reservas del Guest
+            List<Booking> listBookingGuest = bookingRepository.bookingsGuest(id);
+
+            // Atributos de listas pasados al HTML
             model.addAttribute("user",validUser);
+
             model.addAttribute("listHouseHost",listHouseHost);
             model.addAttribute("listHouseGuest",listHouseGuest);
 
             model.addAttribute("nroCasasHost",listHouseHost.size());
             model.addAttribute("nroCasasGuest",listHouseGuest.size());
+
+            model.addAttribute("listBookingsHost",listBookingHost);
+            model.addAttribute("listBookingGuest",listBookingGuest);
+
 
             return "panel-control";
         }

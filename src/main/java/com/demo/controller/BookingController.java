@@ -41,6 +41,7 @@ public class BookingController {
             List<Booking> bookings = bookingRepository.findPendings(id);
             List<Booking> bookingsConfirmed = bookingRepository.findConfirmed(id);
 
+
             model.addAttribute("bookingsPendings",bookings);
             model.addAttribute("bookingsConfirmed",bookingsConfirmed);
             model.addAttribute("user",validUser);
