@@ -226,16 +226,17 @@
                               </tr>
                               </thead>
                               <tbody>
+
                               <!-- 'usuarios' es la lista pasada desde el controlador -->
                               <tr th:each="booking : ${listBookingsHost}">
                                   <td th:text="${booking.userBooking.username}">1</td>
-                                  <td th:text="${booking.estimatedCheckin}">Titulo</td>
-                                  <td th:text="${booking.estimatedCheckout}">10</td>
-                                  <td th:text="${booking.checkin}">Madrid</td>
-                                  <td th:text="${booking.checkout}">1</td>
-                                  <td th:text="${booking.totalPrice}">Madrid</td>
-                                  <td th:text="${booking.statusbooking}">1</td>
-<!--         <td><a th:href="@{/houses/{id}(id=${casa.id})}" class="btn btn-primary btn-sm">Ver</a></td>-->
+                                  <td th:text="${#temporals.format(booking.estimatedCheckin,'dd-MM-yyyy HH:mm')}">EstCheckin</td>
+                                  <td th:text="${#temporals.format(booking.estimatedCheckout,'dd-MM-yyyy HH:mm')}">EstCheckout</td>
+                                  <td th:text="${booking.checkin}">Checkin</td>
+                                  <td th:text="${booking.checkout}">Checkout</td>
+                                  <td th:text="${booking.totalPrice}">0</td>
+                                  <td th:text="${booking.statusbooking}"></td>
+
                               </tr>
                               </tbody>
                           </table>
