@@ -7,20 +7,19 @@
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
 
-<h2>Reservas confirmadas</h2>
+<h2>Reservas canceladas</h2>
 <br>
-<div th:each="booking : ${listBookingsHostConfirmed}"  class="card w-75 mb-3" style="margin-left: 50px;">
+<div th:each="booking : ${listBookingsHostCancelled}"  class="card w-75 mb-3" style="margin-left: 50px;">
     <h5 class="card-title" th:text="| ${booking.userHouse.getTitle()} : ${booking.userHouse.getLocation()} |" >Titulo</h5>
     <p class="card-text" th:text="| ${booking.userHouse.getDescription()} , ${booking.userHouse.getMaxGuests()} personas |">Texto de explicaciones.</p>
     <p class="card-text" th:text="| Precio por noche : ${booking.userHouse.getPricePerNight()} . Provincia : ${booking.userHouse.province}|">Texto de explicaciones.</p>
     <h5 class="card-title" th:text="| Usuario : ${booking.userBooking.username} . ${booking.userBooking.email} |" >Titulo</h5>
     <p class="card-text" th:text="| ${booking.userBooking.firstName} ${booking.userBooking.lastName} |">Texto de explicaciones.</p>
     <h5 class="card-title">Datos reserva : </h5>
-    <p class="card-text" th:text="| Checkin y checkout : ${booking.checkin} / ${booking.checkout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
+    <p class="card-text" th:text="| Estimado checkin y checkout : ${booking.estimatedCheckin} / ${booking.estimatedCheckout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
     <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |">Datos reserva</p>
     <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|">Datos reserva</p>
-    <a href="#" class="btn btn-primary">Cancelar</a>
-    <a href="#" class="btn btn-primary">Completado</a>
+    <a href="#" class="btn btn-primary">Borrar</a>
 </div>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>

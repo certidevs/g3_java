@@ -78,8 +78,8 @@
       </button>
       <ul class="dropdown-menu">
           <li><a class="dropdown-item" th:href="@{/host/pending/{id}(id=${user.id})}">Reservas pendientes</a></li>
-          <li><a class="dropdown-item" href="#">Reservas confirmadas</a></li>
-          <li><a class="dropdown-item" href="#">Reservas canceladas</a></li>
+          <li><a class="dropdown-item" th:href="@{/host/confirmed/{id}(id=${user.id})}">Reservas confirmadas</a></li>
+          <li><a class="dropdown-item" th:href="@{/host/cancelled/{id}(id=${user.id})}">Reservas canceladas</a></li>
       </ul>
   </div>
 
@@ -273,8 +273,8 @@
                                   <th>Precio</th>
                                   <th>Estado</th>
                                   <th>Ver casa</th>
-                                  <th>Ver usuario</th>
                                   <th>Ver reserva</th>
+                                  <th>Recomendar</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -289,8 +289,8 @@
                                   <td th:text="${booking.totalPrice}">0</td>
                                   <td th:text="${booking.statusbooking}"></td>
                                   <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver casa</a></td>
-                                  <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver usuario</a></td>
                                   <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver reserva</a></td>
+                                  <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Recomendar</a></td>
                               </tr>
                               </tbody>
                           </table>

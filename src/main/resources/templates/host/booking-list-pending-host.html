@@ -8,8 +8,8 @@
 
 
   <h2>Reservas pendientes</h2>
-
-  <div th:each="booking : ${listBookingsHostPending}"  class="card w-75 mb-3">
+  <br>
+  <div th:each="booking : ${listBookingsHostPending}"  class="card w-75 mb-3" style="margin-left: 50px;">
       <h5 class="card-title" th:text="| ${booking.userHouse.getTitle()} : ${booking.userHouse.getLocation()} |" >Titulo</h5>
       <p class="card-text" th:text="| ${booking.userHouse.getDescription()} , ${booking.userHouse.getMaxGuests()} personas |">Texto de explicaciones.</p>
       <p class="card-text" th:text="| Precio por noche : ${booking.userHouse.getPricePerNight()} . Provincia : ${booking.userHouse.province}|">Texto de explicaciones.</p>
