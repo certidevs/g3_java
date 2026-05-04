@@ -99,16 +99,6 @@ public class BookingDataInitializer implements CommandLineRunner {
                         .build()
         );
 
-        // Crear casas con host asignados
-//        House house1_booking = new House(
-//                "Parcela el Viso",
-//                "con piscina",
-//                145.0,
-//                "Toledo",
-//                5,
-//                host1_booking
-//        );
-//        houseRepository.save(house1_booking);
 
         House house2_booking = houseRepository.save(House.builder()
                 .title("Apartamento")
@@ -120,15 +110,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .host(host2_booking)
                 .build()
         );
-//        House house2_booking = new House(
-//                "Apartamento",
-//                "Playa cercana",
-//                100.0,
-//                "Alicante",
-//                3,
-//                host2_booking
-//        );
-//        houseRepository.save(house2_booking);
+
 //
         House house3_booking = houseRepository.save(House.builder()
                 .title("Rural Torres")
@@ -147,16 +129,17 @@ public class BookingDataInitializer implements CommandLineRunner {
 //                host3_booking
 //        );
 //        houseRepository.save(house3_booking);
+
+        House house4_booking = houseRepository.save(House.builder()
+                .title("Camping")
+                .description("en playa con piscina")
+                .pricePerNight(105.0)
+                .maxGuests(4)
+                .host(host4_booking)
+                .build()
+        );
 //
-//        House house4_booking = new House(
-//                "Camping",
-//                "en playa con piscina",
-//                100.0,
-//                "Barcelona",
-//                4,
-//                host4_booking
-//        );
-//        houseRepository.save(house4_booking);
+
 //
 //        House house5_booking = new House(
 //                "Ático",
@@ -221,13 +204,14 @@ public class BookingDataInitializer implements CommandLineRunner {
 //        bookingRepository.save(reserva4);
 //
 //        // Reserva cancelada
-//        LocalDateTime timeIn4 =  LocalDateTime.of(2026,9,1,12,0);
-//        LocalDateTime timeOut4 =  LocalDateTime.of(2026,12,1,12,0);
-//        Booking reserva5 = new Booking(guest5_booking,house5_booking,timeIn4,timeOut4);
+        LocalDateTime timeIn4 =  LocalDateTime.of(2026,9,1,12,0);
+        LocalDateTime timeOut4 =  LocalDateTime.of(2026,12,1,12,0);
+        Booking reserva4 = new Booking(guest5_booking,house4_booking,timeIn4,timeOut4);
+
 //        // Modificamos el alquiler como confirmado
-//        reserva5.cancelledBooking();
+        reserva4.cancelledBooking();
 //        // y guardamos
-//        bookingRepository.save(reserva5);
+        bookingRepository.save(reserva4);
 //
 //        // Reserva pendiente
 //        LocalDateTime timeIn5 =  LocalDateTime.of(2026,4,12,12,0);

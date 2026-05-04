@@ -11,6 +11,11 @@
 <!--        <span class="badge bg-secondary fs-6" th:text="|${numRestaurants} resultados|">0 resultados</span>-->
 <!--    </div>-->
 
+<!--    FILTROS-->
+    <a th:href="@{/houses(StatusReserva='DISPONIBLE')}" class="btn btn-sm btn-secondary">Casas Disponible</a>
+    <a th:href="@{/houses(StatusReserva='RESERVADA')}" class="btn btn-sm btn-secondary">Casas Reservadas</a>
+
+
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
         <div class="col" th:each="house : ${houses}">
             <div class="card card-restaurant h-100 shadow-sm">

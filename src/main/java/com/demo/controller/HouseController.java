@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +35,11 @@ public class HouseController {
     }
 
     @GetMapping("/houses")
-    public String houseList(Model model){
-//        List <House>  houses = houseRepository.findAll();
+    public String houseList(Model model,
+        @RequestParam(required = false)StatusReserva StatusReserva){//se agg el reques param para filtrar por parametro de reserva
+//      List <House>  houses = houseRepository.findAll();
+        List<House>  houseStatus = houseRepository.findByReserve(StatusReserva);//NUEVO METODO POR QUERY
+
         List <House>  houses = houseRepository.findByActiveTrue();
         model.addAttribute("houses", houses);
         return "house/house-list";
