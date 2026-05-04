@@ -21,6 +21,10 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Builder.Default
+    @Column(columnDefinition = "boolean default true")
+    private Boolean active = true;
+
     private Integer rating;
 
     @Column(length = 1000)

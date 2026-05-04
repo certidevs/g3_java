@@ -6,6 +6,12 @@
 
   <h1>Vista de Reseñas</h1>
 
+  <div th:if="${message}" class="alert alert-success fade show alert-dismissible" role="alert">
+    <i class="fa-solid fa-check-circle"></i>
+    <span th:text="${message}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
   <ul>
     <li th:each="review : ${reviews}">
       <p>⭐ <span th:text="${review.rating}">0</span>/5</p>

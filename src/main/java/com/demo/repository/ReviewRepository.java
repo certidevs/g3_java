@@ -10,6 +10,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // TODO:
     // - Considerar filtrar por rango between, por ejemplo de fechas o de rating, ordenadas por creationDate desc
 
+    List<Review> findAllByActiveTrue();
+    // List<Review> findAllByActiveFalse();
+
     List<Review> findByHouse_IdOrderByCreatedAtDesc(Long id);
 
     List<com.demo.model.Review> findByHouse_IdAndRatingOrderByCreatedAtDesc(Long id, Integer rating);
