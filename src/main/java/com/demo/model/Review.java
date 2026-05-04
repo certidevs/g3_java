@@ -21,6 +21,8 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // TODO: Una ventaja de Review, es que ninguna clase depende de ella, así que se puede considerar eliminar directamente la review
+    // TODO: En lugar de active, quizás se puede usar algo como verified, que habla sobre si el usuario que realizo la review también realizo una reserva
     @Builder.Default
     @Column(columnDefinition = "boolean default true")
     private Boolean active = true;
