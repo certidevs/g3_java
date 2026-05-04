@@ -2,6 +2,7 @@ package com.demo.controller;
 
 import com.demo.model.Booking;
 import com.demo.model.House;
+import com.demo.model.StatusBooking;
 import com.demo.model.User;
 import com.demo.repository.BookingRepository;
 import com.demo.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import tools.jackson.databind.ser.std.DelegatingSerializer;
 
 import java.util.List;
 import java.util.Optional;
@@ -102,5 +104,20 @@ public class BookingController {
 
     }
 
+    @GetMapping("/host/from-pending-to-confirmed/{id}")
+    // id del booking
+    public String actionFromPendingToConfirmed (@PathVariable Long id, Model model) {
+
+        Optional<Booking> bookingOptional =
+                bookingRepository.findById(id);
+            if (bookingOptional.isPresent()) {
+                Booking bookingPresent = bookingOptional.get();
+                bookingPresent.setStatusbooking(StatusBooking.CONFIRMED);
+                bookingRepository.save(bookingPresent);
+
+            }
+        return "/host/booking-list-pending-host";
+
+    }
 
 }

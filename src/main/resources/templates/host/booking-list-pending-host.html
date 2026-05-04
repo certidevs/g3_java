@@ -19,7 +19,7 @@
       <p class="card-text" th:text="| Estimado checkin y checkout : ${booking.estimatedCheckin} / ${booking.estimatedCheckout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
       <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |">Datos reserva</p>
       <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|">Datos reserva</p>
-      <a href="#" class="btn btn-primary">Confirmar</a>
+      <a th:href="@{/host/from-pending-to-confirmed/{id}(id=${booking.id})}" class="btn btn-primary">Confirmar</a>
       <a href="#" class="btn btn-primary">Cancelar</a>
   </div>
 
