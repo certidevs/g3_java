@@ -41,30 +41,43 @@ public class HouseDataInitializer implements CommandLineRunner {
         userRepository.save(host2);
 
         // Crear casas con host asignados
-        houseRepository.save(House.builder()
-                        .title("Casa 1")
+        House house1 = houseRepository.save(House.builder()
+                        .title("tu Casa")
                         .description("Casa 1 descripción")
                         .pricePerNight(100d)
                         .location("Calle Principe Vergara 108")
                         .province("Madrid")
                         .maxGuests(3)
+                        //.reserve(StatusReserva.NO_DISPONIBLE)
                         .host(host1)
         .build());
 
-        houseRepository.save(new House(
-                null,
-                "casa 2",
-                "casa 2 descr",
-                120d,
-                "Calle alcalá",
-                "Madrid",
-                4,
-                LocalDateTime.now(),
-                StatusReserva.DISPONIBLE,
-                null,
-                null,
-                host1
-        ));
+
+        House house2 = houseRepository.save(House.builder()
+                .title("tu Casita")
+                .description("Casa 2 descripción")
+                .pricePerNight(100d)
+                .location("Por ahi")
+                .province("Madrid")
+                .maxGuests(6)
+                //.reserve(StatusReserva.NO_DISPONIBLE)
+                .host(host2)
+                .build());
+
+
+//        houseRepository.save(new House(
+//                "La casita",
+//                "casa 2 descr",
+//                120d,
+//                "Calle alcalá",
+//                "Madrid",
+//                4,
+//                LocalDateTime.now(),
+//                StatusReserva.NO_DISPONIBLE,
+//                null,
+//                null,
+//                host2
+//        ));
 
 
     }

@@ -31,6 +31,11 @@
                        class="btn btn-outline-primary btn-sm w-100">
                         <i class="fa-regular fa-eye me-1"></i> Ver Casa
                     </a>
+<!--                    boton de desactivar casa-->
+                    <a th:href="@{/houses/disable/{id}(id=${house.id})}"
+                       class="btn btn-danger btn-sm w-100 mt-2">
+                        <i class="fa-regular fa-ban me-1"></i> Ocultar Casa
+                    </a>
                 </div>
             </div>
         </div>

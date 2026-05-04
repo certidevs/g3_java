@@ -88,78 +88,88 @@ public class BookingDataInitializer implements CommandLineRunner {
         host5_booking.setEmail("pedro@test10.com");
         userRepository.save(host5_booking);
 
+        House house1_booking = houseRepository.save(House.builder()
+                        .title("Parcela el Viso")
+                        .description("con piscina")
+                        .pricePerNight(145.0)
+                        .location("Toledo")
+                        .province("Madrid")
+                        .maxGuests(5)
+                        .host(host1_booking)
+                        .build()
+        );
 
         // Crear casas con host asignados
-        House house1_booking = new House(
-                "Parcela el Viso",
-                "con piscina",
-                145.0,
-                "Toledo",
-                5,
-                host1_booking
-        );
-        houseRepository.save(house1_booking);
+//        House house1_booking = new House(
+//                "Parcela el Viso",
+//                "con piscina",
+//                145.0,
+//                "Toledo",
+//                5,
+//                host1_booking
+//        );
+//        houseRepository.save(house1_booking);
 
-        House house2_booking = new House(
-                "Apartamento",
-                "Playa cercana",
-                100.0,
-                "Alicante",
-                3,
-                host2_booking
-        );
-        houseRepository.save(house2_booking);
-
-
-        House house3_booking = new House(
-                "Rural Torres",
-                "senderismo sierra",
-                48.0,
-                "Jaén",
-                4,
-                host3_booking
-        );
-        houseRepository.save(house3_booking);
-
-        House house4_booking = new House(
-                "Camping",
-                "en playa con piscina",
-                100.0,
-                "Barcelona",
-                4,
-                host4_booking
-        );
-        houseRepository.save(house4_booking);
-
-        House house5_booking = new House(
-                "Ático",
-                "centro ciudad",
-                250.6,
-                "Gijón",
-                2,
-                host5_booking
-        );
-        houseRepository.save(house5_booking);
-
-        House house6_booking = new House(
-                "Ático1",
-                "centro ciudad1",
-                167.6,
-                "Gijón1",
-                6,
-                host5_booking
-        );
-        houseRepository.save(house6_booking);
-
-        House house7_booking = new House(
-                "Ático2",
-                "centro ciudad2",
-                280.6,
-                "Gijón2",
-                4,
-                host5_booking
-        );
-        houseRepository.save(house7_booking);
+//        House house2_booking = new House(
+//                "Apartamento",
+//                "Playa cercana",
+//                100.0,
+//                "Alicante",
+//                3,
+//                host2_booking
+//        );
+//        houseRepository.save(house2_booking);
+//
+//
+//        House house3_booking = new House(
+//                "Rural Torres",
+//                "senderismo sierra",
+//                48.0,
+//                "Jaén",
+//                4,
+//                host3_booking
+//        );
+//        houseRepository.save(house3_booking);
+//
+//        House house4_booking = new House(
+//                "Camping",
+//                "en playa con piscina",
+//                100.0,
+//                "Barcelona",
+//                4,
+//                host4_booking
+//        );
+//        houseRepository.save(house4_booking);
+//
+//        House house5_booking = new House(
+//                "Ático",
+//                "centro ciudad",
+//                250.6,
+//                "Gijón",
+//                2,
+//                host5_booking,
+//        );
+//        houseRepository.save(house5_booking);
+//
+//        House house6_booking = new House(
+//                "Ático1",
+//                "centro ciudad1",
+//                167.6,
+//                "Gijón1",
+//                6,
+//                host5_booking
+//        );
+//        houseRepository.save(house6_booking);
+//
+//        House house7_booking = new House(
+//                "Ático2",
+//                "centro ciudad2",
+//                280.6,
+//                "Gijón2",
+//                4,
+//                host5_booking
+//        );
+//        houseRepository.save(house7_booking);
 
         // Reserva pendiente
         LocalDateTime timeIn =  LocalDateTime.of(2026,4,12,12,0);
@@ -167,49 +177,49 @@ public class BookingDataInitializer implements CommandLineRunner {
         Booking reserva1 = new Booking(guest1_booking,house1_booking,timeIn,timeOut);
         bookingRepository.save(reserva1);
 
-        LocalDateTime timeIn1 =  LocalDateTime.of(2026,6,5,12,0);
-        LocalDateTime timeOut1 =  LocalDateTime.of(2026,6,15,12,0);
-        Booking reserva2 = new Booking(guest2_booking,house2_booking,timeIn1,timeOut1);
-        bookingRepository.save(reserva2);
-
-        // Reserva de tipo confirmada
-        LocalDateTime timeIn2 =  LocalDateTime.of(2026,8,5,12,0);
-        LocalDateTime timeOut2 =  LocalDateTime.of(2026,8,10,12,0);
-        Booking reserva3 = new Booking(guest3_booking,house3_booking,timeIn2,timeOut2);
-        // Modificamos el alquiler como confirmado
-        reserva3.confirmedBooking();
-        // y guardamos
-        bookingRepository.save(reserva3);
-
-        // Reserva de tipo confirmada
-        LocalDateTime timeIn3 =  LocalDateTime.of(2026,7,12,12,0);
-        LocalDateTime timeOut3 =  LocalDateTime.of(2026,7,15,12,0);
-        Booking reserva4 = new Booking(guest4_booking,house4_booking,timeIn3,timeOut3);
-        // Modificamos el alquiler como confirmado
-        reserva4.confirmedBooking();
-        // y guardamos
-        bookingRepository.save(reserva4);
-
-        // Reserva cancelada
-        LocalDateTime timeIn4 =  LocalDateTime.of(2026,9,1,12,0);
-        LocalDateTime timeOut4 =  LocalDateTime.of(2026,12,1,12,0);
-        Booking reserva5 = new Booking(guest5_booking,house5_booking,timeIn4,timeOut4);
-        // Modificamos el alquiler como confirmado
-        reserva5.cancelledBooking();
-        // y guardamos
-        bookingRepository.save(reserva5);
-
-        // Reserva pendiente
-        LocalDateTime timeIn5 =  LocalDateTime.of(2026,4,12,12,0);
-        LocalDateTime timeOut5 =  LocalDateTime.of(2026,4,15,12,0);
-        Booking reserva6 = new Booking(guest1_booking,house2_booking,timeIn,timeOut);
-        bookingRepository.save(reserva6);
-
-        // Reserva pendiente
-        LocalDateTime timeIn6 =  LocalDateTime.of(2026,4,12,12,0);
-        LocalDateTime timeOut6 =  LocalDateTime.of(2026,4,15,12,0);
-        Booking reserva7 = new Booking(guest1_booking,house3_booking,timeIn,timeOut);
-        bookingRepository.save(reserva7);
+//        LocalDateTime timeIn1 =  LocalDateTime.of(2026,6,5,12,0);
+//        LocalDateTime timeOut1 =  LocalDateTime.of(2026,6,15,12,0);
+//        Booking reserva2 = new Booking(guest2_booking,house2_booking,timeIn1,timeOut1);
+//        bookingRepository.save(reserva2);
+//
+//        // Reserva de tipo confirmada
+//        LocalDateTime timeIn2 =  LocalDateTime.of(2026,8,5,12,0);
+//        LocalDateTime timeOut2 =  LocalDateTime.of(2026,8,10,12,0);
+//        Booking reserva3 = new Booking(guest3_booking,house3_booking,timeIn2,timeOut2);
+//        // Modificamos el alquiler como confirmado
+//        reserva3.confirmedBooking();
+//        // y guardamos
+//        bookingRepository.save(reserva3);
+//
+//        // Reserva de tipo confirmada
+//        LocalDateTime timeIn3 =  LocalDateTime.of(2026,7,12,12,0);
+//        LocalDateTime timeOut3 =  LocalDateTime.of(2026,7,15,12,0);
+//        Booking reserva4 = new Booking(guest4_booking,house4_booking,timeIn3,timeOut3);
+//        // Modificamos el alquiler como confirmado
+//        reserva4.confirmedBooking();
+//        // y guardamos
+//        bookingRepository.save(reserva4);
+//
+//        // Reserva cancelada
+//        LocalDateTime timeIn4 =  LocalDateTime.of(2026,9,1,12,0);
+//        LocalDateTime timeOut4 =  LocalDateTime.of(2026,12,1,12,0);
+//        Booking reserva5 = new Booking(guest5_booking,house5_booking,timeIn4,timeOut4);
+//        // Modificamos el alquiler como confirmado
+//        reserva5.cancelledBooking();
+//        // y guardamos
+//        bookingRepository.save(reserva5);
+//
+//        // Reserva pendiente
+//        LocalDateTime timeIn5 =  LocalDateTime.of(2026,4,12,12,0);
+//        LocalDateTime timeOut5 =  LocalDateTime.of(2026,4,15,12,0);
+//        Booking reserva6 = new Booking(guest1_booking,house2_booking,timeIn,timeOut);
+//        bookingRepository.save(reserva6);
+//
+//        // Reserva pendiente
+//        LocalDateTime timeIn6 =  LocalDateTime.of(2026,4,12,12,0);
+//        LocalDateTime timeOut6 =  LocalDateTime.of(2026,4,15,12,0);
+//        Booking reserva7 = new Booking(guest1_booking,house3_booking,timeIn,timeOut);
+//        bookingRepository.save(reserva7);
 
 
     }

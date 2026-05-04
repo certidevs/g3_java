@@ -2,6 +2,7 @@ package com.demo.controller;
 
 import com.demo.model.House;
 import com.demo.model.Review;
+import com.demo.model.StatusReserva;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.ReviewRepository;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,23 @@ public class HouseController {
 
     }
 
+    @GetMapping("houses/disable/{id}")
+    public String houseDisable(@PathVariable Long id,Model model){
+        Optional<House> houseOptional = houseRepository.findById(id);
+        if (houseOptional.isPresent()) {
+
+            // casa sí existe
+            House house = houseOptional.get();
+            house.setActive(false);
+//            house.setReserve(StatusReserva.valueOf("NO_DISPONIBLE"));
+            houseRepository.save(house);
+
+        }
+
+        return "redirect:/houses";
+
+    }
+
     // nuevo metodo para traer un solo restaurante por su id
     @GetMapping("houses/{id}")
     public String houseDetail(@PathVariable Long id, Model model) {
@@ -52,6 +70,10 @@ public class HouseController {
             House house = houseOptional.get();
             model.addAttribute("house", house);
 
+            // cargar los platos (Dish) de este restaurant en el model
+//            List<Dish> platos = dishRepository.findByRestaurantIdOrderByPrice(restaurant.getId());
+//            model.addAttribute("dishes", platos);
+
             // reviews
             List<Review> reviews = reviewRepository.findByHouse_IdOrderByCreatedAtDesc(house.getId());
             model.addAttribute("reviews", reviews); // accesibles desde HTML
@@ -59,6 +81,7 @@ public class HouseController {
             return "house/house-detail";
 
         }
+
 
         return "redirect:/house";
     }

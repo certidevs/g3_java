@@ -25,6 +25,9 @@ public class House {
     private String province;
     private Integer maxGuests;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT true")
+    private Boolean active = true;
+
     @Builder.Default
     private LocalDateTime timeRecommended = LocalDateTime.now();
 
@@ -47,13 +50,13 @@ public class House {
 //    public House() {
 //    }
 
-//    public House( String title, String description, Double pricePerNight, String location, Integer maxGuests, User host) {
-//
-//        this.title = title;
-//        this.description = description;
-//        this.pricePerNight = pricePerNight;
-//        this.location = location;
-//        this.maxGuests = maxGuests;
-//        this.host = host;
-//    }
+    public House( String title, String description, Double pricePerNight, String location, Integer maxGuests, User host) {
+
+        this.title = title;
+        this.description = description;
+        this.pricePerNight = pricePerNight;
+        this.location = location;
+        this.maxGuests = maxGuests;
+        this.host = host;
+    }
 }

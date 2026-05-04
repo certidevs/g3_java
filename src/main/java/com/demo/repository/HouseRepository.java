@@ -9,15 +9,15 @@ public interface HouseRepository extends JpaRepository<House, Long> {
 
     //FILTRAR POR UBICACION DE CASA
 
-//    List<House> findByLocation(String location);
+    List<House> findByLocation(String location);
 //
 //    //FILTRAR POR ID
 //
-//    List<House> findByIdOrderByIdAsc(Long id);
+    List<House> findByIdOrderByIdAsc(Long id);
 //
 //    //FILTRAR POR PRECIO POR NOCHE
 //
-//    List<House> findByPricePerNightBetween(Double pricePerNightStart, Double pricePerNightEnd);
+    List<House> findByPricePerNightBetween(Double pricePerNightStart, Double pricePerNightEnd);
 
 
     //FILTRAR REVIEW CON MEJORES RESEÑAS
