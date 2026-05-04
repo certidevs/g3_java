@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "houses")
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 public class House {
 
     @Id
@@ -44,16 +44,16 @@ public class House {
     private User host;
 
 //Constructor
-    public House() {
-    }
+//    public House() {
+//    }
 
-    public House( String title, String description, Double pricePerNight, String location, Integer maxGuests, User host) {
-
-        this.title = title;
-        this.description = description;
-        this.pricePerNight = pricePerNight;
-        this.location = location;
-        this.maxGuests = maxGuests;
-        this.host = host;
-    }
+//    public House( String title, String description, Double pricePerNight, String location, Integer maxGuests, User host) {
+//
+//        this.title = title;
+//        this.description = description;
+//        this.pricePerNight = pricePerNight;
+//        this.location = location;
+//        this.maxGuests = maxGuests;
+//        this.host = host;
+//    }
 }

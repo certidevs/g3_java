@@ -1,12 +1,15 @@
 package com.demo.config;
 
 import com.demo.model.House;
+import com.demo.model.StatusReserva;
 import com.demo.model.User;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 @Profile("!test")
@@ -38,21 +41,28 @@ public class HouseDataInitializer implements CommandLineRunner {
         userRepository.save(host2);
 
         // Crear casas con host asignados
-        houseRepository.save(new House(
-                "Ático en Gran Vía",
-                "Vistas al centro",
-                120.0,
-                "Madrid",
-                4,
-                host2
-        ));
+        houseRepository.save(House.builder()
+                        .title("Casa 1")
+                        .description("Casa 1 descripción")
+                        .pricePerNight(100d)
+                        .location("Calle Principe Vergara 108")
+                        .province("Madrid")
+                        .maxGuests(3)
+                        .host(host1)
+        .build());
 
         houseRepository.save(new House(
-                "Casa rural en la sierra",
-                "Jardín y tranquilidad",
-                85.0,
-                "Segovia",
-                6,
+                null,
+                "casa 2",
+                "casa 2 descr",
+                120d,
+                "Calle alcalá",
+                "Madrid",
+                4,
+                LocalDateTime.now(),
+                StatusReserva.DISPONIBLE,
+                null,
+                null,
                 host1
         ));
 
