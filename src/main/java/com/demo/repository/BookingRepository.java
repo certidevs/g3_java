@@ -27,12 +27,12 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<House> houseBookingHost(Long id);
 
     @Query("""
-        SELECT bk FROM Booking bk WHERE bk.userBooking.id=?1
+        SELECT bk FROM Booking bk WHERE bk.userBooking.id=?1 AND bk.statusbooking<>'COMPLETED'
     """)
     List<Booking> bookingsGuest(Long id);
 
     @Query(value = """
-        SELECT * FROM BOOKINGS WHERE USER_HOUSE_ID=?1
+        SELECT * FROM BOOKINGS WHERE USER_HOUSE_ID=?1 AND STATUSBOOKING<>'COMPLETED'
     """,nativeQuery = true)
     List<Booking> bookingsHost(Long id);
 
@@ -55,8 +55,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
         SELECT * FROM BOOKINGS WHERE USER_HOUSE_ID=?1 AND STATUSBOOKING='CANCELLED'
     """,nativeQuery = true)
     List<Booking> bookingsHostCancelled(Long id);
-
-
 
 
 }
