@@ -25,6 +25,7 @@ public class House {
     private String province;
     private Integer maxGuests;
 
+    @Builder.Default
     @Column(columnDefinition = "BOOLEAN DEFAULT true")
     private Boolean active = true;
 
@@ -43,20 +44,22 @@ public class House {
     @ManyToOne
     private User tokenTo;
 
+
     @ManyToOne
+    @JoinColumn(name = "host_id")
     private User host;
 
 //Constructor
 //    public House() {
 //    }
 
-    public House( String title, String description, Double pricePerNight, String location, Integer maxGuests, User host) {
-
-        this.title = title;
-        this.description = description;
-        this.pricePerNight = pricePerNight;
-        this.location = location;
-        this.maxGuests = maxGuests;
-        this.host = host;
-    }
+//    public House( String title, String description, Double pricePerNight, String location, Integer maxGuests, User host) {
+//
+//        this.title = title;
+//        this.description = description;
+//        this.pricePerNight = pricePerNight;
+//        this.location = location;
+//        this.maxGuests = maxGuests;
+//        this.host = host;
+//    }
 }

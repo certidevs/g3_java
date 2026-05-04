@@ -110,6 +110,16 @@ public class BookingDataInitializer implements CommandLineRunner {
 //        );
 //        houseRepository.save(house1_booking);
 
+        House house2_booking = houseRepository.save(House.builder()
+                .title("Apartamento")
+                .description("Playa cercana")
+                .pricePerNight(145.0)
+                .location("alicante")
+                .province("Madrid")
+                .maxGuests(3)
+                .host(host2_booking)
+                .build()
+        );
 //        House house2_booking = new House(
 //                "Apartamento",
 //                "Playa cercana",
@@ -120,7 +130,14 @@ public class BookingDataInitializer implements CommandLineRunner {
 //        );
 //        houseRepository.save(house2_booking);
 //
-//
+        House house3_booking = houseRepository.save(House.builder()
+                .title("Rural Torres")
+                .description("senderismo sierra")
+                .pricePerNight(45.0)
+                .maxGuests(4)
+                .host(host3_booking)
+                .build()
+        );
 //        House house3_booking = new House(
 //                "Rural Torres",
 //                "senderismo sierra",
@@ -177,24 +194,27 @@ public class BookingDataInitializer implements CommandLineRunner {
         Booking reserva1 = new Booking(guest1_booking,house1_booking,timeIn,timeOut);
         bookingRepository.save(reserva1);
 
-//        LocalDateTime timeIn1 =  LocalDateTime.of(2026,6,5,12,0);
-//        LocalDateTime timeOut1 =  LocalDateTime.of(2026,6,15,12,0);
-//        Booking reserva2 = new Booking(guest2_booking,house2_booking,timeIn1,timeOut1);
-//        bookingRepository.save(reserva2);
+        LocalDateTime timeIn1 =  LocalDateTime.of(2026,6,5,12,0);
+        LocalDateTime timeOut1 =  LocalDateTime.of(2026,6,15,12,0);
+        Booking reserva2 = new Booking(guest2_booking,house2_booking,timeIn1,timeOut1);
+        bookingRepository.save(reserva2);
 //
-//        // Reserva de tipo confirmada
-//        LocalDateTime timeIn2 =  LocalDateTime.of(2026,8,5,12,0);
-//        LocalDateTime timeOut2 =  LocalDateTime.of(2026,8,10,12,0);
-//        Booking reserva3 = new Booking(guest3_booking,house3_booking,timeIn2,timeOut2);
+        // Reserva de tipo confirmada
+        LocalDateTime timeIn2 =  LocalDateTime.of(2026,8,5,12,0);
+        LocalDateTime timeOut2 =  LocalDateTime.of(2026,8,10,12,0);
+        Booking reserva3 = new Booking(guest3_booking,house3_booking,timeIn2,timeOut2);
+
 //        // Modificamos el alquiler como confirmado
-//        reserva3.confirmedBooking();
+
+        reserva3.confirmedBooking();
 //        // y guardamos
-//        bookingRepository.save(reserva3);
+        bookingRepository.save(reserva3);
 //
 //        // Reserva de tipo confirmada
 //        LocalDateTime timeIn3 =  LocalDateTime.of(2026,7,12,12,0);
 //        LocalDateTime timeOut3 =  LocalDateTime.of(2026,7,15,12,0);
 //        Booking reserva4 = new Booking(guest4_booking,house4_booking,timeIn3,timeOut3);
+
 //        // Modificamos el alquiler como confirmado
 //        reserva4.confirmedBooking();
 //        // y guardamos

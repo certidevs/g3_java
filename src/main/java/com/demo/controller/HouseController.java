@@ -35,7 +35,8 @@ public class HouseController {
 
     @GetMapping("/houses")
     public String houseList(Model model){
-        List <House>  houses = houseRepository.findAll();
+//        List <House>  houses = houseRepository.findAll();
+        List <House>  houses = houseRepository.findByActiveTrue();
         model.addAttribute("houses", houses);
         return "house/house-list";
 
@@ -49,7 +50,7 @@ public class HouseController {
             // casa sí existe
             House house = houseOptional.get();
             house.setActive(false);
-//            house.setReserve(StatusReserva.valueOf("NO_DISPONIBLE"));
+            house.setReserve(StatusReserva.valueOf("NO_DISPONIBLE"));
             houseRepository.save(house);
 
         }

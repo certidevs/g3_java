@@ -27,7 +27,7 @@ public class HouseDataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        if (houseRepository.count() > 0) return;
+        //if (houseRepository.count() > 0) return;
 
         // Crear usuarios (hosts)
         User host1 = new User();
@@ -40,6 +40,24 @@ public class HouseDataInitializer implements CommandLineRunner {
         host2.setEmail("nala@test.com");
         userRepository.save(host2);
 
+        User host3 = new User();
+        host3.setUsername("PRUEBA");
+        host3.setEmail("PRUEBA@test.com");
+        userRepository.save(host3);
+
+        //
+
+// Crear casa sin host asignado
+        House h1 = houseRepository.save(House.builder()
+                .title("prueba 100")
+                .description("Casa 1 descripción")
+                .pricePerNight(100d)
+                .location("Calle Principe Vergara 108")
+                .province("Madrid")
+                .maxGuests(3)
+                .reserve(StatusReserva.RESERVADA)
+                .build());
+
         // Crear casas con host asignados
         House house1 = houseRepository.save(House.builder()
                         .title("tu Casa")
@@ -48,7 +66,7 @@ public class HouseDataInitializer implements CommandLineRunner {
                         .location("Calle Principe Vergara 108")
                         .province("Madrid")
                         .maxGuests(3)
-                        //.reserve(StatusReserva.NO_DISPONIBLE)
+                        .reserve(StatusReserva.NO_DISPONIBLE)
                         .host(host1)
         .build());
 
@@ -60,7 +78,7 @@ public class HouseDataInitializer implements CommandLineRunner {
                 .location("Por ahi")
                 .province("Madrid")
                 .maxGuests(6)
-                //.reserve(StatusReserva.NO_DISPONIBLE)
+                .reserve(StatusReserva.DISPONIBLE)
                 .host(host2)
                 .build());
 
