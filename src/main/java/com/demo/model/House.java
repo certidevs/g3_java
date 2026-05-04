@@ -1,9 +1,8 @@
 package com.demo.model;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -11,21 +10,35 @@ import lombok.Setter;
 @Entity
 @Table(name = "houses")
 @AllArgsConstructor
+//@NoArgsConstructor
 public class House {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+
     @Column(length = 1000)
     private  String description;
     private Double pricePerNight;
     private String location;
     private String province;
     private Integer maxGuests;
+
+    @Builder.Default
+    private LocalDateTime timeRecommended = LocalDateTime.now();
+
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private StatusReserva reserve = StatusReserva.DISPONIBLE;
+
+    @ToString.Exclude
+    @ManyToOne
+    private User tokenFrom;
+
+    @ToString.Exclude
+    @ManyToOne
+    private User tokenTo;
 
     @ManyToOne
     private User host;

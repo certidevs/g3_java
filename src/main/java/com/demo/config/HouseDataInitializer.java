@@ -20,6 +20,7 @@ public class HouseDataInitializer implements CommandLineRunner {
         this.userRepository = userRepository;
     }
 
+
     @Override
     public void run(String... args) {
 

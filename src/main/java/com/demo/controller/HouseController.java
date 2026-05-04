@@ -59,9 +59,7 @@ public class HouseController {
             return "house/house-detail";
 
         }
-        // El restaurante NO existe
-        // CUIDADO no apunta a HTML
-        // APUNTA al Controller
+
         return "redirect:/house";
     }
 }
