@@ -120,15 +120,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .host(host3_booking)
                 .build()
         );
-//        House house3_booking = new House(
-//                "Rural Torres",
-//                "senderismo sierra",
-//                48.0,
-//                "Jaén",
-//                4,
-//                host3_booking
-//        );
-//        houseRepository.save(house3_booking);
+
 
         House house4_booking = houseRepository.save(House.builder()
                 .title("Camping")
@@ -138,38 +130,40 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .host(host4_booking)
                 .build()
         );
-//
 
-//
-//        House house5_booking = new House(
-//                "Ático",
-//                "centro ciudad",
-//                250.6,
-//                "Gijón",
-//                2,
-//                host5_booking,
-//        );
-//        houseRepository.save(house5_booking);
-//
-//        House house6_booking = new House(
-//                "Ático1",
-//                "centro ciudad1",
-//                167.6,
-//                "Gijón1",
-//                6,
-//                host5_booking
-//        );
-//        houseRepository.save(house6_booking);
-//
-//        House house7_booking = new House(
-//                "Ático2",
-//                "centro ciudad2",
-//                280.6,
-//                "Gijón2",
-//                4,
-//                host5_booking
-//        );
-//        houseRepository.save(house7_booking);
+
+
+        House house5_booking = houseRepository.save(House.builder()
+                .title("Ático")
+                .description("centro ciudad")
+                .pricePerNight(250.6)
+                .province("Gijón")
+                .maxGuests(2)
+                .host(host5_booking)
+                .build()
+        );
+
+        House house6_booking = houseRepository.save(House.builder()
+                .title("Ático1")
+                .description("centro ciudad1")
+                .pricePerNight(167.6)
+                .province("Gijón1")
+                .maxGuests(6)
+                .host(host5_booking)
+                .build()
+        );
+        houseRepository.save(house6_booking);
+
+        House house7_booking = houseRepository.save(House.builder()
+                .title("Ático2")
+                .description("centro ciudad2")
+                .pricePerNight(280.6)
+                .province("Gijón2")
+                .maxGuests(4)
+                .host(host5_booking)
+                .build()
+        );
+        houseRepository.save(house7_booking);
 
         // Reserva pendiente
         LocalDateTime timeIn =  LocalDateTime.of(2026,4,12,12,0);
@@ -186,13 +180,11 @@ public class BookingDataInitializer implements CommandLineRunner {
         LocalDateTime timeIn2 =  LocalDateTime.of(2026,8,5,12,0);
         LocalDateTime timeOut2 =  LocalDateTime.of(2026,8,10,12,0);
         Booking reserva3 = new Booking(guest3_booking,house3_booking,timeIn2,timeOut2);
-
 //        // Modificamos el alquiler como confirmado
-
         reserva3.confirmedBooking();
 //        // y guardamos
         bookingRepository.save(reserva3);
-//
+
 //        // Reserva de tipo confirmada
 //        LocalDateTime timeIn3 =  LocalDateTime.of(2026,7,12,12,0);
 //        LocalDateTime timeOut3 =  LocalDateTime.of(2026,7,15,12,0);
