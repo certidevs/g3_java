@@ -44,7 +44,6 @@ public class House {
     @ManyToOne
     private User tokenTo;
 
-
     @ManyToOne
     @JoinColumn(name = "host_id")
     private User host;

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,12 +37,24 @@ public class HouseController {
 
     @GetMapping("/houses")
     public String houseList(Model model,
-        @RequestParam(required = false)StatusReserva StatusReserva){//se agg el reques param para filtrar por parametro de reserva
+        @RequestParam(required = false)StatusReserva reserve,//se agg el reques param para filtrar por parametro de reserva
+        @RequestParam(required = false) Double pricePerNight,
+        @RequestParam(required = false) String title,
+        @RequestParam(required = false) String province
+
+    ){
 //      List <House>  houses = houseRepository.findAll();
-        List<House>  houseStatus = houseRepository.findByReserve(StatusReserva);//NUEVO METODO POR QUERY
+        List<House>  houseStatus = houseRepository.findByReserve(reserve,pricePerNight,title,province);//NUEVO METODO POR QUERY
+
+        // lista de provincias para el select
+        List<String> provinces = Arrays.asList("Madrid", "Barcelona", "Valencia", "Sevilla", "Málaga", "Bilbao");
+
+        model.addAttribute("houses", houseStatus);
+        model.addAttribute("provinces", provinces);
+        model.addAttribute("selectedProvince", province);
 
         List <House>  houses = houseRepository.findByActiveTrue();
-        model.addAttribute("houses", houses);
+//        model.addAttribute("houses", houses);
         return "house/house-list";
 
     }
