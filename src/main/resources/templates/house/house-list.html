@@ -6,17 +6,71 @@
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
 <main class="container flex-grow-1">
-<!--    <div class="d-flex justify-content-between align-items-center mb-4">-->
-<!--        <h1 class="mb-0" th:text="${title}">Restaurantes</h1>-->
-<!--        <span class="badge bg-secondary fs-6" th:text="|${numRestaurants} resultados|">0 resultados</span>-->
-<!--    </div>-->
 
 <!--    FILTROS-->
-    <a th:href="@{/houses(reserve='DISPONIBLE')}" class="btn btn-sm btn-secondary">Casas Disponible</a>
-    <a th:href="@{/houses(reserve='RESERVADA')}" class="btn btn-sm btn-secondary">Casas Reservadas</a>
-    <a th:href="@{/houses}" class="btn btn-sm btn-secondary">Todas</a>
+<!--    <div class="mb-3">-->
+<!--        <h5>Filtros rápidos</h5>-->
+<!--        <a th:href="@{/houses(reserve='DISPONIBLE')}" class="btn btn-sm btn-secondary btn-sm">Casas Disponible</a>-->
+<!--        <a th:href="@{/houses(reserve='RESERVADA')}" class="btn btn-sm btn-secondary btn-sm">Casas Reservadas</a>-->
+<!--        <a th:href="@{/houses}" class="btn btn-sm btn-secondary btn-sm ">Todas</a>-->
+<!--        <a th:href="@{/houses()}" class="btn btn-sm btn-secondary btn-sm ">Todas</a>-->
+<!--    </div>-->
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+    <form th:action="@{/houses}" method="get">
+        <div class="mb-3">
+            <h5>Filtros rápidos</h5>
+            <a th:href="@{/houses(reserve='DISPONIBLE')}" class="btn btn-sm btn-secondary">Casas Disponible</a>
+            <a th:href="@{/houses(reserve='RESERVADA')}" class="btn btn-sm btn-secondary">Casas Reservadas</a>
+            <a th:href="@{/houses}" class="btn btn-sm btn-secondary">Todas</a>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="col-sm-4 ">
+<!--                <label>Precio máximo por noche</label>-->
+                <input type="number"
+                       th:name="pricePerNight"
+                       class="form-control"
+                       placeholder="Precio máximo por noche" />
+            </div>
+<!--            <div class="col-sm-4">-->
+<!--&lt;!&ndash;                <label>Búsqueda por título</label>&ndash;&gt;-->
+<!--                <input type="text"-->
+<!--                       th:name="title"-->
+<!--                       class="form-control"-->
+<!--                       placeholder="Buscar por título" />-->
+<!--            </div>-->
+<!--            <div class="col-sm-4">-->
+<!--                <input type="text"-->
+<!--                       th:name="province"-->
+<!--                       class="form-control"-->
+<!--                       placeholder="Buscar por Provincia" />-->
+<!--            </div>-->
+            <div class="col-sm-4">
+<!--                <label>Provincia</label>-->
+                <select th:name="province" class="form-select  form-control" th:value="${selectedProvince}">
+                    <option value="">Todas las provincias</option>
+                    <option th:each="p : ${provinces}"
+                            th:value="${p}"
+                            th:text="${p}" />
+                </select>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary btn-sm">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Buscar
+            </button>
+            <a th:href="@{/houses}" class="btn btn-danger btn-sm">
+                <i class="fa-solid fa-broom"></i>
+                Limpiar filtros
+            </a>
+        </div>
+<!--        <button type="submit" class="btn btn-primary btn-sm">Aplicar filtros</button>-->
+    </form>
+
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mt-1">
         <div class="col" th:each="house : ${houses}">
             <div class="card card-restaurant h-100 shadow-sm">
                 <div class="card-body">
