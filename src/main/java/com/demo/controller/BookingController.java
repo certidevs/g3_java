@@ -107,16 +107,19 @@ public class BookingController {
     @GetMapping("/booking/from-pending-to-confirmed/{id}")
     // id del booking
     public String actionFromPendingToConfirmed (@PathVariable Long id, Model model) {
+        System.out.println("BOOKING ID: " + id);
 
-        Optional<Booking> bookingOptional =
-                bookingRepository.findById(id);
+        Optional<Booking> bookingOptional = bookingRepository.findById(id);
             if (bookingOptional.isPresent()) {
                 Booking bookingPresent = bookingOptional.get();
                 bookingPresent.setStatusbooking(StatusBooking.CONFIRMED);
                 bookingRepository.save(bookingPresent);
-
+                User user = bookingPresent.getUserHouse().getHost();
+                System.out.println("USUARIO HOST id: " + user.getId());
+                return "redirect:/host/pending/" + user.getId();
             }
-        return "redirect:/host/pending/" + id;
+
+            return "redirect:/houses";
 
     }
 

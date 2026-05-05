@@ -32,6 +32,13 @@ public class BookingDataInitializer implements CommandLineRunner {
     public void run(String... args) {
 
 
+        // user host
+        // casa
+
+        // user guest
+        // booking
+
+
         // Crear usuarios (guest)
         User guest1_booking = new User();
         guest1_booking.setUsername("luis1");
