@@ -104,7 +104,7 @@ public class BookingController {
 
     }
 
-    @GetMapping("/host/from-pending-to-confirmed/{id}")
+    @GetMapping("/booking/from-pending-to-confirmed/{id}")
     // id del booking
     public String actionFromPendingToConfirmed (@PathVariable Long id, Model model) {
 
@@ -116,8 +116,39 @@ public class BookingController {
                 bookingRepository.save(bookingPresent);
 
             }
-        return "/host/booking-list-pending-host";
+        return "redirect:/host/pending/" + id;
 
     }
+
+    @GetMapping("/booking/from-pending-to-cancelled/{id}")
+    // id del booking
+    public String actionFromPendingToCancelled (@PathVariable Long id, Model model) {
+
+        Optional<Booking> bookingOptional =
+                bookingRepository.findById(id);
+        if (bookingOptional.isPresent()) {
+            Booking bookingPresent = bookingOptional.get();
+            bookingPresent.setStatusbooking(StatusBooking.CANCELLED);
+            bookingRepository.save(bookingPresent);
+        }
+        return "redirect:/host/pending/" + id;
+
+    }
+
+    @GetMapping("/booking/from-confirmed-to-cancelled/{id}")
+    // id del booking
+    public String actionFromConfirmedToCancelled (@PathVariable Long id, Model model) {
+
+        Optional<Booking> bookingOptional =
+                bookingRepository.findById(id);
+        if (bookingOptional.isPresent()) {
+            Booking bookingPresent = bookingOptional.get();
+            bookingPresent.setStatusbooking(StatusBooking.CANCELLED);
+            bookingRepository.save(bookingPresent);
+        }
+        return "redirect:/host/confirmed/" + id;
+
+    }
+
 
 }
