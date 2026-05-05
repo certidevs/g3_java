@@ -31,17 +31,21 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     """)
     List<Booking> bookingsGuest(Long id);
 
-    @Query(value = """
-        SELECT * FROM BOOKINGS WHERE USER_HOUSE_ID=?1 AND STATUSBOOKING<>'COMPLETED'
-    """,nativeQuery = true)
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userHouse.host.id=?1
+    """)
     List<Booking> bookingsHost(Long id);
 
     // FILTRO PARA PANTALLA DE RESERVAS "PENDING"
 
-    @Query(value = """
-        SELECT * FROM BOOKINGS WHERE USER_HOUSE_ID=?1 AND STATUSBOOKING='PENDING' 
-    """,nativeQuery = true)
+
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userHouse.host.id=?1 AND bk.statusbooking='PENDING' 
+    """)
     List<Booking> bookingsHostPending(Long id);
+
+
+    // TODO . A PARTIR DE AQUI
 
     // FILTRO PARA PANTALLA DE RESERVAS "CONFIRMED"
 

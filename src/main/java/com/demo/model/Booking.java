@@ -51,6 +51,7 @@ public class Booking {
     @ToString.Exclude
     private House userHouse;
 
+
     private Long calculateNights (LocalDateTime tiempoin,LocalDateTime tiempoout)
     {
         // Calcular noches

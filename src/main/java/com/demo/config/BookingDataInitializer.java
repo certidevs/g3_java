@@ -2,6 +2,7 @@ package com.demo.config;
 
 import com.demo.model.Booking;
 import com.demo.model.House;
+import com.demo.model.StatusReserva;
 import com.demo.model.User;
 import com.demo.repository.BookingRepository;
 import com.demo.repository.HouseRepository;
@@ -31,6 +32,68 @@ public class BookingDataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        //////////////// Datos verificados en las relaciones
+
+        // Guests
+        User guest_test_booking = new User();
+        guest_test_booking.setUsername("Guest prueba");
+        guest_test_booking.setFirstName("Guest 1");
+        guest_test_booking.setLastName("Guest 1");
+        guest_test_booking.setEmail("guest1@test1.com");
+        userRepository.save(guest_test_booking);
+
+        User guest_test_booking_1 = new User();
+        guest_test_booking_1.setUsername("Guest prueba 2");
+        guest_test_booking_1.setFirstName("Guest 2");
+        guest_test_booking_1.setLastName("Guest 2");
+        guest_test_booking_1.setEmail("guest2@test1.com");
+        userRepository.save(guest_test_booking_1);
+
+
+        // Host
+        User host_test_booking = new User();
+        host_test_booking.setUsername("Host prueba");
+        host_test_booking.setFirstName("Host 1");
+        host_test_booking.setLastName("Host 1");
+        host_test_booking.setEmail("host1@test1.com");
+        userRepository.save(host_test_booking);
+
+        // Casa propiedad de Host1
+        House house_test_booking = houseRepository.save(House.builder()
+                .title("Parcela el Viso")
+                .description("con piscina")
+                .pricePerNight(145.0)
+                .location("Fuenlabrada")
+                .province("Madrid")
+                .maxGuests(5)
+                .host(host_test_booking)
+                .build()
+        );
+
+        // Casa propiedad de Host1
+        House house_test_booking1 = houseRepository.save(House.builder()
+                .title("Parcela Carranque")
+                .description("con pista de tenis")
+                .pricePerNight(220.0)
+                .location("Carranque")
+                .province("Toledo")
+                .maxGuests(8)
+                .host(host_test_booking)
+                .build()
+        );
+
+        // Reserva pendiente
+        LocalDateTime timeIn_1 =  LocalDateTime.of(2026,4,12,12,0);
+        LocalDateTime timeOut_1 =  LocalDateTime.of(2026,4,15,12,0);
+        Booking reserva_test = new Booking(guest_test_booking,house_test_booking,timeIn_1,timeOut_1);
+        bookingRepository.save(reserva_test);
+
+        LocalDateTime timeIn_2 =  LocalDateTime.of(2026,4,7,12,0);
+        LocalDateTime timeOut_2 =  LocalDateTime.of(2026,4,15,12,0);
+        Booking reserva_test1 = new Booking(guest_test_booking_1,house_test_booking1,timeIn_2,timeOut_2);
+        bookingRepository.save(reserva_test1);
+
+        //////////////////////
 
         // Crear usuarios (guest)
         User guest1_booking = new User();
@@ -216,6 +279,63 @@ public class BookingDataInitializer implements CommandLineRunner {
         LocalDateTime timeOut6 =  LocalDateTime.of(2026,4,15,12,0);
         Booking reserva7 = new Booking(guest1_booking,house3_booking,timeIn,timeOut);
         bookingRepository.save(reserva7);
+
+
+        // DATOS DE ANGELICA
+        // Crear usuarios (hosts)
+        User host1 = new User();
+        host1.setUsername("juan");
+        host1.setEmail("juan@test.com");
+        userRepository.save(host1);
+
+        User host2 = new User();
+        host2.setUsername("maria");
+        host2.setEmail("nala@test.com");
+        userRepository.save(host2);
+
+        User host3 = new User();
+        host3.setUsername("PRUEBA");
+        host3.setEmail("PRUEBA@test.com");
+        userRepository.save(host3);
+
+        //
+
+// Crear casa sin host asignado
+        House h1 = houseRepository.save(House.builder()
+                .title("prueba 100")
+                .description("Casa 1 descripción")
+                .pricePerNight(100d)
+                .location("Calle Principe Vergara 108")
+                .province("Madrid")
+                .maxGuests(3)
+                .reserve(StatusReserva.RESERVADA)
+                .build());
+
+        // Crear casas con host asignados
+        House house1 = houseRepository.save(House.builder()
+                .title("tu Casa")
+                .description("Casa 1 descripción")
+                .pricePerNight(100d)
+                .location("Calle Principe Vergara 108")
+                .province("Madrid")
+                .maxGuests(3)
+                .reserve(StatusReserva.NO_DISPONIBLE)
+                .host(host1)
+                .build());
+
+
+        House house2 = houseRepository.save(House.builder()
+                .title("tu Casita")
+                .description("Casa 2 descripción")
+                .pricePerNight(100d)
+                .location("Por ahi")
+                .province("Madrid")
+                .maxGuests(6)
+                .reserve(StatusReserva.DISPONIBLE)
+                .host(host2)
+                .build());
+
+
 
 
     }
