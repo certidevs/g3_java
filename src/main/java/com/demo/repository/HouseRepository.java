@@ -28,12 +28,11 @@ public interface HouseRepository extends JpaRepository<House, Long> {
 
     //FILTRO POR ESTADO DE RESERVA
 
-    @Query("SELECT h FROM House h WHERE (:StatusReserva IS NULL OR h.reserve = :StatusReserva)")
-    List<House> findByReserve(@Param("StatusReserva") StatusReserva StatusReserva);
-//    List<House> findByReserve(StatusReserva reserve);
+    @Query("SELECT h FROM House h WHERE (:reserve IS NULL OR h.reserve = :reserve)")
+    List<House> findByReserve(@Param("reserve") StatusReserva reserve);
+//  List<House> findByReserve(StatusReserva reserve);
 
 //   @Query("SELECT h FROM House h WHERE h.reserve = true AND (:StatusReserva IS NULL OR h.reserve =:StatusReserve)")
-//
 //    List<House> findByReserve(@Param("StatusReserva") StatusReserva StatusReserva);
 
 

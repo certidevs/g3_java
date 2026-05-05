@@ -36,12 +36,13 @@ public class HouseController {
 
     @GetMapping("/houses")
     public String houseList(Model model,
-        @RequestParam(required = false)StatusReserva StatusReserva){//se agg el reques param para filtrar por parametro de reserva
+        @RequestParam(required = false)StatusReserva reserve){//se agg el reques param para filtrar por parametro de reserva
 //      List <House>  houses = houseRepository.findAll();
-        List<House>  houseStatus = houseRepository.findByReserve(StatusReserva);//NUEVO METODO POR QUERY
+        List<House>  houseStatus = houseRepository.findByReserve(reserve);//NUEVO METODO POR QUERY
+        model.addAttribute("houses", houseStatus);
 
-        List <House>  houses = houseRepository.findByActiveTrue();
-        model.addAttribute("houses", houses);
+//        List <House>  houses = houseRepository.findByActiveTrue();
+//        model.addAttribute("houses", houses);
         return "house/house-list";
 
     }

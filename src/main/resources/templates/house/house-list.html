@@ -12,9 +12,9 @@
 <!--    </div>-->
 
 <!--    FILTROS-->
-    <a th:href="@{/houses(StatusReserva='DISPONIBLE')}" class="btn btn-sm btn-secondary">Casas Disponible</a>
-    <a th:href="@{/houses(StatusReserva='RESERVADA')}" class="btn btn-sm btn-secondary">Casas Reservadas</a>
-
+    <a th:href="@{/houses(reserve='DISPONIBLE')}" class="btn btn-sm btn-secondary">Casas Disponible</a>
+    <a th:href="@{/houses(reserve='RESERVADA')}" class="btn btn-sm btn-secondary">Casas Reservadas</a>
+    <a th:href="@{/houses}" class="btn btn-sm btn-secondary">Todas</a>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
         <div class="col" th:each="house : ${houses}">
