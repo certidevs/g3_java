@@ -53,7 +53,7 @@ public class HouseController {
         model.addAttribute("provinces", provinces);
         model.addAttribute("selectedProvince", province);
 
-//        List <House>  houses = houseRepository.findByActiveTrue();
+        List <House>  houses = houseRepository.findByActiveTrue();
 //        model.addAttribute("houses", houses);
         return "house/house-list";
 

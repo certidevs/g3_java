@@ -12,26 +12,20 @@ import java.util.Optional;
 public interface HouseRepository extends JpaRepository<House, Long> {
 
     //FILTRAR POR UBICACION DE CASA
-    List<House> findByLocation(String location);
-//
-//    //FILTRAR POR ID
-      List<House> findAllByOrderByIdAsc();
+//    List<House> findByLocation(String location);
+//    FILTRAR POR ID
+//    List<House> findAllByOrderByIdAsc();
 //    List<House> findByIdOrderByIdAsc(Long id);
-//
 //    //FILTRAR POR PRECIO POR NOCHE
-     List<House> findByPricePerNightBetween(Double pricePerNightStart, Double pricePerNightEnd);
+//     List<House> findByPricePerNightBetween(Double pricePerNightStart, Double pricePerNightEnd);
+
 
 
     //para mostrar las casas activas
     List<House> findByActiveTrue();
     Optional<House> findByIdAndActiveTrue(Long id);
 
-    //FILTRO POR ESTADO DE RESERVA
-
-    //@Query("SELECT h FROM House h WHERE (:reserve IS NULL OR h.reserve = :reserve)
-
-
-
+    //FILTRO POR ESTADO DE RESERVA, PRECIO, PROVINCIA, TITULO
     @Query("""
     SELECT h FROM House h
     WHERE (:reserve IS NULL OR h.reserve = :reserve)
@@ -47,12 +41,6 @@ public interface HouseRepository extends JpaRepository<House, Long> {
             @Param("province") String province
 
     );
-    //List<House> findByReserve(@Param("reserve") StatusReserva reserve);
-
-//   @Query("SELECT h FROM House h WHERE h.reserve = true AND (:StatusReserva IS NULL OR h.reserve =:StatusReserve)")
-//    List<House> findByReserve(@Param("StatusReserva") StatusReserva StatusReserva);
-
-
 
     //FILTRAR REVIEW CON MEJORES RESEÑAS
 
