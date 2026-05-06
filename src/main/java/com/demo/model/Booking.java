@@ -70,6 +70,7 @@ public class Booking {
 
         // Verificamos que al menos hay un dia entre las fechas.
         if (nroNights>=1) {
+
             // Tipos obligatorios
             this.userBooking = userBooking;
             this.statusbooking = StatusBooking.PENDING;
@@ -80,6 +81,7 @@ public class Booking {
             // Nro de noches
             this.numberNights = nroNights;
             this.totalPrice = nroNights * this.userHouse.getPricePerNight();
+
         }
     }
 

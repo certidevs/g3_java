@@ -11,6 +11,48 @@
     <i class="fa-solid fa-utensils text-primary me-2"></i>Formulario de casa
   </h1>
 <!--TODO FORMULARIO PARA CREAR O EDITAR UNA CASA-->
+  <form th:action="@{/houses/save}" th:object="${house}" method="post" class="row g-3">
+    <div>
+      <input type="hidden" th:field="*{id}">
+
+    </div>
+    <div class="col-md-6">
+      <label for="name" class="form-label">Nombre</label>
+      <input type="text" id="name" th:field="*{title}" class="form-control" placeholder="Nombre de la casa" required>
+    </div>
+    <div class="col-md-6">
+      <label for="address" class="form-label">Dirección</label>
+      <input type="text" id="address" th:field="*{location}" class="form-control" placeholder="Dirección de la casa" required>
+    </div>
+    <div class="col-md-6">
+      <label for="province" class="form-label">Provincia</label>
+      <input type="text" id="province" th:field="*{province}" class="form-control" placeholder="Dirección de la casa" required>
+    </div>
+    <div class="col-md-4">
+      <label for="pricePerNight" class="form-label">Precio por noche</label>
+      <input type="number" id="pricePerNight" th:field="*{pricePerNight}" class="form-control" placeholder="Precio por noche" required>
+    </div>
+    <div class="col-md-4">
+      <label for="capacity" class="form-label">Capacidad</label>
+      <input type="number" id="capacity" th:field="*{maxGuests}" class="form-control" placeholder="Número de personas que puede alojar" required>
+    </div>
+    <div>
+      <label for="description" class="form-label" >Descripcion</label>
+      <input type="text" id="description" th:field="*{description}" class="form-control" placeholder="Descripcion de la casa" required>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-success">
+        <i class="fa-regular fa-floppy-disk"></i>Guardar</button>
+    </div>
+    <a href="@{/houses}" class="btn btn-secondary">cancelar</a>
+
+<!--    <div class="col-md-4">-->
+<!--      <label for="availableFrom" class="form-label-->
+
+  </form>
+
+
+
 </main>
 
 

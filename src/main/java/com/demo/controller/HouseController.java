@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
@@ -103,4 +104,14 @@ public class HouseController {
 
         return "redirect:/house";
     }
-}
+
+//ruta para entrar al formulario de casa
+    @GetMapping("houses/new")
+    public String newHouses(Model model) {
+        //objeto vacío para el formulario
+        model.addAttribute(("house"), new House());
+
+
+    return "house/house-form";}
+    }
+
