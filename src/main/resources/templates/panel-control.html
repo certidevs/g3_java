@@ -240,7 +240,7 @@
                                   <td th:text="${booking.statusbooking}"></td>
                                   <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver casa</a></td>
                                   <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver usuario</a></td>
-                                  <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver reserva</a></td>
+                                  <td><a th:href="@{/booking/{id}(id=${booking.getId})}" class="btn btn-primary btn-sm">Ver reserva</a></td>
                               </tr>
                               </tbody>
                           </table>

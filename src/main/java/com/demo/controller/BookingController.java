@@ -28,6 +28,23 @@ public class BookingController {
         this.userRepository = userRepository;
     }
 
+    // BOOKING ID.
+    @GetMapping("/booking/{id}")
+    public String getBookingById (Model model,@PathVariable Long id)
+    {
+        Optional<Booking> booking = bookingRepository.findById(id);
+        if (booking.isPresent()) {
+
+            Booking validBooking = booking.get();
+
+            model.addAttribute("booking", validBooking);
+            return "/host/booking-detail";
+
+        }
+        return "redirect:/index";
+
+    }
+
     // LADO ANFITRION
     @GetMapping("/host/pending/{id}")
     public String listHostPending (Model model, @PathVariable Long id)
