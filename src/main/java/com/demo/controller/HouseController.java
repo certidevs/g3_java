@@ -7,11 +7,7 @@ import com.demo.repository.HouseRepository;
 import com.demo.repository.ReviewRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -111,7 +107,14 @@ public class HouseController {
         //objeto vacío para el formulario
         model.addAttribute(("house"), new House());
 
+    return "house/house-form";
+}
 
-    return "house/house-form";}
-    }
-
+@PostMapping ("houses")
+public String createHouse (@ModelAttribute House house) {
+    //guardar en la base de datos
+    System.out.println("recibido" + house);
+    houseRepository.save(house);
+    return "redirect:/houses/" + house.getId();
+}
+}
