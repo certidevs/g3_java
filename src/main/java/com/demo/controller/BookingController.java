@@ -104,10 +104,35 @@ public class BookingController {
 
     }
 
+    @GetMapping("/host/completed/{id}")
+    public String listHostCompleted (Model model, @PathVariable Long id)
+    {
+
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            User validUser = user.get();
+
+
+            // Reservas del Host
+            List<Booking> listBookingHost = bookingRepository.bookingsHostCompleted(id);
+
+
+            // Atributos de listas pasados al HTML
+            model.addAttribute("user",validUser);
+            model.addAttribute("listBookingsHostCompleted",listBookingHost);
+
+            return "/host/booking-list-completed-host";
+        }
+        else {
+            return "redirect:/index";
+        }
+
+    }
+
+
     @GetMapping("/booking/from-pending-to-confirmed/{id}")
     // id del booking
     public String actionFromPendingToConfirmed (@PathVariable Long id, Model model) {
-        System.out.println("BOOKING ID: " + id);
 
         Optional<Booking> bookingOptional = bookingRepository.findById(id);
             if (bookingOptional.isPresent()) {
@@ -115,7 +140,6 @@ public class BookingController {
                 bookingPresent.setStatusbooking(StatusBooking.CONFIRMED);
                 bookingRepository.save(bookingPresent);
                 User user = bookingPresent.getUserHouse().getHost();
-                System.out.println("USUARIO HOST id: " + user.getId());
                 return "redirect:/host/pending/" + user.getId();
             }
 
@@ -133,8 +157,12 @@ public class BookingController {
             Booking bookingPresent = bookingOptional.get();
             bookingPresent.setStatusbooking(StatusBooking.CANCELLED);
             bookingRepository.save(bookingPresent);
+            User user = bookingPresent.getUserHouse().getHost();
+            return "redirect:/host/cancelled/" + user.getId();
         }
-        return "redirect:/host/pending/" + id;
+
+        return "redirect:/houses";
+
 
     }
 
@@ -148,10 +176,31 @@ public class BookingController {
             Booking bookingPresent = bookingOptional.get();
             bookingPresent.setStatusbooking(StatusBooking.CANCELLED);
             bookingRepository.save(bookingPresent);
+            User user = bookingPresent.getUserHouse().getHost();
+            return "redirect:/host/cancelled/" + user.getId();
+
         }
-        return "redirect:/host/confirmed/" + id;
+        return "redirect:/houses";
 
     }
 
+    @GetMapping("/booking/from-confirmed-to-completed/{id}")
+    public String actionFromConfirmedToCompleted (@PathVariable Long id,Model model) {
+
+        Optional<Booking> bookingOptional =
+                bookingRepository.findById(id);
+        if (bookingOptional.isPresent()) {
+            Booking bookingPresent = bookingOptional.get();
+            bookingPresent.setStatusbooking(StatusBooking.COMPLETED);
+            bookingRepository.save(bookingPresent);
+            User user=bookingPresent.getUserHouse().getHost();
+
+            return "redirect:/host/completed/" + user.getId();
+
+        }
+
+        return "redirect:/houses";
+
+    }
 
 }

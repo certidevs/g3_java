@@ -60,5 +60,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     """)
     List<Booking> bookingsHostCancelled(Long id);
 
+    // FILTRO PARA PANTALLA DE RESERVAS "COMPLETED"
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userHouse.host.id=?1 AND bk.statusbooking='COMPLETED'
+    """)
+    List<Booking> bookingsHostCompleted(Long id);
+
 
 }
