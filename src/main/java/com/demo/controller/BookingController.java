@@ -28,6 +28,7 @@ public class BookingController {
         this.userRepository = userRepository;
     }
 
+
     // BOOKING ID.
     @GetMapping("/booking/{id}")
     public String getBookingById (Model model,@PathVariable Long id)
@@ -44,6 +45,9 @@ public class BookingController {
         return "redirect:/index";
 
     }
+
+
+
 
     // LADO ANFITRION
     @GetMapping("/host/pending/{id}")
