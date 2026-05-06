@@ -49,15 +49,15 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     // FILTRO PARA PANTALLA DE RESERVAS "CONFIRMED"
 
-    @Query(value = """
-        SELECT * FROM BOOKINGS WHERE USER_HOUSE_ID=?1 AND STATUSBOOKING='CONFIRMED'
-    """,nativeQuery = true)
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userHouse.host.id=?1 AND bk.statusbooking='CONFIRMED'
+    """)
     List<Booking> bookingsHostConfirmed(Long id);
 
     // FILTRO PARA PANTALLA DE RESERVAS "CANCELLED"
-    @Query(value = """
-        SELECT * FROM BOOKINGS WHERE USER_HOUSE_ID=?1 AND STATUSBOOKING='CANCELLED'
-    """,nativeQuery = true)
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userHouse.host.id=?1 AND bk.statusbooking='CANCELLED'
+    """)
     List<Booking> bookingsHostCancelled(Long id);
 
 
