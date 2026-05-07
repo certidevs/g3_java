@@ -30,8 +30,8 @@ public interface HouseRepository extends JpaRepository<House, Long> {
     SELECT h FROM House h
     WHERE (:reserve IS NULL OR h.reserve = :reserve)
       AND (:price IS NULL OR h.pricePerNight <= :price)
-      AND (:title IS NULL OR LOWER(h.title) LIKE LOWER(CONCAT('%', :title, '%')))
-      AND (:province IS NULL OR LOWER(h.province) LIKE LOWER(CONCAT('%', :province, '%')))
+      AND (:title IS NULL OR :title = '' OR LOWER(h.title) LIKE LOWER(CONCAT('%', :title, '%')))
+      AND (:province IS NULL OR :province = '' OR LOWER(h.province) LIKE LOWER(CONCAT('%', :province, '%')))
     """)
 
     List<House> findByReserve(
