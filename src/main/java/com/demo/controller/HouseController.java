@@ -8,6 +8,12 @@ import com.demo.repository.ReviewRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -110,11 +116,28 @@ public class HouseController {
     return "house/house-form";
 }
 
-@PostMapping ("houses")
-public String createHouse (@ModelAttribute House house) {
-    //guardar en la base de datos
-    System.out.println("recibido" + house);
-    houseRepository.save(house);
-    return "redirect:/houses/" + house.getId();
-}
+//@PostMapping ("houses")
+//public String createHouse (@ModelAttribute House house) {
+//    //guardar en la base de datos
+//    System.out.println("recibido" + house);
+//    houseRepository.save(house);
+//    return "redirect:/houses/" + house.getId();
+//}
+
+    @PostMapping("/houses")
+    public String createHouse(@ModelAttribute House house,
+                              @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+
+        if (!imageFile.isEmpty()) {
+            String fileName = imageFile.getOriginalFilename();
+            Path path = Paths.get(System.getProperty("user.dir"), "uploads", fileName);
+            Files.createDirectories(path.getParent());
+            Files.write(path, imageFile.getBytes());
+            house.setImageUrl(fileName);
+        }
+
+        houseRepository.save(house);
+        return "redirect:/houses/" + house.getId();
+    }
+
 }
