@@ -21,9 +21,10 @@
 
       <form th:action="@{/booking/update-dates}" method="post" >
           <input type="hidden" name="id" th:value="*{booking.id}"/>
+          <input type="hidden" name="userid" th:value="*{user.id}"/>
           <input type="datetime-local" name="checkin" th:value="*{booking.checkin}" required>
           <input type="datetime-local" name="checkout" th:value="*{booking.checkout}" required>
-          <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar reserva</button>
+          <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar reserva </button>
       </form>
 <!--      <a th:href="@{/booking/from-pending-to-confirmed/{id}(id=${booking.id})}" class="btn btn-primary">Confirmar</a>-->
       <a th:href="@{/booking/from-pending-to-cancelled/{id}(id=${booking.id})}" class="btn btn-primary">Cancelar reserva</a>

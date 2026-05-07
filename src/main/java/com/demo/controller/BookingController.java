@@ -227,15 +227,19 @@ public class BookingController {
     @PostMapping("booking/update-dates")
     public String updateBooking(
             @RequestParam Long id,
+            @RequestParam Long userid,
             @RequestParam LocalDateTime checkin,
             @RequestParam LocalDateTime checkout
     ) {
         Booking booking = bookingRepository.findById(id).orElseThrow();
         booking.setCheckin(checkin);
         booking.setCheckout(checkout);
+        booking.setStatusbooking(StatusBooking.CONFIRMED);
+        User usuario = userRepository.findById(userid).orElseThrow();
+
         bookingRepository.save(booking);
         //        Enviando al detalle
-        return "redirect:/booking/" + booking.getId();
+        return "redirect:/host/confirmed/" + usuario.getId();
         //      Enviar al listado seria ...
         // return "redirect:/restaurantes";
     }
