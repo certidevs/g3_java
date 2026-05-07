@@ -62,8 +62,8 @@ h1, h2, h3, .navbar-brand {
 
 /* Botones */
 .btn {
-    background-color: #7faedd;
-    color: #edd6d6;
+    background-color: #dfb82b;
+    color: #ffffff;
     padding: 12px 24px;
     text-decoration: none;
     border-radius: 5px;
@@ -72,7 +72,7 @@ h1, h2, h3, .navbar-brand {
 }
 
 .btn:hover {
-    background-color: #ffffff;
+    background-color: #7faedd;
 }
 
 .btn-small {
@@ -112,7 +112,7 @@ h1, h2, h3, .navbar-brand {
 /* Tarjetas */
 .card,
 .feature-card {
-    background: #c5a538;
+    background: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
