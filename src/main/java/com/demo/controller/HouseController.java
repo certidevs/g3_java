@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -126,10 +127,23 @@ public class HouseController {
 
     @PostMapping("/houses")
     public String createHouse(@ModelAttribute House house,
-                              @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+                              @RequestParam("imageFile") MultipartFile imageFile,
+                              RedirectAttributes redirectAttributes) throws IOException {
+
+        long maxSize = 5 * 1024 * 1024L; // 5 MB
 
         if (!imageFile.isEmpty()) {
+            if (imageFile.getSize() > maxSize) {
+                redirectAttributes.addFlashAttribute("error", "El archivo es demasiado grande. Máximo 5 MB.");
+                return "redirect:/houses/new";
+            }
+
             String fileName = imageFile.getOriginalFilename();
+            if (fileName == null || !fileName.toLowerCase().endsWith(".png")) {
+                redirectAttributes.addFlashAttribute("error", "Solo se permiten archivos PNG.");
+                return "redirect:/houses/new";
+            }
+
             Path path = Paths.get(System.getProperty("user.dir"), "uploads", fileName);
             Files.createDirectories(path.getParent());
             Files.write(path, imageFile.getBytes());
