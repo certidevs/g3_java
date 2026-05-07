@@ -19,11 +19,11 @@
       <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |">Datos reserva</p>
       <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|">Datos reserva</p>
 
-      <form th:action="@{booking/update-dates}" method="post" th:object="${booking}">
-          <input type="hidden" th:field="*{id}"/>
-<!--          <input type="datetime-local" th:field="*{checking}">-->
-<!--          <input type="datetime-local" th:field="*{checkout}">-->
-<!--          <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>-->
+      <form th:action="@{/booking/update-dates}" method="post" >
+          <input type="hidden" name="id" th:value="*{booking.id}"/>
+          <input type="datetime-local" name="checkin" th:value="*{booking.checkin}">
+          <input type="datetime-local" name="checkout" th:value="*{booking.checkout}">
+          <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
       </form>
       <a th:href="@{/booking/from-pending-to-confirmed/{id}(id=${booking.id})}" class="btn btn-primary">Confirmar</a>
       <a th:href="@{/booking/from-pending-to-cancelled/{id}(id=${booking.id})}" class="btn btn-primary">Cancelar reserva</a>
