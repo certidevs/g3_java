@@ -11,13 +11,16 @@
     <i class="fa-solid fa-utensils text-primary me-2"></i>Formulario de casa
   </h1>
 <!--TODO FORMULARIO PARA CREAR O EDITAR UNA CASA-->
-  <form th:action="@{/houses}" th:object="${house}" method="post" class="row g-3">
+  <form th:action="@{/houses}" th:object="${house}" method="post" class="row g-3" enctype="multipart/form-data">
     <div>
       <input type="hidden" th:field="*{id}">
 
       <div class="mb-3">
-        <label class="form-label">URL de imagen</label>
-        <input type="text" class="form-control" th:field="*{imageUrl}" placeholder="/images/casa1.jpg">
+        <label class="form-label">Imagen de la casa</label>
+        <input type="file" name="imageFile" class="form-control" accept="image/*">
+
+        <!--        <input type="file" name="imageFile" class="form-control" accept="image/*">-->
+<!--        <input type="file" class="form-control" th:field="*{imageUrl}" placeholder="/images/casa1.jpg">-->
       </div>
 
     </div>
