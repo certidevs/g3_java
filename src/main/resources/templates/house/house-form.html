@@ -15,11 +15,17 @@
     <div>
       <input type="hidden" th:field="*{id}">
 
+      <div class="mb-3">
+        <label class="form-label">URL de imagen</label>
+        <input type="text" class="form-control" th:field="*{imageUrl}" placeholder="/images/casa1.jpg">
+      </div>
+
     </div>
     <div class="col-md-6">
       <label for="name" class="form-label">Nombre</label>
       <input type="text" id="name" th:field="*{title}" class="form-control" placeholder="Nombre de la casa" required>
     </div>
+
 
     <div class="col-md-6">
       <label for="address" class="form-label">Dirección</label>

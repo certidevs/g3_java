@@ -69,6 +69,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Madrid")
                 .maxGuests(5)
                 .host(host_test_booking)
+                .imageUrl("h1.jpg")
                 .build()
         );
 
@@ -80,6 +81,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .location("Carranque")
                 .province("Toledo")
                 .maxGuests(8)
+                .imageUrl("h2.jpg")
                 .host(host_test_booking)
                 .build()
         );
@@ -126,6 +128,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .pricePerNight(100d)
                 .location("Calle Principe Vergara 108")
                 .province("Valencia")
+                .imageUrl("h3.jpg")
                 .maxGuests(3)
                 .reserve(StatusReserva.RESERVADA)
                 .build());
@@ -138,6 +141,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .location("Calle Principe Vergara 108")
                 .province("Madrid")
                 .maxGuests(3)
+                .imageUrl("h4.jpg")
                 .reserve(StatusReserva.NO_DISPONIBLE)
                 .host(host1)
                 .build());
@@ -149,6 +153,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .location("Por ahi")
                 .province("Barcelona")
                 .maxGuests(6)
+                .imageUrl("h5.jpg")
                 .reserve(StatusReserva.RESERVADA)
                 .host(host2)
                 .build());
@@ -216,6 +221,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                         .pricePerNight(145.0)
                         .location("Toledo")
                         .province("Madrid")
+                        .imageUrl("h6.jpg")
                         .maxGuests(5)
                         .host(host1_booking)
                         .build()
@@ -229,6 +235,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .location("alicante")
                 .province("Madrid")
                 .maxGuests(3)
+                .imageUrl("h7.jpg")
                 .host(host2_booking)
                 .build()
         );
@@ -239,6 +246,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .description("senderismo sierra")
                 .pricePerNight(45.0)
                 .maxGuests(4)
+                .imageUrl("h8.jpg")
                 .host(host3_booking)
                 .build()
         );
@@ -249,6 +257,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .description("en playa con piscina")
                 .pricePerNight(105.0)
                 .maxGuests(4)
+                .imageUrl("h1.jpg")
                 .host(host4_booking)
                 .build()
         );
@@ -261,6 +270,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .pricePerNight(250.6)
                 .province("Gijón")
                 .maxGuests(2)
+                .imageUrl("h2.jpg")
                 .host(host5_booking)
                 .build()
         );
@@ -271,6 +281,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .pricePerNight(167.6)
                 .province("Gijón1")
                 .maxGuests(6)
+                .imageUrl("h3.jpg")
                 .host(host5_booking)
                 .build()
         );
@@ -282,6 +293,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .pricePerNight(280.6)
                 .province("Gijón2")
                 .maxGuests(4)
+                .imageUrl("h5.jpg")
                 .host(host5_booking)
                 .build()
         );

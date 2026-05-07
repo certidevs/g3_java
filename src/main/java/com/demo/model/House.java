@@ -25,6 +25,9 @@ public class House {
     private String province;
     private Integer maxGuests;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Builder.Default
     @Column(columnDefinition = "BOOLEAN DEFAULT true")
     private Boolean active = true;
