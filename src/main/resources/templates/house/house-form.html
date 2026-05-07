@@ -41,16 +41,19 @@
       <input type="number" id="capacity" th:field="*{maxGuests}" class="form-control" placeholder="Número de personas que puede alojar" required>
     </div>
 
-    <div>
-      <label for="description" class="form-label" >Descripcion</label>
-      <input type="text" id="description" th:field="*{description}" class="form-control" placeholder="Descripcion de la casa" required>
+    <div class="form-floating">
+      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+      <label for="floatingTextarea2"  >Descripcion</label>
+<!--      <input type="text" id="description" th:field="*{description}" class="form-control" placeholder="Descripcion de la casa" required>-->
     </div>
 
+<div class="d-grid gap-2 col-6 mx-auto">
+  <button type="submit" class="btn btn-success">
+    <i class="fa-regular fa-floppy-disk"></i>Guardar
+  </button>
+  <a th:href="@{/houses}" class="btn btn-secondary">cancelar</a>
+</div>
 
-      <button type="submit" class="btn btn-success">
-        <i class="fa-regular fa-floppy-disk"></i>Guardar
-      </button>
-    <a th:href="@{/houses}" class="btn btn-secondary">cancelar</a>
 
 <!--    <div class="col-md-4">-->
 <!--      <label for="availableFrom" class="form-label-->
