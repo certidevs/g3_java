@@ -258,14 +258,15 @@ public class BookingController {
             House houseValid = house.get();
 
             // Cargamos la reserva vacia
-            model.addAttribute("booking", new Booking());
+            Booking booking = new Booking();
+            booking.setUserHouse(houseValid);
+
+            model.addAttribute("booking", booking);
             // Cargamos los tipos de reserva permitidos
             model.addAttribute("tiposreserva", StatusBooking.values());
             // Cargamos todos los usuarios que son posibles huespedes.
-            model.addAttribute("usuarios",userRepository.findAll());
+            model.addAttribute("usuarios", userRepository.findAll());
 
-            // Cargamos la casa seleccionada
-            model.addAttribute("casa", houseValid);
 
             return "host/booking-form";
         }

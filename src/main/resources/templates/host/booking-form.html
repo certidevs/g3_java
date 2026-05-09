@@ -26,6 +26,22 @@
             <input type="datetime-local" class="form-control" id="estimatedCheckout" th:field="*{estimatedCheckout}" required/>
         </div>
 
+<!--                    Id de la casa relacionada-->
+        <div class="mb-3">
+            <label for="houseId" class="form-label">House id.</label>
+            <input type="number" class="form-control" id="houseId" th:field="*{userHouse.id}" readonly/>
+        </div>
+
+<!--                        Usuario de la reserva-->
+        <div class="mb-3">
+            <label for="usuarios" class="form-label">Usuario</label>
+            <select class="form-select" id="usuarios" th:field="*{userHouse}">
+                <option value="" disabled selected>Selecciona un usuario</option>
+                <option th:each="usuario : ${usuarios}"
+                        th:value="${usuario.id}"
+                        th:text="${usuario.username}"></option>
+            </select>
+        </div>
 
 
 </main>
