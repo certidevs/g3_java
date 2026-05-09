@@ -52,12 +52,17 @@ public class Booking {
     private House userHouse;
 
 
-    private Long calculateNights (LocalDateTime tiempoin,LocalDateTime tiempoout)
+    public Long calculateNights (LocalDateTime tiempoin,LocalDateTime tiempoout)
     {
         // Calcular noches
         Long noches = ChronoUnit.DAYS.between(tiempoin,tiempoout);
         return  noches;
 
+    }
+
+    public Double calculateTotalPrice (Long numberNights)
+    {
+        return (numberNights) * this.userHouse.getPricePerNight();
     }
 
     // Constructor para una nueva peticion de alquiler.

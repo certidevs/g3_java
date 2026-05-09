@@ -1,9 +1,6 @@
 package com.demo.controller;
 
-import com.demo.model.Booking;
-import com.demo.model.House;
-import com.demo.model.StatusBooking;
-import com.demo.model.User;
+import com.demo.model.*;
 import com.demo.repository.BookingRepository;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.UserRepository;
@@ -263,10 +260,9 @@ public class BookingController {
 
             model.addAttribute("booking", booking);
             // Cargamos los tipos de reserva permitidos
-            model.addAttribute("tiposreserva", StatusBooking.values());
+            //model.addAttribute("tiposreserva", StatusBooking.values());
             // Cargamos todos los usuarios que son posibles huespedes.
             model.addAttribute("usuarios", userRepository.findAll());
-
 
             return "host/booking-form";
         }
@@ -275,5 +271,29 @@ public class BookingController {
         return "redirect:/houses";
     }
 
+    // Guarda el formulario de Reservas
+    @PostMapping("booking")
+    public String createBooking (@ModelAttribute Booking booking) {
+
+        // Calculos de noches y precios
+        booking.setNumberNights(booking.calculateNights(booking.getEstimatedCheckin(),booking.getEstimatedCheckout()));
+        booking.setTotalPrice(booking.calculateTotalPrice(booking.getNumberNights()));
+
+        bookingRepository.save(booking);
+
+        // Al hacer el cambio dee estado se pierde el "HOST_ID" de la "HOUSE"
+        Long idHouseModificada = booking.getUserHouse().getId();
+
+        // Esta casa debe de estar como reservada
+        Optional<House> casaParaReservar = houseRepository.findById(idHouseModificada);
+        if (casaParaReservar.isPresent()) {
+            House casaParaReservarValid = casaParaReservar.get();
+            casaParaReservarValid.setReserve(StatusReserva.RESERVADA);
+            houseRepository.save(casaParaReservarValid);
+        }
+
+        return "redirect:/booking/" + booking.getId();
+
+    }
 
 }

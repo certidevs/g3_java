@@ -29,13 +29,43 @@
 <!--                    Id de la casa relacionada-->
         <div class="mb-3">
             <label for="houseId" class="form-label">House id.</label>
-            <input type="number" class="form-control" id="houseId" th:field="*{userHouse.id}" readonly/>
+            <input type="hidden" class="form-control" id="houseId" th:field="*{userHouse.id}" readonly/>
+        </div>
+
+        <div class="mb-3">
+            <label for="title" class="form-label">House</label>
+            <input type="text" class="form-control" id="title" th:field="*{userHouse.title}" readonly/>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Descripción</label>
+            <input type="text" class="form-control" id="description" th:field="*{userHouse.description}" readonly/>
+        </div>
+
+        <div class="mb-3">
+            <label for="location" class="form-label">Localización</label>
+            <input type="text" class="form-control" id="location" th:field="*{userHouse.location}" readonly/>
+        </div>
+
+        <div class="mb-3">
+            <label for="province" class="form-label">Provincia</label>
+            <input type="text" class="form-control" id="province" th:field="*{userHouse.province}" readonly/>
+        </div>
+
+        <div class="mb-3">
+            <label for="maxGuests" class="form-label">Max.Huéspedes</label>
+            <input type="number" class="form-control" id="maxGuests" th:field="*{userHouse.maxGuests}" readonly/>
+        </div>
+
+        <div class="mb-3">
+            <label for="priceNight" class="form-label">Precio por Noche</label>
+            <input type="number" class="form-control" id="priceNight" th:field="*{userHouse.pricePerNight}" readonly/>
         </div>
 
 <!--                        Usuario de la reserva-->
         <div class="mb-3">
             <label for="usuarios" class="form-label">Usuario</label>
-            <select class="form-select" id="usuarios" th:field="*{userHouse}">
+            <select class="form-select" id="usuarios" th:field="*{userBooking}">
                 <option value="" disabled selected>Selecciona un usuario</option>
                 <option th:each="usuario : ${usuarios}"
                         th:value="${usuario.id}"
@@ -43,6 +73,8 @@
             </select>
         </div>
 
+        <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
+        <a th:href="@{/houses}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i>Cancelar</a>
 
 </main>
 
