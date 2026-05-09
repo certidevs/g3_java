@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/head :: head('Alquiler de casa')}"></head>
+
+<body>
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<main class="container flex-grow-1 my-4 shadow">
+
+    <h1>
+        <i class="fa-solid fa-utensils text-primary me-2"></i>Formulario para hacer una reserva
+    </h1>
+
+    <form th:action="@{/booking}" method="post" th:object="${booking}">
+        <input type="text" th:field="*{id}" readonly />
+
+        <!--        Estimatedcheckin-->
+        <div class="mb-3">
+            <label for="estimatedCheckin" class="form-label">Checkin estimado</label>
+            <input type="datetime-local" class="form-control" id="estimatedCheckin" th:field="*{estimatedCheckin}" required/>
+        </div>
+
+        <!--        Estimatedcheckout-->
+        <div class="mb-3">
+            <label for="estimatedCheckout" class="form-label">Checkin estimado</label>
+            <input type="datetime-local" class="form-control" id="estimatedCheckout" th:field="*{estimatedCheckout}" required/>
+        </div>
+
+
+
+</main>
+
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+<script th:replace="~{layout/footer :: scripts}"></script>
+
+</body>
+</html>

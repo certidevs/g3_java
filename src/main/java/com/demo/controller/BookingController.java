@@ -5,6 +5,7 @@ import com.demo.model.House;
 import com.demo.model.StatusBooking;
 import com.demo.model.User;
 import com.demo.repository.BookingRepository;
+import com.demo.repository.HouseRepository;
 import com.demo.repository.UserRepository;
 
 import org.springframework.stereotype.Controller;
@@ -21,11 +22,14 @@ public class BookingController {
 
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
+    private final HouseRepository houseRepository;
 
     public BookingController(BookingRepository bookingRepository,
-                             UserRepository userRepository) {
+                             UserRepository userRepository,
+                             HouseRepository houseRepository) {
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
+        this.houseRepository = houseRepository;
     }
 
 
@@ -243,5 +247,32 @@ public class BookingController {
         //      Enviar al listado seria ...
         // return "redirect:/restaurantes";
     }
+
+    // El id es la casa seleccionada
+    @GetMapping("booking/new/{id}")
+    public String newBooking(Model model,@PathVariable Long id) {
+
+        Optional<House> house = houseRepository.findById(id);
+        if (house.isPresent()) {
+
+            House houseValid = house.get();
+
+            // Cargamos la reserva vacia
+            model.addAttribute("booking", new Booking());
+            // Cargamos los tipos de reserva permitidos
+            model.addAttribute("tiposreserva", StatusBooking.values());
+            // Cargamos todos los usuarios que son posibles huespedes.
+            model.addAttribute("usuarios",userRepository.findAll());
+
+            // Cargamos la casa seleccionada
+            model.addAttribute("casa", houseValid);
+
+            return "host/booking-form";
+        }
+
+        // Utilizar un @RequestParam para saber el usuario al que volver
+        return "redirect:/houses";
+    }
+
 
 }

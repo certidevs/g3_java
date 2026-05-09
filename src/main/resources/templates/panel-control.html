@@ -130,7 +130,9 @@
                               <th>Precio noche</th>
                               <th>Provincia</th>
                               <th>Max.Huesped</th>
+                              <th>Estado</th>
                               <th>Ver</th>
+                              <th>Reserva</th>
                           </tr>
                           </thead>
                           <tbody>
@@ -138,10 +140,16 @@
                           <tr th:each="casa : ${listHouseHost}">
                               <td th:text="${casa.id}">1</td>
                               <td th:text="${casa.title}">Titulo</td>
-                              <td th:text="${casa.pricePerNight}">10</td>
-                              <td th:text="${casa.province}">Madrid</td>
+                              <td th:text="${casa.pricePerNight}">1</td>
+                              <td th:text="${casa.province}">Provincia</td>
                               <td th:text="${casa.maxGuests}">1</td>
+                              <td th:text="${casa.reserve}">OK</td>
                               <td><a th:href="@{/houses/{id}(id=${casa.id})}" class="btn btn-primary btn-sm">Ver</a></td>
+                              <td>
+<!--                              <div th:if="${casa.reserve == 'DISPONIBLE'}">-->
+                                 <a th:href="@{/booking/new/{id}(id=${casa.id})}" class="btn btn-primary btn.sm">Reservar</a>
+<!--                              </div>-->
+                              </td>
                           </tr>
                           </tbody>
                       </table>
