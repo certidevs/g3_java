@@ -104,7 +104,6 @@ public class HouseController {
 
         }
 
-
         return "redirect:/house";
     }
 

@@ -25,6 +25,11 @@ public class House {
     private String province;
     private Integer maxGuests;
 
+
+//    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private HouseType  houseType;
+
     @Column(name = "image_url")
     private String imageUrl;
 

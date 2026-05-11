@@ -1,9 +1,6 @@
 package com.demo.config;
 
-import com.demo.model.Booking;
-import com.demo.model.House;
-import com.demo.model.StatusReserva;
-import com.demo.model.User;
+import com.demo.model.*;
 import com.demo.repository.BookingRepository;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.UserRepository;
@@ -69,6 +66,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Madrid")
                 .maxGuests(5)
                 .host(host_test_booking)
+                .houseType(HouseType.CASA)
                 .imageUrl("h1.jpg")
                 .build()
         );
@@ -82,6 +80,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Toledo")
                 .maxGuests(8)
                 .imageUrl("h2.jpg")
+                .houseType(HouseType.APARTAMENTO)
                 .host(host_test_booking)
                 .build()
         );
@@ -130,6 +129,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Valencia")
                 .imageUrl("h3.jpg")
                 .maxGuests(3)
+                .houseType(HouseType.HABITACION)
                 .reserve(StatusReserva.RESERVADA)
                 .build());
 
@@ -142,6 +142,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Madrid")
                 .maxGuests(3)
                 .imageUrl("h4.jpg")
+                .houseType(HouseType.CASA)
                 .reserve(StatusReserva.NO_DISPONIBLE)
                 .host(host1)
                 .build());
@@ -154,6 +155,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Barcelona")
                 .maxGuests(6)
                 .imageUrl("h5.jpg")
+                .houseType(HouseType.CASA)
                 .reserve(StatusReserva.RESERVADA)
                 .host(host2)
                 .build());
@@ -223,6 +225,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                         .province("Madrid")
                         .imageUrl("h6.jpg")
                         .maxGuests(5)
+                        .houseType(HouseType.CASA)
                         .host(host1_booking)
                         .build()
         );
@@ -236,6 +239,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Madrid")
                 .maxGuests(3)
                 .imageUrl("h7.jpg")
+                .houseType(HouseType.CASA)
                 .host(host2_booking)
                 .build()
         );
@@ -247,6 +251,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .pricePerNight(45.0)
                 .maxGuests(4)
                 .imageUrl("h8.jpg")
+                .houseType(HouseType.CASA)
                 .host(host3_booking)
                 .build()
         );
@@ -258,6 +263,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .pricePerNight(105.0)
                 .maxGuests(4)
                 .imageUrl("h1.jpg")
+                .houseType(HouseType.CASA)
                 .host(host4_booking)
                 .build()
         );
@@ -271,6 +277,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Gijón")
                 .maxGuests(2)
                 .imageUrl("h2.jpg")
+                .houseType(HouseType.CASA)
                 .host(host5_booking)
                 .build()
         );
@@ -282,6 +289,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Gijón1")
                 .maxGuests(6)
                 .imageUrl("h3.jpg")
+                .houseType(HouseType.CASA)
                 .host(host5_booking)
                 .build()
         );
