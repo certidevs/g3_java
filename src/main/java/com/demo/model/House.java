@@ -33,7 +33,7 @@ public class House {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Builder.Default
+//    @Builder.Default
     @Column(columnDefinition = "BOOLEAN DEFAULT true")
     private Boolean active = true;
 

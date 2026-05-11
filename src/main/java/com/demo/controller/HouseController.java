@@ -57,21 +57,20 @@ public class HouseController {
         model.addAttribute("provinces", provinces);
         model.addAttribute("selectedProvince", province);
 
-        List <House>  houses = houseRepository.findByActiveTrue();
+//        List <House>  houses = houseRepository.findByActiveTrue();
 //        model.addAttribute("houses", houses);
         return "house/house-list";
 
     }
 
-    @GetMapping("houses/disable/{id}")
-    public String houseDisable(@PathVariable Long id,Model model){
+    @GetMapping("/houses/deactivate/{id}")
+    public String houseDeactivate(@PathVariable Long id,Model model){
         Optional<House> houseOptional = houseRepository.findById(id);
-        if (houseOptional.isPresent()) {
 
+        if (houseOptional.isPresent()) {
             // casa sí existe
             House house = houseOptional.get();
             house.setActive(false);
-            house.setReserve(StatusReserva.valueOf("NO_DISPONIBLE"));
             houseRepository.save(house);
 
         }
@@ -80,12 +79,29 @@ public class HouseController {
 
     }
 
+
+//    @GetMapping("house/deactivate/{id}")
+//    public String houseDeactivate(@PathVariable Long id, Model model) {
+//        Optional<House> houseOptional = houseRepository.findById(id);
+//
+//        if(houseOptional.isPresent()) {
+//            House house = houseOptional.get();
+//            house.setActive(false);
+//            houseRepository.save(house);
+//        }
+//
+//        return "redirect:/houses";
+//    }
+
     // nuevo metodo para traer un solo restaurante por su id
     @GetMapping("houses/{id}")
     public String houseDetail(@PathVariable Long id, Model model) {
 
         // buscar restaurante por su id: findById
-        Optional<House> houseOptional = houseRepository.findById(id);
+//        Optional<House> houseOptional = houseRepository.findById(id);
+        Optional<House> houseOptional = houseRepository.findByIdAndActiveTrue(id);
+
+
         if (houseOptional.isPresent()) {
 
             // casa sí existe
@@ -106,6 +122,7 @@ public class HouseController {
 
         return "redirect:/house";
     }
+
 
 //ruta para entrar al formulario de casa
     @GetMapping("houses/new")
