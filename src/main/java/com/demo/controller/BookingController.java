@@ -212,9 +212,16 @@ public class BookingController {
         Optional<Booking> bookingOptional =
                 bookingRepository.findById(id);
         if (bookingOptional.isPresent()) {
+
+            // Ponemos la reserva a completada
             Booking bookingPresent = bookingOptional.get();
             bookingPresent.setStatusbooking(StatusBooking.COMPLETED);
             bookingRepository.save(bookingPresent);
+
+            // Ponemos el apartamento a disponible
+            House house = bookingPresent.getUserHouse();
+            house.setReserve(StatusReserva.DISPONIBLE);
+
             User user=bookingPresent.getUserHouse().getHost();
 
             return "redirect:/host/completed/" + user.getId();
@@ -237,6 +244,10 @@ public class BookingController {
         booking.setCheckout(checkout);
         booking.setStatusbooking(StatusBooking.CONFIRMED);
         User usuario = userRepository.findById(userid).orElseThrow();
+
+        // Actualizar noches y precio
+        booking.setNumberNights(booking.calculateNights(booking.getCheckin(),booking.getCheckout()));
+        booking.setTotalPrice(booking.calculateTotalPrice(booking.getNumberNights()));
 
         bookingRepository.save(booking);
         //        Enviando al detalle

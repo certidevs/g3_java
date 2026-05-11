@@ -16,7 +16,13 @@
     <h5 class="card-title" th:text="| Usuario : ${booking.userBooking.username} . ${booking.userBooking.email} |" >Titulo</h5>
     <p class="card-text" th:text="| ${booking.userBooking.firstName} ${booking.userBooking.lastName} |">Texto de explicaciones.</p>
     <h5 class="card-title">Datos reserva : </h5>
-    <p class="card-text" th:text="| Estimado checkin y checkout : ${booking.estimatedCheckin} / ${booking.estimatedCheckout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
+    <p class="card-text" th:text="| Estimado checkin y checkout : ${booking.estimatedCheckin} / ${booking.estimatedCheckout} |">Datos reserva</p>
+    <div th:if="${booking.checkin==null}">
+        <p class="card-text" th:text="|Nro. de noches : ${booking.numberNights}|">Ok</p>
+    </div>
+    <div th:if="${booking.checkin != null}">
+        <p class="card-text" th:text=" | Checkin y checkout : ${booking.checkin} / ${booking.checkout} . Nro. de noches : ${booking.numberNights} |">Checkin</p>
+    </div>
     <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |">Datos reserva</p>
     <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|">Datos reserva</p>
     <a href="#" class="btn btn-primary">Borrar</a>
