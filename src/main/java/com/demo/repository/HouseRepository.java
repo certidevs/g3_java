@@ -28,7 +28,8 @@ public interface HouseRepository extends JpaRepository<House, Long> {
     //FILTRO POR ESTADO DE RESERVA, PRECIO, PROVINCIA, TITULO
     @Query("""
     SELECT h FROM House h
-    WHERE (:reserve IS NULL OR h.reserve = :reserve)
+    WHERE (h.active IS NULL OR h.active = true)
+      AND (:reserve IS NULL OR h.reserve = :reserve)
       AND (:price IS NULL OR h.pricePerNight <= :price)
       AND (:title IS NULL OR :title = '' OR LOWER(h.title) LIKE LOWER(CONCAT('%', :title, '%')))
       AND (:province IS NULL OR :province = '' OR LOWER(h.province) LIKE LOWER(CONCAT('%', :province, '%')))
