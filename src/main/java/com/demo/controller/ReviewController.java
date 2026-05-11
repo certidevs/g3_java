@@ -44,4 +44,10 @@ class ReviewController {
         }
         return "redirect:/reviews";
     }
+
+    // TODO
+    // @GetMapping /reviews/{id} detail
+    // @GetMapping /reviews/new
+    // @GetMapping /reviews/edit/{id}
+    // @PostMapping /reviews
 }

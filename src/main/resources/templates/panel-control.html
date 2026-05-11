@@ -146,9 +146,9 @@
                               <td th:text="${casa.reserve}">OK</td>
                               <td><a th:href="@{/houses/{id}(id=${casa.id})}" class="btn btn-primary btn-sm">Ver</a></td>
                               <td>
-<!--                              <div th:if="${casa.reserve == 'DISPONIBLE'}">-->
+                              <div th:if="${casa.reserve.name() == 'DISPONIBLE'}">
                                  <a th:href="@{/booking/new/{id}(id=${casa.id})}" class="btn btn-primary btn-sm">Reservar</a>
-<!--                              </div>-->
+                              </div>
                               </td>
                           </tr>
                           </tbody>

@@ -246,10 +246,10 @@ public class BookingController {
     }
 
     // El id es la casa seleccionada
-    @GetMapping("booking/new/{id}")
-    public String newBooking(Model model,@PathVariable Long id) {
+    @GetMapping("booking/new/{houseId}")
+    public String newBooking(Model model,@PathVariable Long houseId) {
 
-        Optional<House> house = houseRepository.findById(id);
+        Optional<House> house = houseRepository.findById(houseId);
         if (house.isPresent()) {
 
             House houseValid = house.get();

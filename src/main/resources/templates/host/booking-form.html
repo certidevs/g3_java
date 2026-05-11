@@ -14,6 +14,9 @@
     <form th:action="@{/booking}" method="post" th:object="${booking}">
         <input type="text" th:field="*{id}" readonly />
 
+        <!-- TODO casa precargada -->
+<!--        <input type="hidden" th:field="*{userHouse}">-->
+
         <!--        Estimatedcheckin-->
         <div class="mb-3">
             <label for="estimatedCheckin" class="form-label">Checkin estimado</label>
@@ -25,6 +28,8 @@
             <label for="estimatedCheckout" class="form-label">Checkin estimado</label>
             <input type="datetime-local" class="form-control" id="estimatedCheckout" th:field="*{estimatedCheckout}" required/>
         </div>
+
+        <!-- TODO Mostrar numero total de noches y precio total cuando el usuario seleccione las fechas -->
 
 <!--                    Id de la casa relacionada-->
         <div class="mb-3">
@@ -63,6 +68,8 @@
         </div>
 
 <!--                        Usuario de la reserva-->
+
+        <!-- Cuando pongmaos Srping Security ya no haría falta este selector -->
         <div class="mb-3">
             <label for="usuarios" class="form-label">Usuario</label>
             <select class="form-select" id="usuarios" th:field="*{userBooking}">
