@@ -66,20 +66,23 @@
         <!--        Estimatedcheckin-->
         <div class="mb-3">
             <label for="estimatedCheckin" class="form-label">Checkin estimado</label>
-            <input type="datetime-local" class="form-control" id="estimatedCheckin" th:field="*{estimatedCheckin}"
+            <input type="datetime-local" class="form-control" id="estimatedCheckin"
+                   name="estimatedCheckin" th:field="*{estimatedCheckin}"
                    onchange="calcularDiferencia()" required/>
         </div>
 
         <!--        Estimatedcheckout-->
         <div class="mb-3">
             <label for="estimatedCheckout" class="form-label">Checkin estimado</label>
-            <input type="datetime-local" class="form-control" id="estimatedCheckout" th:field="*{estimatedCheckout}"
+            <input type="datetime-local" class="form-control" id="estimatedCheckout"
+                   name="estimatedCheckout" th:field="*{estimatedCheckout}"
                    onchange="calcularDiferencia()" required/>
         </div>
 
-        <div class="mb-3"
-        <label for="dias" class="form-label">Nro. de noches :</label>
-        <input type="number" id="dias" name="dias" th:field="*{diasDiferencia}"  readonly>
+        <div class="mb-3">
+            <label for="diasDiferencia" class="form-label">Nro. de noches :</label>
+            <input type="number" id="diasDiferencia" name="diasDiferencia" th:field="*{numberNights}"  readonly/>
+        </div>
 
         <!-- TODO Mostrar numero total de noches y precio total cuando el usuario seleccione las fechas -->
 
