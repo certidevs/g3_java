@@ -41,6 +41,11 @@
         </div>
 
         <div class="mb-3">
+            <label for="priceNight" class="form-label">Precio por Noche (€)</label>
+            <input type="number" class="form-control" id="priceNight" th:field="*{userHouse.pricePerNight}" readonly/>
+        </div>
+
+        <div class="mb-3">
             <label for="totalPrice" class="form-label">Precio total (€)</label>
             <input type="number" step="0.01" class="form-control" id="totalPrice" readonly/>
         </div>
@@ -74,11 +79,6 @@
         <div class="mb-3">
             <label for="maxGuests" class="form-label">Max.Huéspedes</label>
             <input type="number" class="form-control" id="maxGuests" th:field="*{userHouse.maxGuests}" readonly/>
-        </div>
-
-        <div class="mb-3">
-            <label for="priceNight" class="form-label">Precio por Noche</label>
-            <input type="number" class="form-control" id="priceNight" th:field="*{userHouse.pricePerNight}" readonly/>
         </div>
 
 <!--                        Usuario de la reserva-->
