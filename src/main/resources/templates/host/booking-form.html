@@ -1,52 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/head :: head('Alquiler de casa')}">
-
-    <script>
-        // Función para calcular la diferencia en días
-        function calcularDiferencia() {
-            try {
-                const fechaInicio = document.getElementById("estimatedCheckin").value;
-                const fechaFin = document.getElementById("estimatedCheckout").value;
-
-                // Validar que ambas fechas estén completas
-                if (!fechaInicio || !fechaFin) {
-                    document.getElementById("diasDiferencia").value = "";
-                    return;
-                }
-
-                const inicio = new Date(fechaInicio);
-                const fin = new Date(fechaFin);
-
-                // Validar que las fechas sean válidas
-                if (isNaN(inicio) || isNaN(fin)) {
-                    alert("Por favor, introduce fechas válidas.");
-                    return;
-                }
-
-                // Calcular diferencia en milisegundos
-                const diffMs = fin - inicio;
-
-                // Si la fecha final es anterior a la inicial
-                if (diffMs < 0) {
-                    alert("La fecha final no puede ser anterior a la inicial.");
-                    document.getElementById("diasDiferencia").value = "";
-                    return;
-                }
-
-                // Convertir a días (1 día = 86400000 ms)
-                const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-                // Mostrar en el campo de solo lectura
-                document.getElementById("diasDiferencia").value = diffDias;
-            } catch (error) {
-                console.error("Error calculando diferencia de fechas:", error);
-            }
-        }
-    </script>
-
-
-</head>
+<head th:replace="~{layout/head :: head('Alquiler de casa')}"></head>
 
 <body>
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
@@ -79,12 +33,17 @@
                    onchange="calcularDiferencia()" required/>
         </div>
 
+        <!-- Campos solo informativos: NO se envían al servidor.
+             El controller recalcula numberNights y totalPrice a partir de las fechas. -->
         <div class="mb-3">
             <label for="diasDiferencia" class="form-label">Nro. de noches :</label>
-            <input type="number" id="diasDiferencia" name="diasDiferencia" th:field="*{numberNights}"  readonly/>
+            <input type="number" class="form-control" id="diasDiferencia" readonly/>
         </div>
 
-        <!-- TODO Mostrar numero total de noches y precio total cuando el usuario seleccione las fechas -->
+        <div class="mb-3">
+            <label for="totalPrice" class="form-label">Precio total (€)</label>
+            <input type="number" step="0.01" class="form-control" id="totalPrice" readonly/>
+        </div>
 
 <!--                    Id de la casa relacionada-->
         <div class="mb-3">
@@ -138,11 +97,58 @@
         <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
         <a th:href="@{/houses}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i>Cancelar</a>
 
+    </form>
 </main>
 
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>
+<script>
+    // Calcula noches y precio total a partir de las fechas y del precio por noche.
+    function calcularDiferencia() {
+        try {
+            const fechaInicio = document.getElementById("estimatedCheckin").value;
+            const fechaFin = document.getElementById("estimatedCheckout").value;
+            const diasInput = document.getElementById("diasDiferencia");
+            const totalInput = document.getElementById("totalPrice");
+            const precioNoche = parseFloat(document.getElementById("priceNight").value);
 
+            // Si falta alguna fecha, limpiamos los dos campos calculados
+            if (!fechaInicio || !fechaFin) {
+                diasInput.value = "";
+                totalInput.value = "";
+                return;
+            }
+
+            const inicio = new Date(fechaInicio);
+            const fin = new Date(fechaFin);
+
+            if (isNaN(inicio) || isNaN(fin)) {
+                alert("Por favor, introduce fechas válidas.");
+                return;
+            }
+
+            const diffMs = fin - inicio;
+
+            if (diffMs < 0) {
+                alert("La fecha final no puede ser anterior a la inicial.");
+                diasInput.value = "";
+                totalInput.value = "";
+                return;
+            }
+
+            // Nro. de noches (1 día = 86400000 ms)
+            const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            diasInput.value = diffDias;
+
+            // Precio total = noches * precio por noche
+            if (!isNaN(precioNoche)) {
+                totalInput.value = (diffDias * precioNoche).toFixed(2);
+            }
+        } catch (error) {
+            console.error("Error calculando reserva:", error);
+        }
+    }
+</script>
 </body>
 </html>
