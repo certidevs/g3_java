@@ -36,7 +36,6 @@ public class HouseController {
 //        List<House>  houses = houseRepository.findAll();
 //        model.addAttribute("houses", houses);
         return "home/index";
-
     }
 
     @GetMapping("/houses")
@@ -74,9 +73,7 @@ public class HouseController {
             houseRepository.save(house);
 
         }
-
         return "redirect:/houses";
-
     }
 
 
@@ -139,7 +136,9 @@ public class HouseController {
 //    System.out.println("recibido" + house);
 //    houseRepository.save(house);
 //    return "redirect:/houses/" + house.getId();
-//}
+//
+
+//    @GetMapping()
 
     @PostMapping("/houses")
     public String createHouse(@ModelAttribute House house,

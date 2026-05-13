@@ -21,6 +21,10 @@
                class="btn btn-success btn-sm mt-1">
                 <i class="fa-solid fa-pencil me-1"></i> Editar
             </a>
+            <a th:href="@{/orders/new(houseId=${house.id})}"
+                class="btn btn-success btn-sm mt-1">
+                <i class="fa-solid fa-pencil me-1"></i> Reservar
+            </a>
             <!-- TODO Reservar -->
             <!-- /bookings?houseId=1 -->
 <!--            <a class="btn btn-success" th:href="@{/reviews/new(restaurantId=${restaurant.id})}">-->
@@ -71,7 +75,7 @@
                 <th>Descripción</th>
                 <th>Precio</th>
                 <th>Tipo</th>
-                <th>Capacidad</th>
+                <th>Capacidad Maxima</th>
             </tr>
             </thead>
             <tbody>
