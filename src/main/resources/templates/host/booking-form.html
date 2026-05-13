@@ -1,6 +1,52 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/head :: head('Alquiler de casa')}"></head>
+<head th:replace="~{layout/head :: head('Alquiler de casa')}">
+
+    <script>
+        // Función para calcular la diferencia en días
+        function calcularDiferencia() {
+            try {
+                const fechaInicio = document.getElementById("estimatedCheckin").value;
+                const fechaFin = document.getElementById("estimatedCheckout").value;
+
+                // Validar que ambas fechas estén completas
+                if (!fechaInicio || !fechaFin) {
+                    document.getElementById("diasDiferencia").value = "";
+                    return;
+                }
+
+                const inicio = new Date(fechaInicio);
+                const fin = new Date(fechaFin);
+
+                // Validar que las fechas sean válidas
+                if (isNaN(inicio) || isNaN(fin)) {
+                    alert("Por favor, introduce fechas válidas.");
+                    return;
+                }
+
+                // Calcular diferencia en milisegundos
+                const diffMs = fin - inicio;
+
+                // Si la fecha final es anterior a la inicial
+                if (diffMs < 0) {
+                    alert("La fecha final no puede ser anterior a la inicial.");
+                    document.getElementById("diasDiferencia").value = "";
+                    return;
+                }
+
+                // Convertir a días (1 día = 86400000 ms)
+                const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+                // Mostrar en el campo de solo lectura
+                document.getElementById("diasDiferencia").value = diffDias;
+            } catch (error) {
+                console.error("Error calculando diferencia de fechas:", error);
+            }
+        }
+    </script>
+
+
+</head>
 
 <body>
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
@@ -20,14 +66,20 @@
         <!--        Estimatedcheckin-->
         <div class="mb-3">
             <label for="estimatedCheckin" class="form-label">Checkin estimado</label>
-            <input type="datetime-local" class="form-control" id="estimatedCheckin" th:field="*{estimatedCheckin}" required/>
+            <input type="datetime-local" class="form-control" id="estimatedCheckin" th:field="*{estimatedCheckin}"
+                   onchange="calcularDiferencia()" required/>
         </div>
 
         <!--        Estimatedcheckout-->
         <div class="mb-3">
             <label for="estimatedCheckout" class="form-label">Checkin estimado</label>
-            <input type="datetime-local" class="form-control" id="estimatedCheckout" th:field="*{estimatedCheckout}" required/>
+            <input type="datetime-local" class="form-control" id="estimatedCheckout" th:field="*{estimatedCheckout}"
+                   onchange="calcularDiferencia()" required/>
         </div>
+
+        <div class="mb-3"
+        <label for="dias" class="form-label">Nro. de noches :</label>
+        <input type="number" id="dias" name="dias" th:field="*{diasDiferencia}"  readonly>
 
         <!-- TODO Mostrar numero total de noches y precio total cuando el usuario seleccione las fechas -->
 
