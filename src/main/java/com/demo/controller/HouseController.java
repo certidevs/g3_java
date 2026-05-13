@@ -111,6 +111,7 @@ public class HouseController {
 
             // reviews
             List<Review> reviews = reviewRepository.findByHouse_IdOrderByCreatedAtDesc(house.getId());
+//            List<Review> reviews = reviewRepository.findByHouseIdOrderByCreationDateDesc(house.getId());
             model.addAttribute("reviews", reviews); // accesibles desde HTML
 
             return "house/house-detail";

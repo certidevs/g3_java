@@ -1,13 +1,13 @@
 package com.demo.controller;
 
 import com.demo.model.Review;
+import com.demo.repository.HouseRepository;
 import com.demo.repository.ReviewRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -17,7 +17,10 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 class ReviewController {
+
     private final ReviewRepository reviewRepository;
+    private final HouseRepository houseRepository;
+
 
     @GetMapping // /reviews
     public String reviewList(Model model) {
@@ -25,6 +28,19 @@ class ReviewController {
         List<Review> reviews = reviewRepository.findAllByActiveTrue();
         model.addAttribute("reviews", reviews);
         return "review/review-list";
+    }
+
+//    // getmapping reviews
+//    @GetMapping //("/reviews")
+//    public String reviews(Model model) {
+//        model.addAttribute("reviews", reviewRepository.findAll());
+//        return "reviews/review-list";
+//    }
+
+    @GetMapping("/{id}")
+    public String review(Model model, @PathVariable Long id) {
+        model.addAttribute("review",  reviewRepository.findById(id).orElseThrow());
+        return "review/review-detail";
     }
 
     @GetMapping("/deactivate/{id}")
@@ -45,9 +61,31 @@ class ReviewController {
         return "redirect:/reviews";
     }
 
+//     @GetMapping /reviews/new
+//
+    @GetMapping("/new")
+    public String newReview(
+            Model model,
+            @RequestParam Long houseId) {
+//
+        Review review = new Review();
+
+        if (houseId != null)
+            review.setHouse(houseRepository.findById(houseId).orElseThrow());
+        model.addAttribute("review", review);
+        return "review/review-form";
+    }
+//
+//    // TODO: Implementar POST para guardar reviews
+     @PostMapping
+     public String saveReview(@ModelAttribute Review review, RedirectAttributes redirectAttributes) {
+        reviewRepository.save(review);
+         redirectAttributes.addFlashAttribute("message", "Review saved successfully.");
+         return "redirect:/reviews";
+     }
+
     // TODO
     // @GetMapping /reviews/{id} detail
-    // @GetMapping /reviews/new
     // @GetMapping /reviews/edit/{id}
     // @PostMapping /reviews
 }

@@ -8,18 +8,21 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "review")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
+@Table(name = "review")
 public class Review {
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String title;
 
     // TODO: Una ventaja de Review, es que ninguna clase depende de ella, así que se puede considerar eliminar directamente la review
     // TODO: En lugar de active, quizás se puede usar algo como verified, que habla sobre si el usuario que realizo la review también realizo una reserva

@@ -3,12 +3,14 @@ package com.demo.config;
 import com.demo.model.*;
 import com.demo.repository.BookingRepository;
 import com.demo.repository.HouseRepository;
+import com.demo.repository.ReviewRepository;
 import com.demo.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 //
 //@Component
@@ -20,13 +22,22 @@ public class BookingDataInitializer implements CommandLineRunner {
     private final HouseRepository houseRepository;
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
+    private final ReviewRepository reviewRepository;
 
-    public BookingDataInitializer(HouseRepository houseRepository, UserRepository userRepository,
-                                  BookingRepository bookingRepository) {
+    public BookingDataInitializer(HouseRepository houseRepository, UserRepository userRepository, BookingRepository bookingRepository, ReviewRepository reviewRepository) {
         this.houseRepository = houseRepository;
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
+        this.reviewRepository = reviewRepository;
     }
+
+    //    public BookingDataInitializer(HouseRepository houseRepository, UserRepository userRepository,
+//                                  BookingRepository bookingRepository,ReviewRepository reviewRepository) {
+//        this.houseRepository = houseRepository;
+//        this.userRepository = userRepository;
+//        this.bookingRepository = bookingRepository;
+//        this.reviewRepository =reviewRepository;
+//    }
 
     @Override
     public void run(String... args) {
@@ -133,34 +144,6 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .reserve(StatusReserva.RESERVADA)
                 .build());
 
-        // Crear casas con host asignados
-        House house1 = houseRepository.save(House.builder()
-                .title("tu Casa")
-                .description("Casa 1 descripción")
-                .pricePerNight(100d)
-                .location("Calle Principe Vergara 108")
-                .province("Madrid")
-                .maxGuests(3)
-                .imageUrl("h4.jpg")
-                .houseType(HouseType.CASA)
-                .reserve(StatusReserva.NO_DISPONIBLE)
-                .host(host1)
-                .build());
-
-        House house2 = houseRepository.save(House.builder()
-                .title("tu Casita")
-                .description("Casa 2 descripción")
-                .pricePerNight(100d)
-                .location("Por ahi")
-                .province("Barcelona")
-                .maxGuests(6)
-                .imageUrl("h5.jpg")
-                .houseType(HouseType.CASA)
-                .reserve(StatusReserva.RESERVADA)
-                .host(host2)
-                .build());
-
-
         // Crear usuarios (guest)
         User guest1_booking = new User();
         guest1_booking.setUsername("luis1");
@@ -217,6 +200,34 @@ public class BookingDataInitializer implements CommandLineRunner {
         host5_booking.setEmail("pedro@test10.com");
         userRepository.save(host5_booking);
 
+        // Crear casas con host asignados
+        House house1 = houseRepository.save(House.builder()
+                .title("tu Casa")
+                .description("Casa 1 descripción")
+                .pricePerNight(100d)
+                .location("Calle Principe Vergara 108")
+                .province("Madrid")
+                .maxGuests(3)
+                .imageUrl("h4.jpg")
+                .houseType(HouseType.CASA)
+                .reserve(StatusReserva.NO_DISPONIBLE)
+                .host(host1)
+                .build());
+
+        House house2 = houseRepository.save(House.builder()
+                .title("tu Casita")
+                .description("Casa 2 descripción")
+                .pricePerNight(100d)
+                .location("Por ahi")
+                .province("Barcelona")
+                .maxGuests(6)
+                .imageUrl("h5.jpg")
+                .houseType(HouseType.CASA)
+                .reserve(StatusReserva.RESERVADA)
+                .host(host2)
+                .build());
+
+
         House house1_booking = houseRepository.save(House.builder()
                         .title("Parcela el Viso")
                         .description("con piscina")
@@ -267,8 +278,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .host(host4_booking)
                 .build()
         );
-
-
+        houseRepository.save(house4_booking);
 
         House house5_booking = houseRepository.save(House.builder()
                 .title("Ático")
@@ -281,6 +291,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .host(host5_booking)
                 .build()
         );
+        houseRepository.save(house5_booking);
 
         House house6_booking = houseRepository.save(House.builder()
                 .title("Ático1")
@@ -307,7 +318,47 @@ public class BookingDataInitializer implements CommandLineRunner {
         );
         houseRepository.save(house7_booking);
 
+        // crear cuatro reviews de casa usando Builder de lombok
+
+        Review review1 = Review.builder()
+                .comment("Te atienden bien")
+                .house(house_test_booking1)
+                .title("IDEAL PARA PAREJAS")
+                .rating(5)
+                .build();
+
+        Review review2 = Review.builder()
+                .comment("Nefasto")
+                .house(house_test_booking)
+                .title("HERMOSO LUGAR PARA IR EN FAMILIA")
+                .rating(1)
+                .build();
+
+        Review review3 = Review.builder()
+                .comment("Ni fu ni fa")
+                .house(house1_booking)
+                .title("Comí y no me morí")
+                .rating(3)
+                .build();
+
+        Review review4 = Review.builder()
+                .comment("Ni fu ni fa")
+                .house(house2_booking)
+                .title("Me pusieron de menos")
+                .rating(2)
+                .build();
+
+        Review review5 = Review.builder()
+                .comment("Excelente")
+                .house(house3_booking)
+                .title("Guay")
+                .rating(5)
+                .build();
+
+        reviewRepository.saveAll(List.of(review1, review2, review3, review4,  review5));
+
         // Reserva pendiente
+
         LocalDateTime timeIn =  LocalDateTime.of(2026,4,12,12,0);
         LocalDateTime timeOut =  LocalDateTime.of(2026,4,15,12,0);
         Booking reserva1 = new Booking(guest1_booking,house1_booking,timeIn,timeOut);
@@ -360,6 +411,8 @@ public class BookingDataInitializer implements CommandLineRunner {
         bookingRepository.save(reserva7);
 
     }
+
+
 
 }
 
