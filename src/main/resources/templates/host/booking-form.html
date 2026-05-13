@@ -12,7 +12,7 @@
     </h1>
 
     <form th:action="@{/booking}" method="post" th:object="${booking}">
-        <input type="text" th:field="*{id}" readonly />
+<!--        <input type="text" th:field="*{id}" readonly />-->
 
         <!-- TODO casa precargada -->
 <!--        <input type="hidden" th:field="*{userHouse}">-->
@@ -51,19 +51,27 @@
         </div>
 
 <!--                    Id de la casa relacionada-->
-        <div class="mb-3">
-            <label for="houseId" class="form-label">House id.</label>
-            <input type="hidden" class="form-control" id="houseId" th:field="*{userHouse.id}" readonly/>
-        </div>
+<!--        <div class="mb-3">-->
+<!--            <label for="houseId" class="form-label">House id.</label>-->
+<!--            <input type="hidden" class="form-control" id="houseId" th:field="*{userHouse.id}" readonly/>-->
+<!--        </div>-->
 
         <div class="mb-3">
             <label for="title" class="form-label">House</label>
             <input type="text" class="form-control" id="title" th:field="*{userHouse.title}" readonly/>
         </div>
 
+<!--        <div class="mb-3">-->
+<!--            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>-->
+<!--            <label for="description" class="form-label">Descripción</label>-->
+<!--            <input type="text" class="form-control" id="description" th:field="*{userHouse.description}" readonly/>-->
+<!--        </div>-->
         <div class="mb-3">
             <label for="description" class="form-label">Descripción</label>
-            <input type="text" class="form-control" id="description" th:field="*{userHouse.description}" readonly/>
+            <textarea class="form-control" id="description"
+                      th:field="*{userHouse.description}"
+                      rows="4"
+                      readonly></textarea>
         </div>
 
         <div class="mb-3">
