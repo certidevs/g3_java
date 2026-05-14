@@ -17,10 +17,8 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 class ReviewController {
-
     private final ReviewRepository reviewRepository;
     private final HouseRepository houseRepository;
-
 
     @GetMapping // /reviews
     public String reviewList(Model model) {
@@ -39,7 +37,7 @@ class ReviewController {
 
     @GetMapping("/{id}")
     public String review(Model model, @PathVariable Long id) {
-        model.addAttribute("review",  reviewRepository.findById(id).orElseThrow());
+        model.addAttribute("review", reviewRepository.findById(id).orElseThrow());
         return "review/review-detail";
     }
 
@@ -61,13 +59,8 @@ class ReviewController {
         return "redirect:/reviews";
     }
 
-//     @GetMapping /reviews/new
-//
     @GetMapping("/new")
-    public String newReview(
-            Model model,
-            @RequestParam Long houseId) {
-//
+    public String newReview(Model model, @RequestParam Long houseId) {
         Review review = new Review();
 
         if (houseId != null)
@@ -75,17 +68,22 @@ class ReviewController {
         model.addAttribute("review", review);
         return "review/review-form";
     }
-//
-//    // TODO: Implementar POST para guardar reviews
-     @PostMapping
-     public String saveReview(@ModelAttribute Review review, RedirectAttributes redirectAttributes) {
-        reviewRepository.save(review);
-         redirectAttributes.addFlashAttribute("message", "Review saved successfully.");
-         return "redirect:/reviews";
-     }
 
-    // TODO
-    // @GetMapping /reviews/{id} detail
-    // @GetMapping /reviews/edit/{id}
-    // @PostMapping /reviews
+    @GetMapping("/edit/{id}")
+    public String editReview(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<Review> reviewOptional = reviewRepository.findByIdAndActiveTrue(id);
+        if (reviewOptional.isPresent()) {
+            model.addAttribute("review", reviewOptional.get());
+            return "review/review-form";
+        }
+        redirectAttributes.addFlashAttribute("message", "Review not found.");
+        return "redirect:/reviews";
+    }
+
+    @PostMapping
+    public String saveReview(@ModelAttribute Review review, RedirectAttributes redirectAttributes) {
+        reviewRepository.save(review);
+        redirectAttributes.addFlashAttribute("message", "Review saved successfully.");
+        return "redirect:/reviews"; // TODO: ahora mismo esta haciendo redirect a review-list, para mi tiene sentido que vaya a la foto a la que se hizo la review
+    }
 }
