@@ -26,6 +26,8 @@ public class House {
     private String location;
     private String province;
     private Integer maxGuests;
+    // TODO opcional minimumNights
+    // TODO opcional maxNights
 
 //    @Builder.Default
     @Enumerated(EnumType.STRING)

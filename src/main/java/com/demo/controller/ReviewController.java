@@ -67,8 +67,11 @@ class ReviewController {
 
     @PostMapping
     public String saveReview(@ModelAttribute Review review, RedirectAttributes redirectAttributes) {
+        // TODO reviewService.isValid(review)
+        //         si no es correcta redirectAttributes.addFlashAttribute("error", "Tu review no cumple los terminos y condiciones de la plataforma");
         reviewRepository.save(review);
         redirectAttributes.addFlashAttribute("message", "Review saved successfully.");
+        // return "redirect:/houses/" + review.getHouse().getId();
         return "redirect:/reviews"; // TODO: ahora mismo esta haciendo redirect a review-list, para mi tiene sentido que vaya a la foto a la que se hizo la review
     }
 

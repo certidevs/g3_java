@@ -5,6 +5,7 @@ import com.demo.repository.BookingRepository;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.UserRepository;
 
+import com.demo.service.BookingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +21,16 @@ public class BookingController {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final HouseRepository houseRepository;
+    private final BookingService bookingService;
 
     public BookingController(BookingRepository bookingRepository,
                              UserRepository userRepository,
-                             HouseRepository houseRepository) {
+                             HouseRepository houseRepository,
+                             BookingService bookingService) {
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
         this.houseRepository = houseRepository;
+        this.bookingService = bookingService;
     }
 
 
@@ -40,6 +44,8 @@ public class BookingController {
             Booking validBooking = booking.get();
 
             model.addAttribute("booking", validBooking);
+            // A futuro AddOn
+            // addons   addonRepository.findByBookingId
             return "/host/booking-detail";
 
         }
@@ -242,6 +248,9 @@ public class BookingController {
         Booking booking = bookingRepository.findById(id).orElseThrow();
         booking.setCheckin(checkin);
         booking.setCheckout(checkout);
+        if (!bookingService.validateDates(booking))
+            return ""; // TODO avisar al usuario de que las fechas están mal
+
         booking.setStatusbooking(StatusBooking.CONFIRMED);
         User usuario = userRepository.findById(userid).orElseThrow();
 
@@ -289,6 +298,12 @@ public class BookingController {
         // Calculos de noches y precios
         booking.setNumberNights(booking.calculateNights(booking.getEstimatedCheckin(),booking.getEstimatedCheckout()));
         booking.setTotalPrice(booking.calculateTotalPrice(booking.getNumberNights()));
+
+        if (!bookingService.validateDates(booking)){
+            // model.addatribute  error "Fechas incorrectas"
+            return "";
+        }
+
 
         bookingRepository.save(booking);
 
