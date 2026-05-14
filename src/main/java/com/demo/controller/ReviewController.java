@@ -21,18 +21,10 @@ class ReviewController {
 
     @GetMapping // /reviews
     public String reviewList(Model model) {
-        // List<Review> reviews = reviewRepository.findAll();
-        List<Review> reviews = reviewRepository.findAllByActiveTrue();
+        List<Review> reviews = reviewRepository.findAll();
         model.addAttribute("reviews", reviews);
         return "review/review-list";
     }
-
-//    // getmapping reviews
-//    @GetMapping //("/reviews")
-//    public String reviews(Model model) {
-//        model.addAttribute("reviews", reviewRepository.findAll());
-//        return "reviews/review-list";
-//    }
 
     @GetMapping("/{id}")
     public String review(Model model, @PathVariable Long id) {
@@ -40,18 +32,12 @@ class ReviewController {
         return "review/review-detail";
     }
 
-    @GetMapping("/deactivate/{id}")
-    public String reviewDeactivate(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/delete/{id}")
+    public String deleteReview(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Review> reviewOptional = reviewRepository.findById(id);
         if (reviewOptional.isPresent()) {
-            Review review = reviewOptional.get();
-            if (review.getActive() != false) {
-                review.setActive(false);
-                reviewRepository.save(review);
-                redirectAttributes.addFlashAttribute("message", "Review deactivated successfully.");
-            } else {
-                redirectAttributes.addFlashAttribute("message", "Review is already deactivated.");
-            }
+            reviewRepository.delete(reviewOptional.get());
+            redirectAttributes.addFlashAttribute("message", "Review deleted successfully.");
         } else {
             redirectAttributes.addFlashAttribute("message", "Review not found.");
         }
@@ -70,7 +56,7 @@ class ReviewController {
 
     @GetMapping("/edit/{id}")
     public String editReview(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        Optional<Review> reviewOptional = reviewRepository.findByIdAndActiveTrue(id);
+        Optional<Review> reviewOptional = reviewRepository.findById(id);
         if (reviewOptional.isPresent()) {
             model.addAttribute("review", reviewOptional.get());
             return "review/review-form";
@@ -85,4 +71,25 @@ class ReviewController {
         redirectAttributes.addFlashAttribute("message", "Review saved successfully.");
         return "redirect:/reviews"; // TODO: ahora mismo esta haciendo redirect a review-list, para mi tiene sentido que vaya a la foto a la que se hizo la review
     }
+
+    /*
+    @GetMapping("/deactivate/{id}")
+    public String reviewDeactivate(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Optional<Review> reviewOptional = reviewRepository.findById(id);
+        if (reviewOptional.isPresent()) {
+            Review review = reviewOptional.get();
+            if (review.getActive() != false) {
+                review.setActive(false);
+                reviewRepository.save(review);
+                redirectAttributes.addFlashAttribute("message", "Review deactivated successfully.");
+            } else {
+                redirectAttributes.addFlashAttribute("message", "Review is already deactivated.");
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Review not found.");
+        }
+        return "redirect:/reviews";
+    }
+    */
+
 }
