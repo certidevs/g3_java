@@ -1,10 +1,10 @@
 package com.demo.repository;
 
 import com.demo.model.Review;
-import jakarta.persistence.Entity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
@@ -14,13 +14,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 //
 //    List<Review> findByHouseIdAndRatingOrderByCreationDateDesc(Long houseId, Integer rating);
 
-//    // TODO:
+    // TODO:
     // - Considerar filtrar por rango between, por ejemplo de fechas o de rating, ordenadas por creationDate desc
 
-    List<Review> findAllByActiveTrue();
-    // List<Review> findAllByActiveFalse();
-
-    List<Review> findByHouse_IdOrderByCreatedAtDesc(Long id);
+    List<Review> findByHouse_IdOrderByCreatedAtDesc(Long houseId);
 
 //    List<Review> findByHouseIdOrderByCreationDateDesc(Long houseId);
 

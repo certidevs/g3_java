@@ -1,82 +1,82 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/head :: head('Review')"></head>
+<head th:replace="~{layout/head :: head('Reviews')}"></head>
 <body>
 
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
 <main class="container flex-grow-1">
 
-  <h1 class="mb-4">
-    <i class="fa-regular fa-comments text-primary me-2"></i> Opiniones de clientes
-  </h1>
+    <h1 class="mb-4">
+        <i class="fa-regular fa-comments text-primary me-2"></i> Opiniones de clientes
+    </h1>
 
-  <div th:if="${reviews.isEmpty()}" class="alert alert-light border">
-    Aún no hay reseñas.
-  </div>
-  <div th:if="${message}" class="alert alert-success fade show alert-dismissible" role="alert">
-    <i class="fa-solid fa-check-circle"></i>
-    <span th:text="${message}"></span>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div th:if="${reviews.isEmpty()}" class="alert alert-light border">
+        Aún no hay reseñas.
+    </div>
+    <div th:if="${message}" class="alert alert-success fade show alert-dismissible" role="alert">
+        <i class="fa-solid fa-check-circle"></i>
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
-  </div>
+    </div>
 
-  <div class="row row-cols-1 row-cols-md-2 g-3">
-    <div class="col" th:each="review : ${reviews}">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-start mb-2">
-            <h5 class="card-title mb-0" th:text="${review.title}">Título</h5>
-            <span class="badge bg-warning text-dark">
+    <div class="row row-cols-1 row-cols-md-2 g-3">
+        <div class="col" th:each="review : ${reviews}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0" th:text="${review.title}">Título</h5>
+                        <span class="badge bg-warning text-dark">
                             <i class="fa-solid fa-star me-1"></i>
                             <span th:text="${review.rating + ' / 5'}"></span>
                         </span>
-          </div>
-          <p class="card-text" th:text="${review.comment}">Descripción</p>
-          <p class="text-muted small mb-0">
-            <i class="fa-regular fa-calendar me-1"></i>
-            <span th:text="${review.createdAt}"></span>
-          </p>
+                    </div>
+                    <p class="card-text" th:text="${review.comment}">Descripción</p>
+                    <p class="text-muted small mb-0">
+                        <i class="fa-regular fa-calendar me-1"></i>
+                        <span th:text="${review.createdAt}"></span>
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent small">
+                    <div th:if="${review.house != null}">
+                        <i class="fa-solid fa-store text-primary me-1"></i>
+                        <a th:href="@{/houses/{id}(id=${review.house.id})}"
+                           th:text="${review.house.title}">Casa</a>
+                    </div>
+
+                    <!--          <div th:if="${review.dish != null}">-->
+                    <!--            <i class="fa-solid fa-utensils text-primary me-1"></i>-->
+                    <!--            <a th:href="@{/dishes/{id}(id=${review.dish.id})}"-->
+                    <!--               th:text="${review.dish.name}">Plato</a>-->
+                    <!--            <span th:if="${review.dish.restaurant != null}"-->
+                    <!--                  class="text-muted">-->
+                    <!--                            — en-->
+                    <!--                            <a th:href="@{/restaurants/{id}(id=${review.dish.restaurant.id})}"-->
+                    <!--                               th:text="${review.dish.restaurant.name}">Restaurante</a>-->
+                    <!--                        </span>-->
+                    <!--          </div>-->
+
+                    <div class="my-3">
+                        <!-- Botón de borrar -->
+                        <a class="btn btn-secondary" th:href="@{/reviews/{id}(id=${review.id})}">
+                            <i class="fa-solid fa-eye mr-2"></i> Ver
+                        </a>
+
+                        <a class="btn btn-success" th:href="@{/reviews/edit/{id}(id=${review.id})}">
+                            <i class="fa-solid fa-pencil mr-2"></i> Editar
+                        </a>
+
+                        <a class="btn btn-danger" th:href="@{/reviews/delete/{id}(id=${review.id})}"
+                           onclick="return confirm('Esta acción borra, ¿quiere borrar esta reseña?')">
+                            <i class="fa-solid fa-trash mr-2"></i> Borrar
+                        </a>
+
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-footer bg-transparent small">
-          <div th:if="${review.house != null}">
-            <i class="fa-solid fa-store text-primary me-1"></i>
-            <a th:href="@{/houses/{id}(id=${review.house.id})}"
-               th:text="${review.house.title}">Casa</a>
-          </div>
-
-<!--          <div th:if="${review.dish != null}">-->
-<!--            <i class="fa-solid fa-utensils text-primary me-1"></i>-->
-<!--            <a th:href="@{/dishes/{id}(id=${review.dish.id})}"-->
-<!--               th:text="${review.dish.name}">Plato</a>-->
-<!--            <span th:if="${review.dish.restaurant != null}"-->
-<!--                  class="text-muted">-->
-<!--                            — en-->
-<!--                            <a th:href="@{/restaurants/{id}(id=${review.dish.restaurant.id})}"-->
-<!--                               th:text="${review.dish.restaurant.name}">Restaurante</a>-->
-<!--                        </span>-->
-<!--          </div>-->
-
-          <div class="my-3">
-            <!-- Botón de borrar -->
-            <a class="btn btn-secondary" th:href="@{/reviews/{id}(id=${review.id})}">
-              <i class="fa-solid fa-eye mr-2"></i> Ver
-            </a>
-
-            <a class="btn btn-success" th:href="@{/reviews/edit/{id}(id=${review.id})}">
-              <i class="fa-solid fa-pencil mr-2"></i> Editar
-            </a>
-
-            <a class="btn btn-danger" th:href="@{/reviews/delete/{id}(id=${review.id})}"
-               onclick="return confirm('Esta acción borra, ¿quiere borrar esta reseña?')">
-              <i class="fa-solid fa-trash mr-2"></i> Borrar
-            </a>
-
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 
 </main>
 
