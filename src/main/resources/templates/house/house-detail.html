@@ -49,12 +49,19 @@
     </h2>
 
     <!-- TODO mostrar imagen de la casa -->
+<!--    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mt-1">-->
+<!--        <div class="col" th:each="house : ${houses}">-->
+<!--            <div class="card card-restaurant h-100 shadow-sm">-->
+                <img th:src="@{'/images/' + ${house.imageUrl}}"
+                     class="card-img-top"
+                     alt="Imagen de la casa"
+                     style="height: 200px; object-fit: cover;">
 
     <div class="table-responsive">
         <table class="table table-hover align-middle">
             <thead class="table-dark">
             <tr>
-                <th>Id</th>
+<!--                <th>Id</th>-->
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Precio</th>
@@ -65,7 +72,7 @@
             <tbody>
             <tr >
 <!--                th:each="house : ${houses}"-->
-                <td th:text="${house.id}"></td>
+<!--                <td th:text="${house.id}"></td>-->
                 <td class="fw-semibold" th:text="${house.title}"></td>
                 <td class="text-muted small" th:text="${house.description}"></td>
                 <td>
@@ -87,51 +94,13 @@
     <section class="section">
         <h2>🌟 Qué incluye esta casa</h2>
         <div class="features-grid">
-
             <div class="feature-card"
                  th:each="amenity : ${house.amenities}">
-
                 <i th:class="'fa-solid fa-' + ${amenity.icon}"></i>
-
                 <h4 th:text="${amenity.name}"></h4>
-
                 <p th:text="${amenity.description}"></p>
-
             </div>
-
         </div>
-<!--        <div class="features-grid">-->
-<!--            <div class="feature-card">-->
-<!--                <i class="fa-solid fa-umbrella-beach"></i>-->
-<!--                <h4>Frente al mar</h4>-->
-<!--                <p>Casas con acceso directo a playas paradisíacas.</p>-->
-<!--            </div>-->
-<!--            <div class="feature-card">-->
-<!--                <i class="fa-solid fa-swimming-pool"></i>-->
-<!--                <h4>Con piscina</h4>-->
-<!--                <p>Disfruta de piscinas privadas.</p>-->
-<!--            </div>-->
-<!--            <div class="feature-card">-->
-<!--                <i class="fa-solid fa-paw"></i>-->
-<!--                <h4>Animal friendly</h4>-->
-<!--                <p>Espacio para compartir con tu mascota.</p>-->
-<!--            </div>-->
-<!--            <div class="feature-card">-->
-<!--                <i class="fa-solid fa-burger"></i>-->
-<!--                <h4>Comida</h4>-->
-<!--                <p>No incluye este servicio.</p>-->
-<!--            </div>-->
-<!--            <div class="feature-card">-->
-<!--                <i class="fa-solid fa-restroom"></i>-->
-<!--                <h4>Baños</h4>-->
-<!--                <p>Baños con tina.</p>-->
-<!--            </div>-->
-<!--            <div class="feature-card">-->
-<!--                <i class="fa-solid fa-wifi"></i>-->
-<!--                <h4>Conectadas</h4>-->
-<!--                <p>WiFi de alta velocidad</p>-->
-<!--            </div>-->
-<!--        </div>-->
     </section>
 
     <!-- Opiniones -->
@@ -139,7 +108,7 @@
         <i class="fa-regular fa-comments text-primary me-2"></i> Opiniones de nuestros clientes
     </h2>
 
-    <a class="btn btn-success" th:href="@{/reviews/new(houseId=${house.id})}">
+    <a class="btn btn-success mb-3"  th:href="@{/reviews/new(houseId=${house.id})}">
         <i class="fa-solid fa-plus"></i> Escribir reseña
     </a>
 
