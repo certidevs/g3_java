@@ -3,7 +3,6 @@ package com.demo.controller;
 import com.demo.model.Review;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.ReviewRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
