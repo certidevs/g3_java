@@ -103,6 +103,16 @@ public class HouseController {
 
     return "house/house-form";
 }
+    // EDITAR UN RESTAURANTE EXISTENTE
+    @GetMapping("houses/edit/{id}")
+    public String editHouse(@PathVariable Long id, Model model) {
+        model.addAttribute("house", houseRepository.findById(id).orElseThrow());
+//        model.addAttribute("foodTypes", FoodType.values());
+        return "house/house-form";
+    }
+
+
+
 
     @PostMapping("/houses")
     public String createHouse(@ModelAttribute House house,
