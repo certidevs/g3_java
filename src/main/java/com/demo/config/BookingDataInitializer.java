@@ -1,16 +1,14 @@
 package com.demo.config;
 
 import com.demo.model.*;
-import com.demo.repository.BookingRepository;
-import com.demo.repository.HouseRepository;
-import com.demo.repository.ReviewRepository;
-import com.demo.repository.UserRepository;
+import com.demo.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 //
 //@Component
@@ -23,24 +21,101 @@ public class BookingDataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final ReviewRepository reviewRepository;
+    private final AmenityRepository amenityRepository;
 
-    public BookingDataInitializer(HouseRepository houseRepository, UserRepository userRepository, BookingRepository bookingRepository, ReviewRepository reviewRepository) {
+
+    public BookingDataInitializer(HouseRepository houseRepository, UserRepository userRepository, BookingRepository bookingRepository, ReviewRepository reviewRepository, AmenityRepository amenityRepository) {
         this.houseRepository = houseRepository;
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
         this.reviewRepository = reviewRepository;
+        this.amenityRepository = amenityRepository;
     }
-
-    //    public BookingDataInitializer(HouseRepository houseRepository, UserRepository userRepository,
-//                                  BookingRepository bookingRepository,ReviewRepository reviewRepository) {
-//        this.houseRepository = houseRepository;
-//        this.userRepository = userRepository;
-//        this.bookingRepository = bookingRepository;
-//        this.reviewRepository =reviewRepository;
-//    }
 
     @Override
     public void run(String... args) {
+
+//        if (amenityRepository.count() == 0) {
+//
+//            amenityRepository.save(
+//                    Amenity.builder()
+//                            .name("Wifi")
+//                            .description("Internet de alta velocidad")
+//                            .icon("wifi")
+//                            .build()
+//            );
+//
+//            amenityRepository.save(
+//                    Amenity.builder()
+//                            .name("Piscina")
+//                            .description("Piscina privada")
+//                            .icon("water-ladder")
+//                            .build()
+//            );
+//
+//            amenityRepository.save(
+//                    Amenity.builder()
+//                            .name("Parking")
+//                            .description("Estacionamiento gratuito")
+//                            .icon("square-parking")
+//                            .build()
+//            );
+//
+//            amenityRepository.save(
+//                    Amenity.builder()
+//                            .name("Cocina")
+//                            .description("Cocina equipada")
+//                            .icon("utensils")
+//                            .build()
+//            );
+        Amenity wifi = amenityRepository.save(
+                Amenity.builder()
+                        .name("Wifi")
+                        .description("Internet de alta velocidad")
+                        .icon("wifi")
+                        .build()
+        );
+
+        Amenity piscina = amenityRepository.save(
+                Amenity.builder()
+                        .name("Piscina")
+                        .description("Piscina privada")
+                        .icon("water-ladder")
+                        .build()
+        );
+
+        Amenity parking = amenityRepository.save(
+                Amenity.builder()
+                        .name("Parking")
+                        .description("Parking gratuito")
+                        .icon("square-parking")
+                        .build()
+        );
+
+        Amenity tenis = amenityRepository.save(
+                Amenity.builder()
+                        .name("Pista de tenis")
+                        .description("Cancha privada")
+                        .icon("table-tennis-paddle-ball")
+                        .build()
+        );
+        Amenity mascotas = amenityRepository.save(
+                Amenity.builder()
+                        .name("Admite mascotas")
+                        .description("Trae y comparte con tu mascota")
+                        .icon("paw")
+                        .build()
+        );
+
+        Amenity cocina = amenityRepository.save(
+                    Amenity.builder()
+                         .name("Cocina")
+                         .description("Cocina equipada")
+                         .icon("utensils")
+                         .build()
+            );
+        //}
+
 
         //////////////// Datos verificados en las relaciones
 
@@ -58,7 +133,6 @@ public class BookingDataInitializer implements CommandLineRunner {
         guest_test_booking_1.setLastName("Guest 2");
         guest_test_booking_1.setEmail("guest2@test1.com");
         userRepository.save(guest_test_booking_1);
-
 
         // Host
         User host_test_booking = new User();
@@ -79,6 +153,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .host(host_test_booking)
                 .houseType(HouseType.CASA)
                 .imageUrl("h1.jpg")
+                .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
                 .build()
         );
 
@@ -93,6 +168,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .imageUrl("h2.jpg")
                 .houseType(HouseType.APARTAMENTO)
                 .host(host_test_booking)
+                .amenities(Set.of(wifi, tenis))
                 .build()
         );
 
@@ -130,19 +206,6 @@ public class BookingDataInitializer implements CommandLineRunner {
         host3.setUsername("PRUEBA");
         host3.setEmail("PRUEBA@test.com");
         userRepository.save(host3);
-
-        // Crear casa sin host asignado
-        House h1 = houseRepository.save(House.builder()
-                .title("prueba 100")
-                .description("Casa 1 descripción")
-                .pricePerNight(100d)
-                .location("Calle Principe Vergara 108")
-                .province("Valencia")
-                .imageUrl("h3.jpg")
-                .maxGuests(3)
-                .houseType(HouseType.HABITACION)
-                .reserve(StatusReserva.RESERVADA)
-                .build());
 
         // Crear usuarios (guest)
         User guest1_booking = new User();
@@ -209,6 +272,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Madrid")
                 .maxGuests(3)
                 .imageUrl("h4.jpg")
+                .amenities(Set.of(wifi,cocina))
                 .houseType(HouseType.CASA)
                 .reserve(StatusReserva.NO_DISPONIBLE)
                 .host(host1)
@@ -222,6 +286,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Barcelona")
                 .maxGuests(6)
                 .imageUrl("h5.jpg")
+                .amenities(Set.of(wifi,mascotas,cocina))
                 .houseType(HouseType.CASA)
                 .reserve(StatusReserva.RESERVADA)
                 .host(host2)
@@ -236,6 +301,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                         .province("Madrid")
                         .imageUrl("h6.jpg")
                         .maxGuests(5)
+                        .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
                         .houseType(HouseType.CASA)
                         .host(host1_booking)
                         .build()
@@ -251,6 +317,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .maxGuests(3)
                 .imageUrl("h7.jpg")
                 .houseType(HouseType.CASA)
+                .amenities(Set.of(wifi, parking,mascotas,cocina))
                 .host(host2_booking)
                 .build()
         );
@@ -263,6 +330,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .maxGuests(4)
                 .imageUrl("h8.jpg")
                 .houseType(HouseType.CASA)
+                .amenities(Set.of(wifi, parking,mascotas,cocina))
                 .host(host3_booking)
                 .build()
         );
@@ -275,6 +343,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .maxGuests(4)
                 .imageUrl("h1.jpg")
                 .houseType(HouseType.CASA)
+                .amenities(Set.of( piscina, parking,mascotas,cocina))
                 .host(host4_booking)
                 .build()
         );
@@ -288,6 +357,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .maxGuests(2)
                 .imageUrl("h2.jpg")
                 .houseType(HouseType.CASA)
+                .amenities(Set.of(wifi, parking,mascotas,cocina))
                 .host(host5_booking)
                 .build()
         );
@@ -301,6 +371,7 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .maxGuests(6)
                 .imageUrl("h3.jpg")
                 .houseType(HouseType.CASA)
+                .amenities(Set.of(wifi,parking,mascotas,cocina))
                 .host(host5_booking)
                 .build()
         );
@@ -313,10 +384,26 @@ public class BookingDataInitializer implements CommandLineRunner {
                 .province("Gijón2")
                 .maxGuests(4)
                 .imageUrl("h5.jpg")
+                .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
+                .houseType(HouseType.CASA)
                 .host(host5_booking)
                 .build()
         );
         houseRepository.save(house7_booking);
+
+        // Crear casa sin host asignado
+        House h1 = houseRepository.save(House.builder()
+                .title("prueba 100")
+                .description("Casa 1 descripción")
+                .pricePerNight(100d)
+                .location("Calle Principe Vergara 108")
+                .province("Valencia")
+                .imageUrl("h3.jpg")
+                .maxGuests(3)
+                .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
+                .houseType(HouseType.HABITACION)
+                .reserve(StatusReserva.RESERVADA)
+                .build());
 
         // crear cuatro reviews de casa usando Builder de lombok
 

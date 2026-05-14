@@ -80,10 +80,59 @@
         </table>
     </div>
 
-    <h2>Qué incluye esta casa (Amenities)</h2>
     <!-- TODO lista de amenities de la casa amenityRepository.findByHouseId() -->
 <!-- Por cada amenity hay que renderizar su icon como icono de font awesome y tambien mostrar nombre del amenity -->
 <!-- <i class="fa-solid fa-soap"></i> -->
+    <!-- CARACTERÍSTICAS Y UBICACIONES -->
+    <section class="section">
+        <h2>🌟 Qué incluye esta casa</h2>
+        <div class="features-grid">
+
+            <div class="feature-card"
+                 th:each="amenity : ${house.amenities}">
+
+                <i th:class="'fa-solid fa-' + ${amenity.icon}"></i>
+
+                <h4 th:text="${amenity.name}"></h4>
+
+                <p th:text="${amenity.description}"></p>
+
+            </div>
+
+        </div>
+<!--        <div class="features-grid">-->
+<!--            <div class="feature-card">-->
+<!--                <i class="fa-solid fa-umbrella-beach"></i>-->
+<!--                <h4>Frente al mar</h4>-->
+<!--                <p>Casas con acceso directo a playas paradisíacas.</p>-->
+<!--            </div>-->
+<!--            <div class="feature-card">-->
+<!--                <i class="fa-solid fa-swimming-pool"></i>-->
+<!--                <h4>Con piscina</h4>-->
+<!--                <p>Disfruta de piscinas privadas.</p>-->
+<!--            </div>-->
+<!--            <div class="feature-card">-->
+<!--                <i class="fa-solid fa-paw"></i>-->
+<!--                <h4>Animal friendly</h4>-->
+<!--                <p>Espacio para compartir con tu mascota.</p>-->
+<!--            </div>-->
+<!--            <div class="feature-card">-->
+<!--                <i class="fa-solid fa-burger"></i>-->
+<!--                <h4>Comida</h4>-->
+<!--                <p>No incluye este servicio.</p>-->
+<!--            </div>-->
+<!--            <div class="feature-card">-->
+<!--                <i class="fa-solid fa-restroom"></i>-->
+<!--                <h4>Baños</h4>-->
+<!--                <p>Baños con tina.</p>-->
+<!--            </div>-->
+<!--            <div class="feature-card">-->
+<!--                <i class="fa-solid fa-wifi"></i>-->
+<!--                <h4>Conectadas</h4>-->
+<!--                <p>WiFi de alta velocidad</p>-->
+<!--            </div>-->
+<!--        </div>-->
+    </section>
 
     <!-- Opiniones -->
     <h2 class="mt-5">

@@ -3,6 +3,9 @@ package com.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "amenities")
 @Getter
@@ -25,6 +28,10 @@ public class Amenity {
     @Column(length = 100)
     private String icon;        // nombre del icono ("wifi", "pool", "parking")
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(mappedBy = "amenities")
+    private Set<House> houses = new HashSet<>();
 
 }
 

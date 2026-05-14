@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -24,7 +26,6 @@ public class House {
     private String location;
     private String province;
     private Integer maxGuests;
-
 
 //    @Builder.Default
     @Enumerated(EnumType.STRING)
@@ -56,17 +57,17 @@ public class House {
     @JoinColumn(name = "host_id")
     private User host;
 
-//Constructor
-//    public House() {
-//    }
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @Builder.Default
+    @ManyToMany
+    @JoinTable(
+            name = "house_amenities",
+            joinColumns = @JoinColumn(name = "house_id"),
+            inverseJoinColumns = @JoinColumn(name = "amenity_id")
+    )
+    private Set<Amenity> amenities = new HashSet<>();
 
-//    public House( String title, String description, Double pricePerNight, String location, Integer maxGuests, User host) {
-//
-//        this.title = title;
-//        this.description = description;
-//        this.pricePerNight = pricePerNight;
-//        this.location = location;
-//        this.maxGuests = maxGuests;
-//        this.host = host;
-//    }
+
+
 }

@@ -19,8 +19,6 @@ public interface HouseRepository extends JpaRepository<House, Long> {
 //    //FILTRAR POR PRECIO POR NOCHE
 //     List<House> findByPricePerNightBetween(Double pricePerNightStart, Double pricePerNightEnd);
 
-
-
     //para mostrar las casas activas
     List<House> findByActiveTrue();
     Optional<House> findByIdAndActiveTrue(Long id);

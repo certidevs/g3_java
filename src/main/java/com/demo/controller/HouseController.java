@@ -33,8 +33,7 @@ public class HouseController {
 
     @GetMapping("/")
     public String home(Model model){
-//        List<House>  houses = houseRepository.findAll();
-//        model.addAttribute("houses", houses);
+
         return "home/index";
     }
 
@@ -46,7 +45,6 @@ public class HouseController {
         @RequestParam(required = false) String province
 
     ){
-//      List <House>  houses = houseRepository.findAll();
         List<House>  houseStatus = houseRepository.findByReserve(reserve,pricePerNight,title,province);//NUEVO METODO POR QUERY
 
         // lista de provincias para el select
@@ -76,20 +74,6 @@ public class HouseController {
         return "redirect:/houses";
     }
 
-
-//    @GetMapping("house/deactivate/{id}")
-//    public String houseDeactivate(@PathVariable Long id, Model model) {
-//        Optional<House> houseOptional = houseRepository.findById(id);
-//
-//        if(houseOptional.isPresent()) {
-//            House house = houseOptional.get();
-//            house.setActive(false);
-//            houseRepository.save(house);
-//        }
-//
-//        return "redirect:/houses";
-//    }
-
     // nuevo metodo para traer un solo restaurante por su id
     @GetMapping("houses/{id}")
     public String houseDetail(@PathVariable Long id, Model model) {
@@ -98,16 +82,11 @@ public class HouseController {
 //        Optional<House> houseOptional = houseRepository.findById(id);
         Optional<House> houseOptional = houseRepository.findByIdAndActiveTrue(id);
 
-
         if (houseOptional.isPresent()) {
 
             // casa sí existe
             House house = houseOptional.get();
             model.addAttribute("house", house);
-
-            // cargar los platos (Dish) de este restaurant en el model
-//            List<Dish> platos = dishRepository.findByRestaurantIdOrderByPrice(restaurant.getId());
-//            model.addAttribute("dishes", platos);
 
             // reviews
             List<Review> reviews = reviewRepository.findByHouse_IdOrderByCreatedAtDesc(house.getId());
@@ -130,16 +109,6 @@ public class HouseController {
 
     return "house/house-form";
 }
-
-//@PostMapping ("houses")
-//public String createHouse (@ModelAttribute House house) {
-//    //guardar en la base de datos
-//    System.out.println("recibido" + house);
-//    houseRepository.save(house);
-//    return "redirect:/houses/" + house.getId();
-//
-
-//    @GetMapping()
 
     @PostMapping("/houses")
     public String createHouse(@ModelAttribute House house,

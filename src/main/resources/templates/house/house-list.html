@@ -79,11 +79,6 @@
                     <a th:href="@{/houses/deactivate/{id}(id=${house.id})}"
                        class="btn btn-danger btn-sm w-40 ">
                         <i class="fa-solid fa-house-circle-xmark"></i> Desactivar
-
-<!--                        <a th:href="@{/restaurants/deactivate/{id}(id=${restaurant.id})}"-->
-<!--                           class="btn btn-warning btn-sm w-100 mt-2">-->
-<!--                            <i class="fa-solid fa-ban me-1"></i> Desactivar-->
-<!--                        </a>-->
                     </a>
                 </div>
             </div>
@@ -95,66 +90,3 @@
 <script th:replace="~{layout/footer :: scripts}"></script>
 </body>
 </html>
-
-
-
-<!--<main class="container flex-grow-1">-->
-
-<!--<div class="d-flex justify-content-start">-->
-<!--    <a th:href="@{/houses/new}" class="btn btn-success">-->
-<!--        <i class="fa-solid fa-plus me-1"></i> Crear restaurante-->
-<!--    </a>-->
-<!--</div>-->
-
-
-<!--    <form th:action="@{/houses}" method="get">-->
-<!--        <div class="mb-3">-->
-<!--            <h5>Filtros rápidos</h5>-->
-<!--            <a th:href="@{/houses(reserve='DISPONIBLE')}" class="btn btn-sm btn-secondary">Casas Disponible</a>-->
-<!--            <a th:href="@{/houses(reserve='RESERVADA')}" class="btn btn-sm btn-secondary">Casas Reservadas</a>-->
-<!--            <a th:href="@{/houses}" class="btn btn-sm btn-secondary">Todas</a>-->
-<!--        </div>-->
-
-<!--        <div class="mb-3 row">-->
-<!--            <div class="col-sm-4 ">-->
-<!--&lt;!&ndash;                <label>Precio máximo por noche</label>&ndash;&gt;-->
-<!--                <input type="number"-->
-<!--                       th:name="pricePerNight"-->
-<!--                       class="form-control"-->
-<!--                       placeholder="Precio máximo por noche" />-->
-<!--            </div>-->
-<!--&lt;!&ndash;            <div class="col-sm-4">&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                <label>Búsqueda por título</label>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;                <input type="text"&ndash;&gt;-->
-<!--&lt;!&ndash;                       th:name="title"&ndash;&gt;-->
-<!--&lt;!&ndash;                       class="form-control"&ndash;&gt;-->
-<!--&lt;!&ndash;                       placeholder="Buscar por título" />&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="col-sm-4">&ndash;&gt;-->
-<!--&lt;!&ndash;                <input type="text"&ndash;&gt;-->
-<!--&lt;!&ndash;                       th:name="province"&ndash;&gt;-->
-<!--&lt;!&ndash;                       class="form-control"&ndash;&gt;-->
-<!--&lt;!&ndash;                       placeholder="Buscar por Provincia" />&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--            <div class="col-sm-4">-->
-<!--&lt;!&ndash;                <label>Provincia</label>&ndash;&gt;-->
-<!--                <select th:name="province" class="form-select  form-control" th:value="${selectedProvince}">-->
-<!--                    <option value="">Todas las provincias</option>-->
-<!--                    <option th:each="p : ${provinces}"-->
-<!--                            th:value="${p}"-->
-<!--                            th:text="${p}" />-->
-<!--                </select>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="col-auto">-->
-<!--            <button type="submit" class="btn btn-primary btn-sm">-->
-<!--                <i class="fa-solid fa-magnifying-glass"></i>-->
-<!--                Buscar-->
-<!--            </button>-->
-<!--            <a th:href="@{/houses}" class="btn btn-danger btn-sm">-->
-<!--                <i class="fa-solid fa-broom"></i>-->
-<!--                Limpiar filtros-->
-<!--            </a>-->
-<!--        </div>-->
-<!--    </form>-->
