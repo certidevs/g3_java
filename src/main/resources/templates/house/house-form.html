@@ -14,6 +14,8 @@
   <form th:action="@{/houses}" th:object="${house}" method="post" class="row g-3" enctype="multipart/form-data">
     <div>
       <input type="hidden" th:field="*{id}">
+      <input type="hidden" th:field="*{imageUrl}">
+      <input type="hidden" th:field="*{houseType}">
 
       <div class="mb-3">
         <label class="form-label">Imagen de la casa</label>
@@ -51,7 +53,7 @@
     </div>
 
     <div class="form-floating">
-      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+      <textarea class="form-control" placeholder="Leave a comment here" th:field="*{description}" id="floatingTextarea2" style="height: 100px"></textarea>
       <label for="floatingTextarea2"  >Descripcion</label>
 <!--      <input type="text" id="description" th:field="*{description}" class="form-control" placeholder="Descripcion de la casa" required>-->
     </div>
@@ -67,6 +69,10 @@
 <!--    <div class="col-md-4">-->
 <!--      <label for="availableFrom" class="form-label-->
 
+<!--    -->
+<!--    <select name="" id="">-->
+<!--      -->
+<!--    </select>-->
   </form>
 
 

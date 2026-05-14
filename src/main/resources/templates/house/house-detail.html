@@ -79,7 +79,7 @@
                     <span class="badge bg-success" th:text="${house.pricePerNight} + ' €'"></span>
                 </td>
                 <td>
-                    <span class="badge bg-light text-dark border" th:text="${house.houseType.label}"></span>
+                    <span class="badge bg-light text-dark border" th:text="${house.houseType != null ? house.houseType : 'Sin tipo'}"></span>
                 </td>
                 <td class="text-muted small" th:text="${house.maxGuests}"> </td>
             </tr>
