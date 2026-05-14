@@ -50,33 +50,16 @@
             <p class="card-text fs-5 lh-base" th:text="${review.comment}">Descripción</p>
         </div>
 
-        <div class="card-footer bg-white" th:if="${review.housue != null or review.dish != null}">
+        <div class="card-footer bg-white" th:if="${review.house != null}">
             <div class="row g-3">
                 <div class="col-md-6" th:if="${review.house != null}">
                     <div class="d-flex align-items-center">
                         <i class="fa-solid fa-store fa-2x text-danger me-3"></i>
                         <div>
                             <div class="text-muted small">Casas</div>
-                            <a th:href="@{/house/{id}(id=${review.house.id})}"
+                            <a th:href="@{/houses/{id}(id=${review.house.id})}"
                                class="fw-semibold text-decoration-none"
-                               th:text="${review.house.name}">Casa</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6" th:if="${review.dish != null}">
-                    <div class="d-flex align-items-center">
-                        <i class="fa-solid fa-utensils fa-2x text-primary me-3"></i>
-                        <div>
-<!--                            <div class="text-muted small">Plato</div>-->
-<!--                            <a th:href="@{/dishes/{id}(id=${review.dish.id})}"-->
-<!--                               class="fw-semibold text-decoration-none"-->
-<!--                               th:text="${review.dish.name}">Plato</a>-->
-<!--                            <span th:if="${review.dish.restaurant != null}" class="text-muted small">-->
-<!--                                        — en-->
-<!--                                        <a th:href="@{/restaurants/{id}(id=${review.dish.restaurant.id})}"-->
-<!--                                           class="text-decoration-none"-->
-<!--                                           th:text="${review.dish.restaurant.name}">Restaurante</a>-->
-<!--                                    </span>-->
+                               th:text="${review.house.title}">Casa</a>
                         </div>
                     </div>
                 </div>
