@@ -31,12 +31,6 @@ public class HouseController {
         this.reviewRepository = reviewRepository;
     }
 
-    @GetMapping("/")
-    public String home(Model model){
-
-        return "home/index";
-    }
-
     @GetMapping("/houses")
     public String houseList(Model model,
         @RequestParam(required = false)StatusReserva reserve,//se agg el reques param para filtrar por parametro de reserva
