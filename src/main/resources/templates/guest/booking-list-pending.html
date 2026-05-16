@@ -27,7 +27,9 @@
 <!--        <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar reserva </button>-->
 <!--    </form>-->
     <!--      <a th:href="@{/booking/from-pending-to-confirmed/{id}(id=${booking.id})}" class="btn btn-primary">Confirmar</a>-->
-    <a th:href="@{/booking/from-pending-to-cancelled-guest/{id}(id=${booking.id})}" class="btn btn-primary">Cancelar reserva</a>
+    <div>
+        <a th:href="@{/booking/from-pending-to-cancelled-guest/{id}(id=${booking.id})}" class="btn btn-primary">Cancelar reserva</a>
+    </div>
 </div>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>

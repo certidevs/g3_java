@@ -101,8 +101,17 @@
       </ul>
   </div>
     <div class="col col-md-2">
-      <input type="text" class="form-control" id="exampleInput" placeholder="Token destinatario">
+        <input type="text" class="form-control" id="exampleInput" placeholder="Token destinatario">
+
     </div>
+    <div class="col col-md-2">
+        <button class="btn btn-secondary ms-5" onclick="alternarDiv()"><i class="fa-solid fa-filter"></i>Filtros</button>
+    </div>
+  </div>
+
+  <br>
+  <div id="DivFiltrado" style="display: none;">
+      Sección de Filtrado
   </div>
 
   <br>
@@ -323,5 +332,22 @@
   <footer th:replace="~{layout/footer :: footer}"></footer>
   <script th:replace="~{layout/footer :: scripts}"></script>
   </main>
+
+  Script que oculta y muestra el DIV de filtrado.
+  <script>
+      function alternarDiv() {
+          var elemento = document.getElementById("DivFiltrado");
+
+          // Comprobamos si el div está oculto (display none)
+          if (elemento.style.display === "none" || elemento.style.display === "") {
+              elemento.style.display = "block"; // Lo muestra
+          } else {
+              elemento.style.display = "none";  // Lo oculta
+          }
+      }
+  </script>
+
+
   </body>
 </html>
+

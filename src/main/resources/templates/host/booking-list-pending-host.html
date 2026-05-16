@@ -25,9 +25,10 @@
           <input type="datetime-local" name="checkin" th:value="*{booking.checkin}" required>
           <input type="datetime-local" name="checkout" th:value="*{booking.checkout}" required>
           <button type="submit" class="btn btn-success ms-2"><i class="fa-solid fa-floppy-disk"></i>Guardar reserva </button>
+          <a th:href="@{/booking/from-pending-to-cancelled/{id}(id=${booking.id})}" class="btn btn-primary ms-2">Cancelar reserva</a>
       </form>
 <!--      <a th:href="@{/booking/from-pending-to-confirmed/{id}(id=${booking.id})}" class="btn btn-primary">Confirmar</a>-->
-      <a th:href="@{/booking/from-pending-to-cancelled/{id}(id=${booking.id})}" class="btn btn-primary mt-2">Cancelar reserva</a>
+<!--      <a th:href="@{/booking/from-pending-to-cancelled/{id}(id=${booking.id})}" class="btn btn-primary ms-2">Cancelar reserva</a>-->
   </div>
 
   <footer th:replace="~{layout/footer :: footer}"></footer>
