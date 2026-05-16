@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,26 +68,33 @@ public class  ControlPanelController {
     // FILTRADO
     @GetMapping("panel-control-filter/{id}")
     public String listaFiltrada(Model model, @PathVariable Long id,
-                                @RequestParam(required = false) LocalDate minDate,
-                                @RequestParam(required = false) LocalDate maxDate,
-                                @RequestParam(required = false) Double precio) {
+                                @RequestParam(required = false) LocalDateTime searchDate,
+                                @RequestParam(required = false) Double price) {
 
-        System.out.println(id.toString());
-        //System.out.println(minDate.toString());
-        //System.out.println(maxDate.toString());
-        System.out.println(precio.toString());
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            User validUser = user.get();
 
-        List<House> houseshost = bookingFilterRepository.bookingsFilterHouseHost(id,minDate,maxDate,precio);
+            List<House> housesHost = bookingFilterRepository.houseBookinHostFilter(id,price);
+            List<House> housesGuest = bookingFilterRepository.houseBookingGuestFilter(id,price);
+            List<Booking> bookingsHost = bookingFilterRepository.bookingsHostFilter(id,searchDate,price);
+            List<Booking> bookingsGuest = bookingFilterRepository.bookingsGuestFilter(id,searchDate,price);
 
-        List<House> houserGuest = bookingFilterRepository.
+            // Atributos de listas pasados al HTML
+            model.addAttribute("user", validUser);
 
-        //List<Booking> bookings = bookingRepository.findBookingFilter(id,minDate,maxDate,precio);
+            model.addAttribute("listHouseHost", housesHost);
+            model.addAttribute("listHouseGuest", housesGuest);
 
+            model.addAttribute("listBookingsHost", bookingsHost);
+            model.addAttribute("listBookingGuest", bookingsGuest);
 
+            return "panel-control";
 
-
-
-        return "redirect:/houses";
+        }
+        else {
+            return "redirect:/panel-control/" + id.toString();
+        }
 
     }
 }
