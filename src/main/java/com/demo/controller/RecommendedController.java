@@ -43,8 +43,9 @@ public class RecommendedController {
             User userValid = user.get();
 
             HouseRecommended recommendation = new HouseRecommended();
-            recommendation.setHouseRecommended(houseValid);
+            recommendation.setIdHouseRecommended(houseValid.getId());
             recommendation.setTokenFrom(token);
+            recommendation.setIdUsuario(userValid.getId());
             recommendation.setEmailFrom(userValid.getEmail());
 
             model.addAttribute("recommendation",recommendation);
@@ -53,7 +54,7 @@ public class RecommendedController {
         }
         else
         {
-            return "redirect:/houses";
+            return "redirect:/booking/" + idUsuario.toString();
         }
 
     }

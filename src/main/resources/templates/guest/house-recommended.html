@@ -13,7 +13,8 @@
 
   <form th:action="@{/recommended}" method="post" th:object="${recommendation}">
         <!--        Estimatedcheckin-->
-      <input type="hidden" th:field="*{houseRecommended}"></input>
+      <input type="hidden" th:field="*{idHouseRecommended}"></input>
+      <input type="hidden" th:field="*{idUsuario}"></input>
 
       <div class="mb-3">
         <label for="tokenfrom" class="form-label">Token personal : </label>
@@ -46,7 +47,7 @@
           />
       </div>
       <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
-      <a th:href="@{/houses}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i>Cancelar</a>
+      <a th:href="@{/panel-control/{idUsuario}(idUsuario=${recommendation.idUsuario})}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i>Cancelar</a>
 
   </form>
 

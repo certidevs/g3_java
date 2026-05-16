@@ -29,8 +29,7 @@ public class HouseRecommended {
     @Builder.Default
     private LocalDateTime timeRecommended = LocalDateTime.now();
 
-    @ToString.Exclude
-    @ManyToOne
-    private House houseRecommended;
+    private Long idHouseRecommended;
+    private Long idUsuario;
 
 }
