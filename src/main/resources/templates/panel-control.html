@@ -228,7 +228,6 @@
                               <td th:text="${casa.province}">Madrid</td>
                               <td th:text="${casa.maxGuests}">1</td>
                               <td><a th:href="@{/houses/{id}(id=${casa.id})}" class="btn btn-primary btn-sm">Ver</a></td>
-
                           </tr>
                           </tbody>
                       </table>
@@ -325,7 +324,6 @@
                                   <th>Estado</th>
                                   <th>Ver casa</th>
                                   <th>Ver reserva</th>
-                                  <th>Recomendar</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -341,7 +339,6 @@
                                   <td th:text="${booking.statusbooking}"></td>
                                   <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver casa</a></td>
                                   <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver reserva</a></td>
-                                  <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Recomendar</a></td>
                               </tr>
                               </tbody>
                           </table>
