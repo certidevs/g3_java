@@ -1,78 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{layout/head :: head('CASAS')}"></head>
+
+<head th:replace="~{layout/head :: head('Vista de las reservas pendientes')}"></head>
 
 <body>
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-    <h1>Sistema alquiler habitaciones</h1>
-    <h2>Reservas pendientes de confirmación</h2>
+<h2>Reservas pendientes</h2>
+<br>
+<div th:each="booking : ${listBookingsGuestPending}"  class="card w-75 mb-3" style="margin-left: 50px;">
+    <h5 class="card-title" th:text="| ${booking.userHouse.getTitle()} : ${booking.userHouse.getLocation()} |" >Titulo</h5>
+    <p class="card-text" th:text="| ${booking.userHouse.getDescription()} , ${booking.userHouse.getMaxGuests()} personas |">Texto de explicaciones.</p>
+    <p class="card-text" th:text="| Precio por noche : ${booking.userHouse.getPricePerNight()} . Provincia : ${booking.userHouse.province}|">Texto de explicaciones.</p>
+    <h5 class="card-title" th:text="| Usuario : ${booking.userBooking.username} . ${booking.userBooking.email} |" >Titulo</h5>
+    <p class="card-text" th:text="| ${booking.userBooking.firstName} ${booking.userBooking.lastName} |">Texto de explicaciones.</p>
+    <h5 class="card-title">Datos reserva : </h5>
+    <p class="card-text" th:text="| Estimado checkin y checkout : ${booking.estimatedCheckin} / ${booking.estimatedCheckout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
+    <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |">Datos reserva</p>
+    <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|">Datos reserva</p>
 
+<!--    <form th:action="@{/booking/update-dates}" method="post" >-->
+<!--        <input type="hidden" name="id" th:value="*{booking.id}"/>-->
+<!--        <input type="hidden" name="userid" th:value="*{user.id}"/>-->
+<!--        <input type="datetime-local" name="checkin" th:value="*{booking.checkin}" required>-->
+<!--        <input type="datetime-local" name="checkout" th:value="*{booking.checkout}" required>-->
+<!--        <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar reserva </button>-->
+<!--    </form>-->
+    <!--      <a th:href="@{/booking/from-pending-to-confirmed/{id}(id=${booking.id})}" class="btn btn-primary">Confirmar</a>-->
+    <a th:href="@{/booking/from-pending-to-cancelled-guest/{id}(id=${booking.id})}" class="btn btn-primary">Cancelar reserva</a>
+</div>
 
-    <h2>Alquileres confirmados</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Casa</th>
-            <th>Localización</th>
-            <th>Fecha entrada</th>
-            <th>Fecha salida</th>
-            <th>Anfitrion</th>
-            <th>Email anfitrión</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Iteración con th:each -->
-        <tr th:each="bookings : ${bookingsConfirmed}">
-            <td th:text="${bookings.getUserHouse().getTitle()}">Nombre</td>
-            <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
-            <td th:text="${bookings.getEstimatedCheckin()}">Fecha checkin</td>
-            <td th:text="${bookings.getEstimatedCheckout()}">Fecha checkout</td>
-            <td th:text="${bookings.getUserHouse().getHost().getUsername()}">Usuario anfitrion</td>
-            <td th:text="${bookings.getUserHouse().getHost().getEmail()}">Email anfitrión</td>
-        </tr>
-        </tbody>
-    </table>
-
-    <h2>Previsión de alquileres</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>Casa</th>
-            <th>Localización</th>
-            <th>Anfitrión</th>
-            <th>Email anfitrión</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Iteración con th:each -->
-        <tr th:each="bookings : ${bookingsPendings}">
-            <td th:text="${bookings.getUserHouse().getTitle()}">Nombre</td>
-            <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
-            <td th:text="${bookings.getUserHouse().getHost().getUsername()}">Usuario anfitrion</td>
-            <td th:text="${bookings.getUserHouse().getHost().getEmail()}">Email anfitrión</td>
-        </tr>
-        </tbody>
-    </table>
-
-    <p th:text="|Nuestro token es : ${user.tokenforRecommended}"|></p>
-
-    <form action="/enviar-recomendacion" method="post">
-        <!-- Nombre del usuario -->
-        <label for="nombre">Token destino:</label><br>
-        <input type="text" id="nombre" name="nombre" required><br><br>
-
-        <!-- Correo electrónico -->
-        <label for="email">Correo electrónico:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <!-- Recomendación o mensaje -->
-        <label for="mensaje">Tu Recomendación:</label><br>
-        <textarea id="mensaje" name="mensaje" rows="4" cols="50" required></textarea><br><br>
-
-        <!-- Botón de envío -->
-        <button type="submit">Enviar Recomendación</button>
-    </form>
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>
 </body>

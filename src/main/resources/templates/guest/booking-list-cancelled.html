@@ -1,37 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{layout/head :: head('CASAS')}"></head>
+
+<head th:replace="~{layout/head :: head('Vista de las reservas pendientes')}"></head>
 
 <body>
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-<h1>Sistema alquiler habitaciones</h1>
 <h2>Reservas canceladas</h2>
+<br>
+<div th:each="booking : ${listBookingsGuestCancelled}"  class="card w-75 mb-3" style="margin-left: 50px;">
+    <h5 class="card-title" th:text="| ${booking.userHouse.getTitle()} : ${booking.userHouse.getLocation()} |" >Titulo</h5>
+    <p class="card-text" th:text="| ${booking.userHouse.getDescription()} , ${booking.userHouse.getMaxGuests()} personas |">Texto de explicaciones.</p>
+    <p class="card-text" th:text="| Precio por noche : ${booking.userHouse.getPricePerNight()} . Provincia : ${booking.userHouse.province}|">Texto de explicaciones.</p>
+    <h5 class="card-title" th:text="| Usuario : ${booking.userBooking.username} . ${booking.userBooking.email} |" >Titulo</h5>
+    <p class="card-text" th:text="| ${booking.userBooking.firstName} ${booking.userBooking.lastName} |">Texto de explicaciones.</p>
+    <h5 class="card-title">Datos reserva : </h5>
+    <p class="card-text" th:text="| Estimado checkin y checkout : ${booking.estimatedCheckin} / ${booking.estimatedCheckout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
+    <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |">Datos reserva</p>
+    <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|">Datos reserva</p>
+</div>
 
-<h2>Alquileres cancelados</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Casa</th>
-        <th>Localización</th>
-        <th>Fecha entrada</th>
-        <th>Fecha salida</th>
-        <th>Anfitrión</th>
-        <th>Email anfitrión</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Iteración con th:each -->
-    <tr th:each="bookings : ${bookingsCancelled}">
-        <td th:text="${bookings.getUserHouse().getTitle()}">Nombre</td>
-        <td th:text="${bookings.getUserHouse().getLocation()}">Localización</td>
-        <td th:text="${bookings.getEstimatedCheckin()}">Fecha checkin</td>
-        <td th:text="${bookings.getEstimatedCheckout()}">Fecha checkout</td>
-        <td th:text="${bookings.getUserHouse().getHost().getUsername()}">Anfitrión</td>
-        <td th:text="${bookings.getUserHouse().getHost().getEmail()}">Email anfitrión</td>
-    </tr>
-    </tbody>
-</table>
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>
 </body>

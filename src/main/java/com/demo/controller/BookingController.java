@@ -53,9 +53,6 @@ public class BookingController {
 
     }
 
-
-
-
     // LADO ANFITRION
     @GetMapping("/host/pending/{id}")
     public String listHostPending (Model model, @PathVariable Long id)
@@ -157,6 +154,59 @@ public class BookingController {
 
     }
 
+    // LADO HUESPED
+
+    @GetMapping("/guest/pending/{id}")
+    public String listGuestPending (Model model, @PathVariable Long id)
+    {
+
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            User validUser = user.get();
+
+
+            // Reservas del Host
+            List<Booking> listBookingGuest = bookingRepository.bookingsGuestPending(id);
+
+
+            // Atributos de listas pasados al HTML
+            model.addAttribute("user",validUser);
+            model.addAttribute("listBookingsGuestPending",listBookingGuest);
+
+            return "/guest/booking-list-pending";
+        }
+        else {
+            return "redirect:/index";
+        }
+
+    }
+
+    @GetMapping("/guest/cancelled/{id}")
+    public String listGuestCancelled (Model model, @PathVariable Long id)
+    {
+
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            User validUser = user.get();
+
+
+            // Reservas del Host
+            List<Booking> listBookingGuest = bookingRepository.bookingsGuestCancelled(id);
+
+
+            // Atributos de listas pasados al HTML
+            model.addAttribute("user",validUser);
+            model.addAttribute("listBookingsGuestCancelled",listBookingGuest);
+
+            return "/guest/booking-list-cancelled";
+        }
+        else {
+            return "redirect:/index";
+        }
+
+    }
+
+    // CAMBIO DE ESTADOS HOST
 
     @GetMapping("/booking/from-pending-to-confirmed/{id}")
     // id del booking
@@ -188,11 +238,11 @@ public class BookingController {
             User user = bookingPresent.getUserHouse().getHost();
             return "redirect:/host/cancelled/" + user.getId();
         }
-
         return "redirect:/houses";
-
-
     }
+
+
+
 
     @GetMapping("/booking/from-confirmed-to-cancelled/{id}")
     // id del booking
@@ -237,6 +287,23 @@ public class BookingController {
         return "redirect:/houses";
 
     }
+
+    @GetMapping("/booking/from-pending-to-cancelled-guest/{id}")
+    // id del booking
+    public String actionFromPendingToCancelledGuest (@PathVariable Long id, Model model) {
+
+        Optional<Booking> bookingOptional =
+                bookingRepository.findById(id);
+        if (bookingOptional.isPresent()) {
+            Booking bookingPresent = bookingOptional.get();
+            bookingPresent.setStatusbooking(StatusBooking.CANCELLED);
+            bookingRepository.save(bookingPresent);
+            User user = bookingPresent.getUserHouse().getHost();
+            return "redirect:/guest/cancelled/" + id.toString();
+        }
+        return "redirect:/houses";
+    }
+
 
     @PostMapping("booking/update-dates")
     public String updateBooking(

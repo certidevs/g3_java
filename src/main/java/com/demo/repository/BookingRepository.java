@@ -36,16 +36,15 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     """)
     List<Booking> bookingsHost(Long id);
 
-    // FILTRO PARA PANTALLA DE RESERVAS "PENDING"
+    // FILTRO PARA PANTALLAS HOST
+    //////////////////////////////
 
+    // FILTRO PARA PANTALLA DE RESERVAS "PENDING"
 
     @Query("""
         SELECT bk FROM Booking bk WHERE bk.userHouse.host.id=?1 AND bk.statusbooking='PENDING' 
     """)
     List<Booking> bookingsHostPending(Long id);
-
-
-    // TODO . A PARTIR DE AQUI
 
     // FILTRO PARA PANTALLA DE RESERVAS "CONFIRMED"
 
@@ -66,5 +65,17 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     """)
     List<Booking> bookingsHostCompleted(Long id);
 
+    // FILTRO PARA PANTALLAS GUEST
+    //////////////////////////////
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userBooking.id=?1 AND bk.statusbooking='PENDING' 
+    """)
+    List<Booking> bookingsGuestPending(Long id);
+
+    // FILTRO PARA PANTALLA DE RESERVAS "CANCELLED"
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userBooking.id=?1 AND bk.statusbooking='CANCELLED'
+    """)
+    List<Booking> bookingsGuestCancelled(Long id);
 
 }
