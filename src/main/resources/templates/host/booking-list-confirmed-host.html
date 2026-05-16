@@ -10,12 +10,12 @@
 <h2>Reservas confirmadas</h2>
 <br>
 <div th:each="booking : ${listBookingsHostConfirmed}"  class="card w-75 mb-3" style="margin-left: 50px;">
-    <h5 class="card-title" th:text="| ${booking.userHouse.getTitle()} : ${booking.userHouse.getLocation()} |" >Titulo</h5>
+    <h5><i class="fa-solid fa-house"></i><span class="card-title" th:text="| ${booking.userHouse.getTitle()} : ${booking.userHouse.getLocation()} |" >Titulo</span></h5>
     <p class="card-text" th:text="| ${booking.userHouse.getDescription()} , ${booking.userHouse.getMaxGuests()} personas |">Texto de explicaciones.</p>
     <p class="card-text" th:text="| Precio por noche : ${booking.userHouse.getPricePerNight()} . Provincia : ${booking.userHouse.province}|">Texto de explicaciones.</p>
-    <h5 class="card-title" th:text="| Usuario : ${booking.userBooking.username} . ${booking.userBooking.email} |" >Titulo</h5>
+    <h5><i class="fa-regular fa-user"></i><span class="card-title" th:text="| Usuario : ${booking.userBooking.username} . ${booking.userBooking.email} |">Titulo</span></h5>
     <p class="card-text" th:text="| ${booking.userBooking.firstName} ${booking.userBooking.lastName} |">Texto de explicaciones.</p>
-    <h5 class="card-title">Datos reserva : </h5>
+    <h5><i class="fa-solid fa-place-of-worship"></i><span class="card-title">Datos reserva :</span></h5>
     <p class="card-text" th:text="| Checkin y checkout : ${booking.checkin} / ${booking.checkout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
     <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |">Datos reserva</p>
     <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|">Datos reserva</p>
