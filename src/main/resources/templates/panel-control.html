@@ -95,8 +95,9 @@
       </button>
       <ul class="dropdown-menu">
           <li><a class="dropdown-item" th:href="@{/guest/pending/{id}(id=${user.id})}">Reservas pendientes</a></li>
-          <li><a class="dropdown-item" href="#">Reservas confirmadas</a></li>
+          <li><a class="dropdown-item" th:href="@{/guest/confirmed/{id}(id=${user.id})}">Reservas confirmadas</a></li>
           <li><a class="dropdown-item" th:href="@{/guest/cancelled/{id}(id=${user.id})}">Reservas canceladas</a></li>
+          <li><a class="dropdown-item" th:href="@{/guest/completed/{id}(id=${user.id})}">Reservas completadas</a></li>
       </ul>
   </div>
     <div class="col col-md-2">

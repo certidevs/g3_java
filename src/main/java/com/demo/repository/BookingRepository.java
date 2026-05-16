@@ -72,10 +72,20 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     """)
     List<Booking> bookingsGuestPending(Long id);
 
-    // FILTRO PARA PANTALLA DE RESERVAS "CANCELLED"
     @Query("""
         SELECT bk FROM Booking bk WHERE bk.userBooking.id=?1 AND bk.statusbooking='CANCELLED'
     """)
     List<Booking> bookingsGuestCancelled(Long id);
+
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userBooking.id=?1 AND bk.statusbooking='CONFIRMED'
+    """)
+    List<Booking> bookingsGuestConfirmed(Long id);
+
+    @Query("""
+        SELECT bk FROM Booking bk WHERE bk.userBooking.id=?1 AND bk.statusbooking='COMPLETED'
+    """)
+    List<Booking> bookingsGuestCompleted(Long id);
+
 
 }

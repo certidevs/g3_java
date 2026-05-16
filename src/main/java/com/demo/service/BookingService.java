@@ -25,24 +25,15 @@ public class BookingService {
         if (checkin.isAfter(checkout))
             return false;
 
-        // no se puede reservar antes de hoy
-        if (checkin.isBefore(LocalDateTime.now()))
-            return false;
-
-//        if booking.getUserHouse().getMinimumNights
-
         return true;
     }
 
-    public Booking recalculateBooking(Booking booking){
-        // precondiciones
+    public void recalculateBooking(Booking booking){
 
-        // calcular precio
+        // Actualizar noches y precio
+        booking.setNumberNights(booking.calculateNights(booking.getCheckin(),booking.getCheckout()));
+        booking.setTotalPrice(booking.calculateTotalPrice(booking.getNumberNights()));
 
-        // opcional: guardar en base datos
-        // bookingRepository.save(booking);
-
-        return booking;
     }
 
 }

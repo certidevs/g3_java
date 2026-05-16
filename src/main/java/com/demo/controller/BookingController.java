@@ -206,6 +206,56 @@ public class BookingController {
 
     }
 
+    @GetMapping("/guest/completed/{id}")
+    public String listGuestCompleted (Model model, @PathVariable Long id)
+    {
+
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            User validUser = user.get();
+
+
+            // Reservas del Host
+            List<Booking> listBookingGuest = bookingRepository.bookingsGuestCompleted(id);
+
+
+            // Atributos de listas pasados al HTML
+            model.addAttribute("user",validUser);
+            model.addAttribute("listBookingsGuestCompleted",listBookingGuest);
+
+            return "/guest/booking-list-completed";
+        }
+        else {
+            return "redirect:/index";
+        }
+
+    }
+
+    @GetMapping("/guest/confirmed/{id}")
+    public String listGuestConfirmed (Model model, @PathVariable Long id)
+    {
+
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            User validUser = user.get();
+
+
+            // Reservas del Host
+            List<Booking> listBookingGuest = bookingRepository.bookingsGuestConfirmed(id);
+
+
+            // Atributos de listas pasados al HTML
+            model.addAttribute("user",validUser);
+            model.addAttribute("listBookingsGuestConfirmed",listBookingGuest);
+
+            return "/guest/booking-list-confirmed";
+        }
+        else {
+            return "redirect:/index";
+        }
+
+    }
+
     // CAMBIO DE ESTADOS HOST
 
     @GetMapping("/booking/from-pending-to-confirmed/{id}")
@@ -240,8 +290,6 @@ public class BookingController {
         }
         return "redirect:/houses";
     }
-
-
 
 
     @GetMapping("/booking/from-confirmed-to-cancelled/{id}")
@@ -321,9 +369,7 @@ public class BookingController {
         booking.setStatusbooking(StatusBooking.CONFIRMED);
         User usuario = userRepository.findById(userid).orElseThrow();
 
-        // Actualizar noches y precio
-        booking.setNumberNights(booking.calculateNights(booking.getCheckin(),booking.getCheckout()));
-        booking.setTotalPrice(booking.calculateTotalPrice(booking.getNumberNights()));
+        bookingService.recalculateBooking(booking);
 
         bookingRepository.save(booking);
         //        Enviando al detalle
