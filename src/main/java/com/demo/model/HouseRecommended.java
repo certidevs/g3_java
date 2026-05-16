@@ -26,7 +26,6 @@ public class HouseRecommended {
 
     private String message;
 
-
     @Builder.Default
     private LocalDateTime timeRecommended = LocalDateTime.now();
 

@@ -418,7 +418,6 @@ public class BookingController {
             return "";
         }
 
-
         bookingRepository.save(booking);
 
         // Al hacer el cambio dee estado se pierde el "HOST_ID" de la "HOUSE"

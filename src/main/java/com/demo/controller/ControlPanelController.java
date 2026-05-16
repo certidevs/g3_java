@@ -1,16 +1,16 @@
 package com.demo.controller;
 
 import com.demo.model.Booking;
+import com.demo.model.HouseRecommended;
 import com.demo.model.User;
 import com.demo.model.House;
 import com.demo.repository.BookingFilterRepository;
 import com.demo.repository.BookingRepository;
+import com.demo.repository.HouseRecommendedRepository;
 import com.demo.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,13 +23,16 @@ public class  ControlPanelController {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final BookingFilterRepository bookingFilterRepository;
+    private final HouseRecommendedRepository houseRecommendedRepository;
 
     public ControlPanelController(BookingRepository bookingRepository,
                                   UserRepository userRepository,
-                                  BookingFilterRepository bookingFilterRepository) {
+                                  BookingFilterRepository bookingFilterRepository,
+                                  HouseRecommendedRepository houseRecommendedRepository) {
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
         this.bookingFilterRepository = bookingFilterRepository;
+        this.houseRecommendedRepository = houseRecommendedRepository;
     }
 
     @GetMapping("panel-control/{id}")
@@ -97,4 +100,15 @@ public class  ControlPanelController {
         }
 
     }
+
+    @PostMapping("recommended")
+    public String addRecommendation (@ModelAttribute HouseRecommended houseRecommended) {
+
+        houseRecommendedRepository.save(houseRecommended);
+
+        return "redirect:/houses";
+
+    }
+
+
 }

@@ -13,6 +13,8 @@
 
   <form th:action="@{/recommended}" method="post" th:object="${recommendation}">
         <!--        Estimatedcheckin-->
+      <input type="hidden" th:field="*{houseRecommended}"></input>
+
       <div class="mb-3">
         <label for="tokenfrom" class="form-label">Token personal : </label>
         <input type="text" class="form-control" id="tokenfrom"
@@ -37,10 +39,14 @@
              name="correoto" th:field="*{emailTo}"
              />
     </div>
-
-
-
-
+      <div class="mb-3">
+          <label for="mensaje" class="form-label">Mensaje :</label>
+          <textarea rows="4" class="form-control" id="mensaje"
+                 name="correoto" th:field="*{message}" placeholder="Mensaje de recomendación"
+          />
+      </div>
+      <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
+      <a th:href="@{/houses}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i>Cancelar</a>
 
   </form>
 

@@ -15,7 +15,7 @@ public interface BookingFilterRepository extends JpaRepository<Booking, Long> {
     // Casas alquiladas por un (guest)
     @Query("""
         SELECT hs FROM House hs WHERE hs.host.id=:idUsuario  
-          AND (:price IS NULL OR :price<hs.pricePerNight) 
+          AND (:price IS NULL OR :price>hs.pricePerNight) 
     """)
     List<House> houseBookinHostFilter(
                     @Param("idUsuario") Long id,
@@ -23,7 +23,7 @@ public interface BookingFilterRepository extends JpaRepository<Booking, Long> {
 
     @Query("""
         SELECT bk.userHouse  FROM Booking bk WHERE bk.userBooking.id=:idUsuario
-         AND (:price IS NULL OR :price<bk.userHouse.pricePerNight)    
+         AND (:price IS NULL OR :price>bk.userHouse.pricePerNight)    
     """)
     List<House> houseBookingGuestFilter(
                          @Param("idUsuario") Long id,
@@ -31,7 +31,7 @@ public interface BookingFilterRepository extends JpaRepository<Booking, Long> {
 
     @Query("""
         SELECT bk FROM Booking bk WHERE bk.userHouse.host.id=:idUsuario 
-            AND (:price IS NULL OR :price<bk.userHouse.pricePerNight) 
+            AND (:price IS NULL OR :price>bk.userHouse.pricePerNight) 
             AND (
                 (:searchDate IS NULL OR (:searchDate>=bk.estimatedCheckin AND :searchDate<=bk.estimatedCheckout)) OR
                 (:searchDate IS NULL OR (:searchDate>=bk.checkin AND :searchDate<=bk.checkout))    
@@ -44,7 +44,7 @@ public interface BookingFilterRepository extends JpaRepository<Booking, Long> {
 
     @Query("""
         SELECT bk FROM Booking bk WHERE bk.userBooking.id=:idUsuario 
-            AND (:price IS NULL OR :price<bk.userHouse.pricePerNight) 
+            AND (:price IS NULL OR :price>bk.userHouse.pricePerNight) 
             AND (
                 (:searchDate IS NULL OR (:searchDate>=bk.estimatedCheckin AND :searchDate<=bk.estimatedCheckout)) OR
                 (:searchDate IS NULL OR (:searchDate>=bk.checkin AND :searchDate<=bk.checkout))    
