@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BookingService {
 
-    private BookingRepository bookingRepository;
-
     // validateDates
     public boolean validateDates(Booking booking){
         var checkin = booking.getCheckin();

@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/head :: head('PANEL DE CONTROL')}"></head>
+
+<body>
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<main class="container flex-grow-1">
+
+  <h2>Formulario de recomendación</h2>
+
+  <form th:action="@{/recommended}" method="post" th:object="${recommendation}">
+        <!--        Estimatedcheckin-->
+      <div class="mb-3">
+        <label for="tokenfrom" class="form-label">Token personal : </label>
+        <input type="text" class="form-control" id="tokenfrom"
+               name="tokenfrom" th:field="*{tokenFrom}"
+                required/>
+      </div>
+    <div class="mb-3">
+      <label for="tokento" class="form-label">Token destinatario :</label>
+      <input type="text" class="form-control" id="tokento"
+             name="tokento" th:field="*{tokenTo}"
+             required/>
+    </div>
+    <div class="mb-3">
+      <label for="correofrom" class="form-label">Email personal : </label>
+      <input type="text" class="form-control" id="correofrom"
+             name="correofrom" th:field="*{emailFrom}"
+             />
+    </div>
+    <div class="mb-3">
+      <label for="correoto" class="form-label">Email destino :</label>
+      <input type="text" class="form-control" id="correoto"
+             name="correoto" th:field="*{emailTo}"
+             />
+    </div>
+
+
+
+
+
+  </form>
+
+  <footer th:replace="~{layout/footer :: footer}"></footer>
+  <script th:replace="~{layout/footer :: scripts}"></script>
+</main>
+
+</body>
+</html>
+

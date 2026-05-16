@@ -18,15 +18,14 @@ public class HouseRecommended {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ToString.Exclude
-    @ManyToOne
-    private User tokenFrom;
+    private String tokenFrom;
+    private String tokenTo;
 
-    @ToString.Exclude
-    @ManyToOne
-    private User tokenTo;
+    private String emailFrom;
+    private String emailTo;
 
     private String message;
+
 
     @Builder.Default
     private LocalDateTime timeRecommended = LocalDateTime.now();

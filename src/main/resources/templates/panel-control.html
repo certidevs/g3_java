@@ -229,7 +229,8 @@
                               <td th:text="${casa.province}">Madrid</td>
                               <td th:text="${casa.maxGuests}">1</td>
                               <td><a th:href="@{/houses/{id}(id=${casa.id})}" class="btn btn-primary btn-sm">Ver</a></td>
-                              <td><a th:href="@{/houses/{id}(id=${casa.id})}" class="btn btn-primary btn-sm">Recomendar</a></td>
+                              <td><a th:href="@{/recommended/{token}/{idHouse}/{idUsuario}(token=${user.tokenforRecommended},
+                              idHouse=${casa.id},idUsuario=${user.id})}" class="btn btn-primary btn-sm">Recomendar</a></td>
                           </tr>
                           </tbody>
                       </table>
