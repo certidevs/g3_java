@@ -11,10 +11,18 @@
 
   <h2>Formulario de recomendación</h2>
 
+<!--  Consumimos el Flash Attribute-->
+
+    <div th:if="${errorMessage}" class="alert alert-success" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <!--    Formulario de entrada de datos-->
+
   <form th:action="@{/recommended}" method="post" th:object="${recommendation}">
         <!--        Estimatedcheckin-->
-      <input type="hidden" th:field="*{idHouseRecommended}"></input>
-      <input type="hidden" th:field="*{idUsuario}"></input>
+      <input type="hidden" th:field="*{idHouseRecommended}" readonly></input>
+      <input type="hidden" th:field="*{idUsuario}" readonly></input>
 
       <div class="mb-3">
         <label for="tokenfrom" class="form-label">Token personal : </label>
@@ -26,7 +34,7 @@
       <label for="tokento" class="form-label">Token destinatario :</label>
       <input type="text" class="form-control" id="tokento"
              name="tokento" th:field="*{tokenTo}"
-             required/>
+             />
     </div>
     <div class="mb-3">
       <label for="correofrom" class="form-label">Email personal : </label>

@@ -101,14 +101,5 @@ public class  ControlPanelController {
 
     }
 
-    @PostMapping("recommended")
-    public String addRecommendation (@ModelAttribute HouseRecommended houseRecommended) {
-
-        houseRecommendedRepository.save(houseRecommended);
-
-        return "redirect:/houses";
-
-    }
-
 
 }

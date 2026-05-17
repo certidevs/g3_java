@@ -24,6 +24,9 @@ public class HouseRecommended {
     private String emailFrom;
     private String emailTo;
 
+    private String firstNameTo;
+    private String lastNameTo;
+
     private String message;
 
     @Builder.Default
