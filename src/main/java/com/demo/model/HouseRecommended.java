@@ -24,6 +24,8 @@ public class HouseRecommended {
     private String emailFrom;
     private String emailTo;
 
+    private String firstNameFrom;
+    private String lastNameFrom;
     private String firstNameTo;
     private String lastNameTo;
 

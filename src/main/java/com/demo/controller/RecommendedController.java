@@ -53,6 +53,8 @@ public class RecommendedController {
             recommendation.setIdHouseRecommended(houseValid.getId());
             recommendation.setTokenFrom(token);
             recommendation.setIdUsuario(userValid.getId());
+            recommendation.setFirstNameFrom(userValid.getFirstName());
+            recommendation.setLastNameFrom(userValid.getLastName());
             recommendation.setEmailFrom(userValid.getEmail());
 
             model.addAttribute("recommendation",recommendation);
