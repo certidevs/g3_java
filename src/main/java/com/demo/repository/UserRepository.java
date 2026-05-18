@@ -1,6 +1,5 @@
 package com.demo.repository;
 
-import com.demo.model.HouseRecommended;
 import com.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,15 +10,24 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 //    Optional<User> findById(Long id);
 
+    //Resgistro verificar si el email o username estas ocupados
+    boolean existsByEmail(String email);
+    boolean existsByUsername(String username);
+
+    //login recuperar el user
+    Optional<org.springframework.security.core.userdetails.User> findByUsername(String username);
+    Optional<User> findByEmail(String email);
+
+
     // ACCIONES PARA VALIDACIONES EN RECOMENDACIONES
 
     @Query("""
-        SELECT us FROM User us WHERE us.tokenforRecommended=?1 
+        SELECT us FROM User us WHERE us.tokenforRecommended=?1
     """)
     Optional<User> verificarToken (String token);
 
     @Query("""
-        SELECT us FROM User us WHERE us.email=?1 
+        SELECT us FROM User us WHERE us.email=?1
     """)
     Optional<User> verificarEmail (String email);
 
