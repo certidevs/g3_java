@@ -3,6 +3,7 @@ package com.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.SecureRandom;
@@ -25,6 +26,7 @@ public class User implements UserDetails{
     /** Nombre de usuario único, utilizado para el login. */
     @Column(nullable = false, unique = true)
     private String username;
+
     private String firstName;
     private String lastName;
 
@@ -58,7 +60,7 @@ public class User implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
 //    @Override

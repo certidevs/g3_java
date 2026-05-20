@@ -15,8 +15,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
 
     //login recuperar el user
-    Optional<org.springframework.security.core.userdetails.User> findByUsername(String username);
+//    Optional<org.springframework.security.core.userdetails.User> findByUsername(String username);
     Optional<User> findByEmail(String email);
+    Optional<User> findByUsername(String username);
+
 
 
     // ACCIONES PARA VALIDACIONES EN RECOMENDACIONES
