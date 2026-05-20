@@ -4,6 +4,7 @@ import com.demo.model.*;
 import com.demo.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -22,14 +23,17 @@ public class BookingDataInitializer implements CommandLineRunner {
     private final BookingRepository bookingRepository;
     private final ReviewRepository reviewRepository;
     private final AmenityRepository amenityRepository;
+    private final PasswordEncoder passwordEncoder;
 
-
-    public BookingDataInitializer(HouseRepository houseRepository, UserRepository userRepository, BookingRepository bookingRepository, ReviewRepository reviewRepository, AmenityRepository amenityRepository) {
+    public BookingDataInitializer(HouseRepository houseRepository, UserRepository userRepository,
+                                  BookingRepository bookingRepository, ReviewRepository reviewRepository, AmenityRepository amenityRepository,
+                                  PasswordEncoder passwordEncoder) {
         this.houseRepository = houseRepository;
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
         this.reviewRepository = reviewRepository;
         this.amenityRepository = amenityRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -121,30 +125,30 @@ public class BookingDataInitializer implements CommandLineRunner {
 
         // Guests
         User guest_test_booking = new User();
-        guest_test_booking.setUsername("Guest prueba");
+        guest_test_booking.setUsername("user1");
         guest_test_booking.setFirstName("Guest 1");
         guest_test_booking.setLastName("Guest 1");
         guest_test_booking.setEmail("guest1@test1.com");
-        guest_test_booking.setPassword("password");
+        guest_test_booking.setPassword(passwordEncoder.encode("user1"));
         guest_test_booking.setRole(Role.USER);
         userRepository.save(guest_test_booking);
 
         User guest_test_booking_1 = new User();
-        guest_test_booking_1.setUsername("Guest prueba 2");
+        guest_test_booking_1.setUsername("user2");
         guest_test_booking_1.setFirstName("Guest 2");
         guest_test_booking_1.setLastName("Guest 2");
         guest_test_booking_1.setEmail("guest2@test1.com");
-        guest_test_booking_1.setPassword("password");
+        guest_test_booking_1.setPassword(passwordEncoder.encode("user2"));
         guest_test_booking_1.setRole(Role.USER);
         userRepository.save(guest_test_booking_1);
 
         // Host
         User host_test_booking = new User();
-        host_test_booking.setUsername("Host prueba");
+        host_test_booking.setUsername("host1");
         host_test_booking.setFirstName("Host 1");
         host_test_booking.setLastName("Host 1");
         host_test_booking.setEmail("host1@test1.com");
-        host_test_booking.setPassword("password");
+        host_test_booking.setPassword(passwordEncoder.encode("host1"));
         host_test_booking.setRole(Role.ADMIN);
         userRepository.save(host_test_booking);
 
