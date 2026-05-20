@@ -46,6 +46,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/houses/new").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/houses/edit/*").hasRole("ADMIN")
 //
+                        .requestMatchers(HttpMethod.GET, "/panel-control/*").authenticated()
+
+
 //                        .requestMatchers(HttpMethod.GET, "/reviews").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/reviews/*").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/reviews").hasRole("USER")
