@@ -14,10 +14,10 @@ public class BookingService {
 
     // validateDates
     public boolean validateDates(Booking booking){
-        var checkin = booking.getCheckin();
-        var checkout = booking.getCheckout();
+        var checkin = booking.getEstimatedCheckin();
+        var checkout = booking.getEstimatedCheckout();
 
-        if (checkin == null && checkout == null)
+        if (checkin == null || checkout == null)
             return false;
 
         if (checkin.isAfter(checkout))

@@ -47,7 +47,7 @@ public class BookingController {
             model.addAttribute("booking", validBooking);
             // A futuro AddOn
             // addons   addonRepository.findByBookingId
-            return "/host/booking-detail";
+            return "host/booking-detail";
 
         }
         return "redirect:/index";

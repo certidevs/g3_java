@@ -5,7 +5,6 @@ import com.demo.model.Role;
 import com.demo.model.User;
 import com.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.jspecify.annotations.NonNull;
 //import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -57,7 +56,7 @@ public class UserService implements UserDetailsService {
         user.setEmail(form.getEmail());
         // user.setPassword(form.getPassword()); // texto plano sin cifrar
         user.setPassword(passwordEncoder.encode(form.getPassword())); // password cifrada con bcrypt
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
         return userRepository.save(user);
     }
 

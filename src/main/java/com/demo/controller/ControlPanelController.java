@@ -1,18 +1,15 @@
 package com.demo.controller;
 
-import com.demo.model.Booking;
-import com.demo.model.HouseRecommended;
-import com.demo.model.User;
-import com.demo.model.House;
+import com.demo.model.*;
 import com.demo.repository.BookingFilterRepository;
 import com.demo.repository.BookingRepository;
 import com.demo.repository.HouseRecommendedRepository;
 import com.demo.repository.UserRepository;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -35,22 +32,29 @@ public class  ControlPanelController {
         this.houseRecommendedRepository = houseRecommendedRepository;
     }
 
-    @GetMapping("panel-control/{id}")
-    public String panelControl(Model model, @PathVariable Long id) {
+    @GetMapping("panel-control/{userId}")
+    public String panelControl(Model model, @PathVariable Long userId, @AuthenticationPrincipal User currentUser) {
 
-        Optional<User> user = userRepository.findById(id);
+        if (currentUser.getRole() != Role.ROLE_ADMIN && !userId.equals(currentUser.getId()))
+        {
+            return "redirect:/panel-control/" + currentUser.getId();
+        }
+
+
+
+        Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             User validUser = user.get();
 
             // Casas que pone en alquiler
-            List<House> listHouseHost = bookingRepository.houseBookingHost(id);
+            List<House> listHouseHost = bookingRepository.houseBookingHost(userId);
             // Casas alquiladas
-            List<House> listHouseGuest = bookingRepository.housesBookingGuest(id);
+            List<House> listHouseGuest = bookingRepository.housesBookingGuest(userId);
 
             // Reservas del Host
-            List<Booking> listBookingHost = bookingRepository.bookingsHost(id);
+            List<Booking> listBookingHost = bookingRepository.bookingsHost(userId);
             // Reservas del Guest
-            List<Booking> listBookingGuest = bookingRepository.bookingsGuest(id);
+            List<Booking> listBookingGuest = bookingRepository.bookingsGuest(userId);
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
