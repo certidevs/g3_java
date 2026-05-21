@@ -2,6 +2,7 @@ package com.demo.config;
 
 import com.demo.model.*;
 import com.demo.repository.*;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +17,8 @@ import java.util.Set;
 //@Profile("!test")
 @Component
 @Profile("!test")
-public class BookingDataInitializer implements CommandLineRunner {
+@AllArgsConstructor
+public class DataInitializer implements CommandLineRunner {
 
     private final HouseRepository houseRepository;
     private final UserRepository userRepository;
@@ -25,53 +27,8 @@ public class BookingDataInitializer implements CommandLineRunner {
     private final AmenityRepository amenityRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public BookingDataInitializer(HouseRepository houseRepository, UserRepository userRepository,
-                                  BookingRepository bookingRepository, ReviewRepository reviewRepository, AmenityRepository amenityRepository,
-                                  PasswordEncoder passwordEncoder) {
-        this.houseRepository = houseRepository;
-        this.userRepository = userRepository;
-        this.bookingRepository = bookingRepository;
-        this.reviewRepository = reviewRepository;
-        this.amenityRepository = amenityRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @Override
     public void run(String... args) {
-
-//        if (amenityRepository.count() == 0) {
-//
-//            amenityRepository.save(
-//                    Amenity.builder()
-//                            .name("Wifi")
-//                            .description("Internet de alta velocidad")
-//                            .icon("wifi")
-//                            .build()
-//            );
-//
-//            amenityRepository.save(
-//                    Amenity.builder()
-//                            .name("Piscina")
-//                            .description("Piscina privada")
-//                            .icon("water-ladder")
-//                            .build()
-//            );
-//
-//            amenityRepository.save(
-//                    Amenity.builder()
-//                            .name("Parking")
-//                            .description("Estacionamiento gratuito")
-//                            .icon("square-parking")
-//                            .build()
-//            );
-//
-//            amenityRepository.save(
-//                    Amenity.builder()
-//                            .name("Cocina")
-//                            .description("Cocina equipada")
-//                            .icon("utensils")
-//                            .build()
-//            );
         Amenity wifi = amenityRepository.save(
                 Amenity.builder()
                         .name("Wifi")
