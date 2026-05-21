@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4 shadow-sm">
     <div class="container">
@@ -36,27 +36,29 @@
 <!--                        <i class="fa-solid fa-star me-1"></i> Amenities-->
 <!--                    </a>-->
 <!--                </li>-->
-                <li class="nav-item">
+                <li sec:authorize="!isAuthenticated()" class="nav-item">
                     <a class="nav-link" th:href="@{/login}">
                         <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
                     </a>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="!isAuthenticated()" class="nav-item">
                     <a class="nav-link" th:href="@{/login}">
                         <i class="fa-solid fa-user-plus"></i></i> Registro
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a th:href="@{/panel-control/{id}(id=${#authentication.principal.id})}">
+                <li sec:authorize="isAuthenticated()" class="nav-item me-1">
+                    <a class="nav-link" th:href="@{/panel-control/{id}(id=${#authentication.principal.id})}">
                         <i class="fa-solid fa-code-fork"></i>Panel control
                     </a>
                 </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="nav-link btn btn-link p-1 border-0">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
+                        </button>
+                    </form>
+                </li>
 
-<!--                <li class="nav-item ms-lg-3">-->
-<!--                    <a class="btn btn-outline-light btn-sm" th:href="@{/login}">-->
-<!--                        Login-->
-<!--                    </a>-->
-<!--                </li>-->
             </ul>
         </div>
     </div>
