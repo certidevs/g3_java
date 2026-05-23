@@ -1,10 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
+<head th:replace="~{layout/head :: head('Vista de las reservas pendientes')}"></head>
+
+<body>
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<main class="container flex-grow-1 my-4 shadow">
+
+<h2>Revista de recomendaciones</h2>
+
+    <div class="container">
+        <h1 class="mb-4 text-center">Ejemplo de Listas Dinámicas</h1>
+
+        <div class="row">
+            <!-- Primera Lista Dinámica: Recomendaciones From -->
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        Recomendaciones lanzadas
+                    </div>
+                    <ul class="list-group list-group-flush" th:if="${not #lists.isEmpty(recommfrom)}">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            th:each="cat : ${recommfrom}">
+                            <span th:text="|${cat.firstNameTo} ${cat.lastNameTo}">Nombre</span>
+
+                            <span th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy')}">Fecha</span>
+
+                            <a th:href="@{/houses/{id}(id=${cat.houseRecommended.id})}" class="btn btn-primary">
+                            Enlace</a>
+                            <br>
+                            <div style="display: block;">
+                                <span>Mensaje</span>
+                                <span th:text="${cat.message}" style="dispalay: block;"></span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="card-body text-muted" th:if="${#lists.isEmpty(recommfrom)}">
+                        No hay recomendaciones.
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Segunda Lista Dinámica: Recomendaciones To -->
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        Recomendaciones recibidas
+                    </div>
+                    <ul class="list-group list-group-flush" th:if="${not #lists.isEmpty(recommto)}">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            th:each="cat : ${recommto}">
+                            <span th:text="|${cat.firstNameTo} ${cat.lastNameTo}">Nombre</span>
+
+                            <span th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy')}">Fecha</span>
+
+                            <a th:href="@{/houses/{id}(id=${cat.houseRecommended.id})}" class="btn btn-primary">
+                                Enlace</a>
+                            <br>
+                            <div style="display: block;">
+                                <span>Mensaje</span>
+                                <span th:text="${cat.message}" style="dispalay: block;"></span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="card-body text-muted" th:if="${#lists.isEmpty(recommto)}">
+                        No hay recomendaciones.
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+<script th:replace="~{layout/footer :: scripts}"></script>
 </body>
 </html>

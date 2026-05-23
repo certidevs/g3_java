@@ -165,8 +165,8 @@ public class RecommendedController {
 
         List<HouseRecommended> recommendedToTokenEmail  =   houseRecommendedRepository.listHousesToEmail(email,token);
 
-        model.addAttribute("from",recommendedFrom);
-        model.addAttribute("to",recommendedToTokenEmail);
+        model.addAttribute("recommfrom",recommendedFrom);
+        model.addAttribute("recommto",recommendedToTokenEmail);
 
         return "/guest/recommended-list";
 
