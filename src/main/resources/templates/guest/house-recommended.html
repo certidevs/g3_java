@@ -22,7 +22,7 @@
   <form th:action="@{/recommended}" method="post" th:object="${recommendation}">
         <!--        Estimatedcheckin-->
       <input type="hidden" th:field="*{houseRecommended}" readonly></input>
-<!--      <input type="hidden" th:field="*{idUsuario}" readonly></input>-->
+      <input type="hidden" th:field="*{userRecommended}" readonly></input>
       <input type="hidden" th:field="*{firstNameFrom}" readonly></input>
       <input type="hidden" th:field="*{lastNameFrom}" readonly></input>
 
@@ -53,12 +53,13 @@
       <div class="mb-3">
           <label for="mensaje" class="form-label">Mensaje :</label>
           <textarea rows="4" class="form-control" id="mensaje"
-                 name="correoto" th:field="*{message}" placeholder="Mensaje de recomendación"
+                 name="mensaje" th:field="*{message}" placeholder="Mensaje de recomendación"
           />
       </div>
-      <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
-      <a th:href="@{/panel-control/{idUsuario}(idUsuario=${recommendation.idUsuario})}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i>Cancelar</a>
-
+      <div>
+            <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
+<!--            <a th:href="@{/panel-control/{idUsuario}(idUsuario=${recommendation.idUsuario})}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i>Cancelar</a>-->
+      </div>
   </form>
 
   <footer th:replace="~{layout/footer :: footer}"></footer>

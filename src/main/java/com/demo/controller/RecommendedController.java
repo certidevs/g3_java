@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -35,7 +36,7 @@ public class RecommendedController {
     }
 
 
-    @GetMapping("/recommended/{token}/{idHouse}/{idUsuario}")
+    @GetMapping("recommended/{token}/{idHouse}/{idUsuario}")
     public String createRecommended (Model model,
                          @PathVariable String token,
                          @PathVariable Long idHouse,
@@ -50,11 +51,17 @@ public class RecommendedController {
             User userValid = user.get();
 
             HouseRecommended recommendation = new HouseRecommended();
-            recommendation.setIdHouseRecommended(houseValid.getId());
+
+
+
+            recommendation.setHouseRecommended(houseValid);
             recommendation.setTokenFrom(token);
-            recommendation.setIdUsuario(userValid.getId());
+            // Datos usuario que crea la recomendacion
+            recommendation.setUserRecommended(userValid);
             recommendation.setFirstNameFrom(userValid.getFirstName());
             recommendation.setLastNameFrom(userValid.getLastName());
+            recommendation.setEmailFrom(userValid.getEmail());
+
             recommendation.setEmailFrom(userValid.getEmail());
 
             model.addAttribute("recommendation",recommendation);
@@ -70,7 +77,8 @@ public class RecommendedController {
 
     @PostMapping("recommended")
     public String addRecommendation (@ModelAttribute HouseRecommended houseRecommended,
-                                     RedirectAttributes redirectAttributes) {
+                                     RedirectAttributes redirectAttributes)
+                                      {
 
         Boolean bok = false;
 
@@ -105,25 +113,31 @@ public class RecommendedController {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Ni el token ni el correo son válidos.");
 
+            //TODO : Que vuelva a su ruta
             return"redirect:/recommended/" + houseRecommended.getTokenFrom() + "/" +
-                    houseRecommended.getIdHouseRecommended() + "/" + houseRecommended.getIdUsuario();
+                    houseRecommended.getHouseRecommended().getId() + "/" +
+                    houseRecommended.getUserRecommended().getId();
 
         }
 
         houseRecommended.setEmailTo(emailto);
         houseRecommended.setTokenTo(tokento);
 
-
         // Ver si ya está recomendada por el mismo usuario al mismo destinatario
-        Optional<HouseRecommended> houseValid = houseRecommendedRepository.findRecommendation(houseRecommended.getTokenFrom(),tokento,
-            houseRecommended.getIdHouseRecommended());
+
+        Optional<HouseRecommended> houseValid = houseRecommendedRepository.findRecommendation(
+                houseRecommended.getTokenFrom(),
+                houseRecommended.getTokenTo(),
+                houseRecommended.getId());
+
+
         if (houseValid.isPresent()) {
 
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Ya ha recomendado esta casa al usuario.");
 
             return"redirect:/recommended/" + houseRecommended.getTokenFrom() + "/" +
-                    houseRecommended.getIdHouseRecommended() + "/" + houseRecommended.getIdUsuario();
+                    houseRecommended.getId() + "/" +  houseRecommended.getUserRecommended().getId();
 
         }
 
@@ -133,7 +147,28 @@ public class RecommendedController {
 
         houseRecommendedRepository.save(houseRecommended);
 
-        return "redirect:/panel-control/" + houseRecommended.getIdUsuario();
+
+
+        return "redirect:/panel-control/" + houseRecommended.getUserRecommended().getId();
+
+    }
+
+    @GetMapping("recommended-show/{idUsuario}")
+    public String showRecommendations(Model model,@PathVariable Long idUsuario)
+    {
+        // Recomendaciones lanzadas
+        List<HouseRecommended> recommendedFrom = houseRecommendedRepository.listHousesFrom(idUsuario);
+
+
+        // Recomendaciones obtenidas
+        User datosUsuario = userRepository.findById(idUsuario).orElseThrow();
+        String token = datosUsuario.getTokenforRecommended();
+        String email = datosUsuario.getEmail();
+
+        List<HouseRecommended> recommendedToEmail  =   houseRecommendedRepository.listHousesToEmail(email);
+        List<HouseRecommended> recommendedToToken  =   houseRecommendedRepository.listHousesToToken(token);
+
+        return "/guest/recommended-list";
 
     }
 

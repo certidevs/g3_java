@@ -11,13 +11,33 @@ import java.util.Optional;
 
 public interface HouseRecommendedRepository extends JpaRepository<HouseRecommended, Long> {
 
+    // TODO
+
     @Query("""
         SELECT hs FROM HouseRecommended hs WHERE hs.tokenFrom=:tokenfrom AND hs.tokenTo=:tokento AND
-         hs.idHouseRecommended=:idhouse
+         hs.houseRecommended.id=:idhouse
     """)
     Optional<HouseRecommended> findRecommendation ( @Param("tokenfrom") String tokenFrom,
                                                     @Param("tokento") String tokenTo,
                                                     @Param("idhouse") Long idHouse);
+
+
+    // Recomendaciones lanzadas
+    @Query("""
+        SELECT hs FROM HouseRecommended hs WHERE hs.userRecommended.id=:idUsuario
+    """)
+    List<HouseRecommended> listHousesFrom(@Param("idUsuario") Long idUsuario);
+
+    // Recomendaciones recibidas
+    @Query("""
+        SELECT hs FROM HouseRecommended hs WHERE hs.emailTo=:email
+    """)
+    List<HouseRecommended> listHousesToEmail(@Param("email") String email);
+
+    @Query("""
+        SELECT hs FROM HouseRecommended hs WHERE hs.tokenTo=:token
+    """)
+    List<HouseRecommended> listHousesToToken(@Param("token") String token);
 
 
 }

@@ -40,6 +40,6 @@ public class HouseRecommended {
     private House houseRecommended;
 
     @ManyToOne
-    private User usuario
+    private User userRecommended;
 
 }
