@@ -10,6 +10,20 @@
 
     <h2>Agenda Usuarios</h2>
 
+<!--    Busqueda por nombre y apellidos-->
+
+    <div id="DivFiltrado"  class="mb-3">
+        <h5>Búsqueda avanzada de usuarios</h5>
+        <form th:action="@{/agenda-filter}" method="get" class="row align-items-end">
+            <!-- Filtro por fecha menor -->
+            <div class="col-auto">
+                <label class="form-label form-label-sm">Texto para nombre o apellido</label>
+                <input type="text" autofocus name="textfind" class="form-control form-control-sm"
+                       placeholder="Texto" th:value="${param.textfind}">
+            </div>
+        </form>
+    </div>
+
 <!--    Tabla de usuarios-->
 
     <table class="table table-striped table-bordered">

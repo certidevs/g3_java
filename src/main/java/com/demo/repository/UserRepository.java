@@ -3,6 +3,7 @@ package com.demo.repository;
 import com.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,5 +41,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     """)
     List<User> userallOrderFirstName ();
 
+    // USUARIOS FILTRADOS POR TEXTO
+    @Query("""
+            SELECT us FROM User us  WHERE us.firstName IS NOT NULL AND  
+                ((:textfind IS NULL OR us.firstName LIKE  %:textfind%) OR
+                (:textfind IS NULL OR us.lastName LIKE  %:textfind%))                                       
+            """)
+    List<User> userallOrderFirstNameFilterText (
+            @Param("textfind") String textoFind);
 
 }

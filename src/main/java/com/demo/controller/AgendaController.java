@@ -1,5 +1,7 @@
 package com.demo.controller;
 
+import com.demo.model.Booking;
+import com.demo.model.House;
 import com.demo.model.User;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.ReviewRepository;
@@ -8,14 +10,20 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
 public class AgendaController {
 
     private final UserRepository userRepository;
+
+    // Obtiene la tabla entera
 
     @GetMapping("agenda")
     public String showAgenda(Model model) {
@@ -29,5 +37,20 @@ public class AgendaController {
 
     }
 
+    // Para filtrar
+    // FILTRADO
+    @GetMapping("agenda-filter")
+    public String listaFiltrada(Model model,
+                                @RequestParam(required = false) String textfind)
+
+    {
+
+
+        List<User> agenda = userRepository.userallOrderFirstNameFilterText(textfind);
+        model.addAttribute("agenda",agenda);
+
+        return "/guest/agenda";
+
+    }
 
 }
