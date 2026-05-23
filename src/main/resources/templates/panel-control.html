@@ -76,8 +76,8 @@
 
 <!--  Acciones segun rol-->
 
-  <div class="row gap-7">
-  <div class="dropdown col col-md-3">
+  <div class="row gap-3">
+  <div class="dropdown col col-md-2 me-3">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Acciones como Anfitrión
       </button>
@@ -89,7 +89,7 @@
       </ul>
   </div>
 
-  <div class="dropdown col col-md-3">
+  <div class="dropdown col col-md-2 me-3">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Acciones como Huésped
       </button>
@@ -100,12 +100,17 @@
           <li><a class="dropdown-item" th:href="@{/guest/completed/{id}(id=${user.id})}">Reservas completadas</a></li>
       </ul>
   </div>
-    <div class="col col-md-3">
+    <div class="col col-md-2 me-3">
         <a th:href="@{/recommended-show/{id}(id=${user.id})}" class="btn btn-primary">
-            <i class="fa-solid fa-people-arrows"></i>Revista recomendaciones</a>
+            <i class="fa-solid fa-people-arrows"></i>Revista</a>
     </div>
+      <div class="col col-md-2 me-3">
+          <a th:href="@{/agenda}" class="btn btn-primary">
+              <i class="fa-solid fa-clipboard-list"></i>Agenda</a>
+      </div>
+
     <div class="col col-md-2">
-        <button class="btn btn-secondary ms-5" onclick="alternarDiv()"><i class="fa-solid fa-filter"></i>Filtros</button>
+        <button class="btn btn-secondary" onclick="alternarDiv()"><i class="fa-solid fa-filter"></i>Filtros</button>
     </div>
   </div>
 
