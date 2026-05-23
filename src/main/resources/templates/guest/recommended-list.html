@@ -21,20 +21,18 @@
                         Recomendaciones lanzadas
                     </div>
                     <ul class="list-group list-group-flush" th:if="${not #lists.isEmpty(recommfrom)}">
-                        <li class="list-group-item d-flex justify-content-between align-items-center"
-                            th:each="cat : ${recommfrom}">
-                            <span th:text="|${cat.firstNameTo} ${cat.lastNameTo}">Nombre</span>
 
-                            <span th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy')}">Fecha</span>
-
-                            <a th:href="@{/houses/{id}(id=${cat.houseRecommended.id})}" class="btn btn-primary">
-                            Enlace</a>
-                            <br>
-                            <div style="display: block;">
-                                <span>Mensaje</span>
-                                <span th:text="${cat.message}" style="dispalay: block;"></span>
+                       <div class="col" th:each="cat : ${recommfrom}">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="title" th:text="|${cat.firstNameTo} ${cat.lastNameTo}|"></h5>
+                                    <p class="card-text" th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy')}"></p>
+                                    <p class="card-text" th:text="${cat.message}"></p>
+                                </div>
+                                    <a th:href="@{/houses/{id}(id=${cat.houseRecommended.id})}" class="btn btn-primary">
+                                        Enlace</a>
                             </div>
-                        </li>
+                        </div>
                     </ul>
                     <div class="card-body text-muted" th:if="${#lists.isEmpty(recommfrom)}">
                         No hay recomendaciones.
@@ -50,20 +48,18 @@
                         Recomendaciones recibidas
                     </div>
                     <ul class="list-group list-group-flush" th:if="${not #lists.isEmpty(recommto)}">
-                        <li class="list-group-item d-flex justify-content-between align-items-center"
-                            th:each="cat : ${recommto}">
-                            <span th:text="|${cat.firstNameTo} ${cat.lastNameTo}">Nombre</span>
 
-                            <span th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy')}">Fecha</span>
-
-                            <a th:href="@{/houses/{id}(id=${cat.houseRecommended.id})}" class="btn btn-primary">
-                                Enlace</a>
-                            <br>
-                            <div style="display: block;">
-                                <span>Mensaje</span>
-                                <span th:text="${cat.message}" style="dispalay: block;"></span>
+                        <div class="col" th:each="cat : ${recommto}">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="title" th:text="|${cat.firstNameTo} ${cat.lastNameTo}|"></h5>
+                                    <p class="card-text" th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy')}"></p>
+                                    <p class="card-text" th:text="${cat.message}"></p>
+                                </div>
+                                <a th:href="@{/houses/{id}(id=${cat.houseRecommended.id})}" class="btn btn-primary">
+                                    Enlace</a>
                             </div>
-                        </li>
+                        </div>
                     </ul>
                     <div class="card-body text-muted" th:if="${#lists.isEmpty(recommto)}">
                         No hay recomendaciones.
@@ -73,7 +69,35 @@
 
 
 
-        </div>
+
+
+
+
+<!--            <div class="col-md-6">-->
+<!--                <div class="card shadow-sm">-->
+<!--                    <div class="card-header bg-primary text-white">-->
+<!--                        Recomendaciones recibidas-->
+<!--                    </div>-->
+<!--                    <ul class="list-group list-group-flush" th:if="${not #lists.isEmpty(recommto)}">-->
+<!--                        <li class="list-group-item d-flex justify-content-between align-items-center"-->
+<!--                            th:each="cat : ${recommto}">-->
+<!--                            <span th:text="|${cat.firstNameTo} ${cat.lastNameTo}">Nombre</span>-->
+
+<!--                            <span th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy')}">Fecha</span>-->
+
+<!--                            <a th:href="@{/houses/{id}(id=${cat.houseRecommended.id})}" class="btn btn-primary">-->
+<!--                                Enlace</a>-->
+<!--                            <br>-->
+<!--                            <div style="display: block;">-->
+<!--                                <span>Mensaje</span>-->
+<!--                                <span th:text="${cat.message}" style="dispalay: block;"></span>-->
+<!--                            </div>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                    <div class="card-body text-muted" th:if="${#lists.isEmpty(recommto)}">-->
+<!--                        No hay recomendaciones.-->
+<!--                    </div>-->
+          </div>
     </div>
 
 </main>
