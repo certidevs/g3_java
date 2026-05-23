@@ -52,8 +52,6 @@ public class RecommendedController {
 
             HouseRecommended recommendation = new HouseRecommended();
 
-
-
             recommendation.setHouseRecommended(houseValid);
             recommendation.setTokenFrom(token);
             // Datos usuario que crea la recomendacion
@@ -165,8 +163,10 @@ public class RecommendedController {
         String token = datosUsuario.getTokenforRecommended();
         String email = datosUsuario.getEmail();
 
-        List<HouseRecommended> recommendedToEmail  =   houseRecommendedRepository.listHousesToEmail(email);
-        List<HouseRecommended> recommendedToToken  =   houseRecommendedRepository.listHousesToToken(token);
+        List<HouseRecommended> recommendedToTokenEmail  =   houseRecommendedRepository.listHousesToEmail(email,token);
+
+        model.addAttribute("from",recommendedFrom);
+        model.addAttribute("to",recommendedToTokenEmail);
 
         return "/guest/recommended-list";
 

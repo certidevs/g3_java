@@ -30,14 +30,11 @@ public interface HouseRecommendedRepository extends JpaRepository<HouseRecommend
 
     // Recomendaciones recibidas
     @Query("""
-        SELECT hs FROM HouseRecommended hs WHERE hs.emailTo=:email
+        SELECT hs FROM HouseRecommended hs WHERE hs.emailTo=:email OR
+            hs.tokenTo=:token
     """)
-    List<HouseRecommended> listHousesToEmail(@Param("email") String email);
-
-    @Query("""
-        SELECT hs FROM HouseRecommended hs WHERE hs.tokenTo=:token
-    """)
-    List<HouseRecommended> listHousesToToken(@Param("token") String token);
+    List<HouseRecommended> listHousesToEmail(@Param("email") String email,
+                                             @Param("token") String token);
 
 
 }

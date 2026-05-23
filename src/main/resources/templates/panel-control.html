@@ -101,7 +101,8 @@
       </ul>
   </div>
     <div class="col col-md-3">
-        <button class="btn btn-secondary ms-5"><i class="fa-solid fa-people-arrows"></i>Revista recomendaciones</button>
+        <a th:href="@{/recommended-show/{id}(id=${user.id})}" class="btn btn-primary">
+            <i class="fa-solid fa-people-arrows"></i>Revista recomendaciones</a>
     </div>
     <div class="col col-md-2">
         <button class="btn btn-secondary ms-5" onclick="alternarDiv()"><i class="fa-solid fa-filter"></i>Filtros</button>
