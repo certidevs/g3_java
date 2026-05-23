@@ -66,37 +66,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-<!--            <div class="col-md-6">-->
-<!--                <div class="card shadow-sm">-->
-<!--                    <div class="card-header bg-primary text-white">-->
-<!--                        Recomendaciones recibidas-->
-<!--                    </div>-->
-<!--                    <ul class="list-group list-group-flush" th:if="${not #lists.isEmpty(recommto)}">-->
-<!--                        <li class="list-group-item d-flex justify-content-between align-items-center"-->
-<!--                            th:each="cat : ${recommto}">-->
-<!--                            <span th:text="|${cat.firstNameTo} ${cat.lastNameTo}">Nombre</span>-->
-
-<!--                            <span th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy')}">Fecha</span>-->
-
-<!--                            <a th:href="@{/houses/{id}(id=${cat.houseRecommended.id})}" class="btn btn-primary">-->
-<!--                                Enlace</a>-->
-<!--                            <br>-->
-<!--                            <div style="display: block;">-->
-<!--                                <span>Mensaje</span>-->
-<!--                                <span th:text="${cat.message}" style="dispalay: block;"></span>-->
-<!--                            </div>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                    <div class="card-body text-muted" th:if="${#lists.isEmpty(recommto)}">-->
-<!--                        No hay recomendaciones.-->
-<!--                    </div>-->
           </div>
     </div>
 
