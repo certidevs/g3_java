@@ -20,7 +20,7 @@ public class AgendaController {
     @GetMapping("agenda")
     public String showAgenda(Model model) {
 
-        List<User> agenda = userRepository.findAll();
+        List<User> agenda = userRepository.userallOrderFirstName();
 
         model.addAttribute("agenda",agenda);
 

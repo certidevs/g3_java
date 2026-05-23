@@ -1,10 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Agenda</title>
-</head>
+
+<head th:replace="~{layout/head :: head('Vista de las reservas pendientes')}"></head>
+
 <body>
-    <h1>Agenda</h1>
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<main class="container flex-grow-1 my-4 shadow">
+
+    <h2>Agenda Usuarios</h2>
+
+<!--    Tabla de usuarios-->
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Token</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contacto : ${agenda}">
+            <td th:text="|${contacto.firstName} ${contacto.lastName}|">Titulo</td>
+            <td th:text="${contacto.email}">Email</td>
+            <td th:text="${contacto.tokenforRecommended}">Token</td>
+        </tr>
+        </tbody>
+    </table>
+
+</main>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+<script th:replace="~{layout/footer :: scripts}"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ import com.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -33,6 +34,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     """)
     Optional<User> verificarEmail (String email);
 
+    // TODOS LOS USUARIOS ORDENADOS POR FIRSTNAME
+    @Query("""
+        SELECT us FROM User us  WHERE us.firstName IS NOT NULL ORDER BY us.firstName ASC
+    """)
+    List<User> userallOrderFirstName ();
 
 
 }
