@@ -80,6 +80,8 @@ public class RecommendedController {
 
         Boolean bok = false;
 
+        houseRecommended.setId(null);
+
         // Si no tiene token ni email
         String emailto = houseRecommended.getEmailTo();
         String tokento = houseRecommended.getTokenTo();
@@ -111,7 +113,6 @@ public class RecommendedController {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Ni el token ni el correo son válidos.");
 
-            //TODO : Que vuelva a su ruta
             return"redirect:/recommended/" + houseRecommended.getTokenFrom() + "/" +
                     houseRecommended.getHouseRecommended().getId() + "/" +
                     houseRecommended.getUserRecommended().getId();
@@ -143,11 +144,10 @@ public class RecommendedController {
         houseRecommended.setFirstNameTo(userValid.getFirstName());
         houseRecommended.setLastNameTo(userValid.getLastName());
 
+        String idredirect = houseRecommended.getUserRecommended().getId().toString();
         houseRecommendedRepository.save(houseRecommended);
 
-
-
-        return "redirect:/panel-control/" + houseRecommended.getUserRecommended().getId();
+        return "redirect:/panel-control/" + idredirect;
 
     }
 
