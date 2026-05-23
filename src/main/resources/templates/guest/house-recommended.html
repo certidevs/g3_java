@@ -21,8 +21,8 @@
 
   <form th:action="@{/recommended}" method="post" th:object="${recommendation}">
         <!--        Estimatedcheckin-->
-      <input type="hidden" th:field="*{idHouseRecommended}" readonly></input>
-      <input type="hidden" th:field="*{idUsuario}" readonly></input>
+      <input type="hidden" th:field="*{houseRecommended}" readonly></input>
+<!--      <input type="hidden" th:field="*{idUsuario}" readonly></input>-->
       <input type="hidden" th:field="*{firstNameFrom}" readonly></input>
       <input type="hidden" th:field="*{lastNameFrom}" readonly></input>
 

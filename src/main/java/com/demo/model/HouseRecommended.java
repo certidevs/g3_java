@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "houses_recommended")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class HouseRecommended {
 
     @Id
@@ -34,7 +35,11 @@ public class HouseRecommended {
     @Builder.Default
     private LocalDateTime timeRecommended = LocalDateTime.now();
 
-    private Long idHouseRecommended;
-    private Long idUsuario;
+    @ManyToOne
+    @ToString.Exclude
+    private House houseRecommended;
+
+    @ManyToOne
+    private User usuario
 
 }
