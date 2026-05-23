@@ -80,8 +80,6 @@ public class RecommendedController {
 
         Boolean bok = false;
 
-        houseRecommended.setId(null);
-
         // Si no tiene token ni email
         String emailto = houseRecommended.getEmailTo();
         String tokento = houseRecommended.getTokenTo();
