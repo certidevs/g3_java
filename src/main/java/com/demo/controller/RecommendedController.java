@@ -10,10 +10,7 @@ import com.demo.repository.UserRepository;
 import com.demo.service.BookingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -74,79 +71,64 @@ public class RecommendedController {
     }
 
     @PostMapping("recommended")
-    public String addRecommendation (@ModelAttribute HouseRecommended houseRecommended,
-                                     RedirectAttributes redirectAttributes)
-                                      {
+    public String addRecommendation(
+            @RequestParam Long houseId,
+            @RequestParam Long userFromId,
+            @RequestParam String tokenFrom,
+            @RequestParam(required = false) String tokenTo,
+            @RequestParam(required = false) String emailFrom,
+            @RequestParam(required = false) String emailTo,
+            @RequestParam(required = false) String message,
+            RedirectAttributes redirectAttributes) {
 
-        Boolean bok = false;
+        // 1) Cargar entidades base (las que estaban en el formulario son referencias, las recargamos por id)
+        House house = houseRepository.findById(houseId).orElseThrow();
+        User userFrom = userRepository.findById(userFromId).orElseThrow();
 
-        // Si no tiene token ni email
-        String emailto = houseRecommended.getEmailTo();
-        String tokento = houseRecommended.getTokenTo();
-
-        User userValid = new User();
-
-        // Buscar por token
-        Optional<User> userwithToken = userRepository.verificarToken(tokento);
-        if (userwithToken.isPresent())
-        {
-            userValid = userwithToken.get();
-            // El token es valido
-            emailto = userValid.getEmail();
-            bok = true;
+        // 2) Resolver destinatario: primero por token, si falla por email
+        User userTo = null;
+        if (tokenTo != null && !tokenTo.isBlank()) {
+            userTo = userRepository.verificarToken(tokenTo).orElse(null);
+        }
+        if (userTo == null && emailTo != null && !emailTo.isBlank()) {
+            userTo = userRepository.verificarEmail(emailTo).orElse(null);
         }
 
-        if (!bok) {
-            Optional<User> userwithEmail = userRepository.verificarEmail(emailto);
-            if (userwithEmail.isPresent())
-            {
-                userValid = userwithEmail.get();
-                tokento=userValid.getTokenforRecommended();
-                bok = true;
-            }
-        }
-
-        if (!bok) {
-
+        if (userTo == null) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Ni el token ni el correo son válidos.");
-
-            return"redirect:/recommended/" + houseRecommended.getTokenFrom() + "/" +
-                    houseRecommended.getHouseRecommended().getId() + "/" +
-                    houseRecommended.getUserRecommended().getId();
-
+            return "redirect:/recommended/" + tokenFrom + "/" + houseId + "/" + userFromId;
         }
 
-        houseRecommended.setEmailTo(emailto);
-        houseRecommended.setTokenTo(tokento);
-
-        // Ver si ya está recomendada por el mismo usuario al mismo destinatario
-
-        Optional<HouseRecommended> houseValid = houseRecommendedRepository.findRecommendation(
-                houseRecommended.getTokenFrom(),
-                houseRecommended.getTokenTo(),
-                houseRecommended.getId());
-
-
-        if (houseValid.isPresent()) {
-
+        // 3) Comprobar duplicado (mismo recomendador, mismo destinatario, misma casa)
+        Optional<HouseRecommended> dup = houseRecommendedRepository.findRecommendation(
+                tokenFrom,
+                userTo.getTokenforRecommended(),
+                houseId);                                  // ← ahora SÍ el id de la casa
+        if (dup.isPresent()) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Ya ha recomendado esta casa al usuario.");
-
-            return"redirect:/recommended/" + houseRecommended.getTokenFrom() + "/" +
-                    houseRecommended.getId() + "/" +  houseRecommended.getUserRecommended().getId();
-
+            return "redirect:/recommended/" + tokenFrom + "/" + houseId + "/" + userFromId;
         }
 
-        // Introducimos el nombre y apellidos del usuario destino
-        houseRecommended.setFirstNameTo(userValid.getFirstName());
-        houseRecommended.setLastNameTo(userValid.getLastName());
+        // 4) Crear entidad NUEVA → id null → JPA hará INSERT seguro
+        HouseRecommended nueva = HouseRecommended.builder()
+                .houseRecommended(house)
+                .userRecommended(userFrom)
+                .tokenFrom(tokenFrom)
+                .tokenTo(userTo.getTokenforRecommended())
+                .emailFrom(userFrom.getEmail())
+                .emailTo(userTo.getEmail())
+                .firstNameFrom(userFrom.getFirstName())
+                .lastNameFrom(userFrom.getLastName())
+                .firstNameTo(userTo.getFirstName())
+                .lastNameTo(userTo.getLastName())
+                .message(message)
+                .build();
 
-        String idredirect = houseRecommended.getUserRecommended().getId().toString();
-        houseRecommendedRepository.save(houseRecommended);
+        houseRecommendedRepository.save(nueva);
 
-        return "redirect:/panel-control/" + idredirect;
-
+        return "redirect:/panel-control/" + userFromId;
     }
 
     @GetMapping("recommended-show/{idUsuario}")

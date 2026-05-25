@@ -21,10 +21,12 @@
 
   <form th:action="@{/recommended}" method="post" th:object="${recommendation}">
         <!--        Estimatedcheckin-->
-      <input type="hidden" th:field="*{houseRecommended}" readonly></input>
-      <input type="hidden" th:field="*{userRecommended}" readonly></input>
-      <input type="hidden" th:field="*{firstNameFrom}" readonly></input>
-      <input type="hidden" th:field="*{lastNameFrom}" readonly></input>
+      <input type="hidden" name="houseId" th:value="${recommendation.houseRecommended.id}" readonly/>
+      <input type="hidden" name="userFromId" th:value="${recommendation.userRecommended.id}" readonly/>
+
+
+      <input type="hidden" th:field="*{firstNameFrom}" readonly/>
+      <input type="hidden" th:field="*{lastNameFrom}" readonly/>
 
       <div class="mb-3">
         <label for="tokenfrom" class="form-label">Token personal : </label>
@@ -54,7 +56,7 @@
           <label for="mensaje" class="form-label">Mensaje :</label>
           <textarea rows="4" class="form-control" id="mensaje"
                  name="mensaje" th:field="*{message}" placeholder="Mensaje de recomendación"
-          />
+          ></textarea>
       </div>
       <div>
             <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
