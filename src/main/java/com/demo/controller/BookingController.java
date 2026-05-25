@@ -6,6 +6,7 @@ import com.demo.repository.HouseRepository;
 import com.demo.repository.UserRepository;
 
 import com.demo.service.BookingService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -407,7 +408,7 @@ public class BookingController {
 
     // Guarda el formulario de Reservas
     @PostMapping("booking")
-    public String createBooking (@ModelAttribute Booking booking) {
+    public String createBooking (@ModelAttribute Booking booking, @AuthenticationPrincipal User user) {
 
         // Calculos de noches y precios
         booking.setNumberNights(booking.calculateNights(booking.getEstimatedCheckin(),booking.getEstimatedCheckout()));
@@ -418,6 +419,12 @@ public class BookingController {
             return "";
         }
 
+        if (user != null && user.getRole() == Role.ROLE_USER) {
+            // Si el usuario no es admin, entonces asigno el User user cargado por Spring Security
+            // para que no nos asignen una reserva a otro usuario diferente y evitar problemas de seguridad.
+            // Si eres ROLE_ADMIN no entra en este if y sí permite que asocie el usuario que llega de formulario
+            booking.setUserBooking(user);
+        }
         bookingRepository.save(booking);
 
         // Al hacer el cambio dee estado se pierde el "HOST_ID" de la "HOUSE"

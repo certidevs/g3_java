@@ -51,6 +51,12 @@
                         <i class="fa-solid fa-code-fork"></i>Panel control
                     </a>
                 </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item me-1">
+                      <span class="text-light me-3">
+                    <i class="fa-solid fa-user me-1"></i>
+                    <span sec:authentication="name"></span>
+                </span>
+                </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
                     <form th:action="@{/logout}" method="post" class="d-inline">
                         <button type="submit" class="nav-link btn btn-link p-1 border-0">
