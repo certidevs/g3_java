@@ -4,6 +4,7 @@ import com.demo.model.*;
 import com.demo.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -22,14 +23,18 @@ public class DataInitializer implements CommandLineRunner {
     private final BookingRepository bookingRepository;
     private final ReviewRepository reviewRepository;
     private final AmenityRepository amenityRepository;
+    private final PasswordEncoder passwordEncoder;
 
-
-    public DataInitializer(HouseRepository houseRepository, UserRepository userRepository, BookingRepository bookingRepository, ReviewRepository reviewRepository, AmenityRepository amenityRepository) {
+    public DataInitializer(HouseRepository houseRepository, UserRepository userRepository,
+                           BookingRepository bookingRepository, ReviewRepository reviewRepository,
+                           AmenityRepository amenityRepository,
+                           PasswordEncoder passwordEncoder) {
         this.houseRepository = houseRepository;
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
         this.reviewRepository = reviewRepository;
         this.amenityRepository = amenityRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -191,6 +196,61 @@ public class DataInitializer implements CommandLineRunner {
 
         //////////////////////
 
+        User user1 = new User();
+        user1.setUsername("user1");
+        user1.setEmail("user1@gmail.com");
+        user1.setPassword(passwordEncoder.encode("user1"));
+        user1.setRole(Role.ROLE_USER);
+        userRepository.save(user1);
+
+        User user2 = new User();
+        user2.setUsername("user2");
+        user2.setEmail("user2@gmail.com");
+        user2.setPassword(passwordEncoder.encode("user2"));
+        user2.setRole(Role.ROLE_USER);
+        userRepository.save(user2);
+
+        User host1 = new User();
+        host1.setUsername("host1");
+        host1.setEmail("host1@gmail.com");
+        host1.setPassword(passwordEncoder.encode("host1"));
+        host1.setRole(Role.ROLE_ADMIN);
+        userRepository.save(host1);
+
+        // Casa propiedad de Host1
+        House house_test_booking11 = houseRepository.save(House.builder()
+                .title("Barcelona")
+                .description("con piscina")
+                .pricePerNight(145.0)
+                .location("Fuenlabrada")
+                .province("Madrid")
+                .maxGuests(5)
+                .host(host_test_booking)
+                .houseType(HouseType.CASA)
+                .imageUrl("h1.jpg")
+                .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
+                .host(host1)
+                .build()
+        );
+
+        // Casa propiedad de Host1
+        House house_test_booking12 = houseRepository.save(House.builder()
+                .title("Gerona")
+                .description("ventilado")
+                .pricePerNight(25.0)
+                .location("Madrid")
+                .province("Madrid")
+                .maxGuests(1)
+                .host(host1)
+                .houseType(HouseType.CASA)
+                .imageUrl("h1.jpg")
+                .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
+                .build()
+        );
+
+
+
+
         // user host
         // casa
 
@@ -198,12 +258,12 @@ public class DataInitializer implements CommandLineRunner {
         // booking
 
         // Crear usuarios (hosts)
-        User host1 = new User();
-        host1.setUsername("juan");
-        host1.setEmail("juan@test.com");
-        host1.setPassword("password");
-        host1.setRole(Role.ROLE_ADMIN);
-        userRepository.save(host1);
+        User host11 = new User();
+        host11.setUsername("juan");
+        host11.setEmail("juan@test.com");
+        host11.setPassword("password");
+        host11.setRole(Role.ROLE_ADMIN);
+        userRepository.save(host11);
 
         User host2 = new User();
         host2.setUsername("maria");

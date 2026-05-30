@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout/head :: head('Alquiler de casa')}"></head>
+
+<body>
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<main class="container flex-grow-1 my-4 shadow">
+
+  <h1>
+    <i class="fa-solid fa-utensils text-primary me-2"></i>Edición de Reserva
+  </h1>
+
+  <form th:action="@{/booking}" method="post" th:object="${booking}">
+    <!-- TODO casa precargada -->
+    <input type="text" th:field="*{userHouse}" readonly>
+
+    <div class="mb-3">
+      <label for="checkin" class="form-label">Checkin</label>
+      <input type="text" class="form-control" id="checkin"
+             name="checkin" th:field="*{checkin}"
+             onchange="calcularDiferencia()"/>
+    </div>
+
+    <div class="mb-3">
+      <label for="checkout" class="form-label">Checkout</label>
+      <input type="text" class="form-control" id="checkout"
+             name="checkout" th:field="*{checkout}"
+             onchange="calcularDiferencia()"/>
+    </div>
+
+    <div class="mb-3">
+      <label for="diasDiferencia" class="form-label">Nro. de noches :</label>
+      <input type="number" class="form-control" id="diasDiferencia" readonly/>
+    </div>
+
+    <div class="mb-3">
+      <label for="priceNight" class="form-label">Precio por Noche (€)</label>
+      <input type="number" class="form-control" id="priceNight" th:field="*{userHouse.pricePerNight}"
+             onchange="calcularDiferencia()" readonly/>
+    </div>
+
+    <div class="mb-3">
+      <label for="totalPrice" class="form-label">Precio total (€)</label>
+      <input type="number" step="0.01" class="form-control" id="totalPrice"/>
+    </div>
+
+    <label>Estado alquiler</label>
+    <select th:field="*{statusbooking}">
+      <option value="">Seleccione un estado</option>
+      <option th:each="estado : ${estados}"
+              th:value="${estado}"
+              th:text="${estado}">
+      </option>
+    </select>
+
+    <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
+    <a th:href="@{/houses}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i>Cancelar</a>
+
+  </form>
+</main>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+<script th:replace="~{layout/footer :: scripts}"></script>
+<script>
+  // Calcula noches y precio total a partir de las fechas y del precio por noche.
+  function calcularDiferencia() {
+    try {
+      const fechaInicio = document.getElementById("checkin").value;
+      const fechaFin = document.getElementById("checkout").value;
+      const diasInput = document.getElementById("diasDiferencia");
+      const totalInput = document.getElementById("totalPrice");
+      const precioNoche = parseFloat(document.getElementById("priceNight").value);
+
+      // Si falta alguna fecha, limpiamos los dos campos calculados
+      if (!fechaInicio || !fechaFin) {
+        diasInput.value = "";
+        totalInput.value = "";
+        return;
+      }
+
+      const inicio = new Date(fechaInicio);
+      const fin = new Date(fechaFin);
+
+      if (isNaN(inicio) || isNaN(fin)) {
+        alert("Por favor, introduce fechas válidas.");
+        return;
+      }
+
+      const diffMs = fin - inicio;
+
+      if (diffMs < 0) {
+        alert("La fecha final no puede ser anterior a la inicial.");
+        diasInput.value = "";
+        totalInput.value = "";
+        return;
+      }
+
+      // Nro. de noches (1 día = 86400000 ms)
+      const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      diasInput.value = diffDias;
+
+      // Precio total = noches * precio por noche
+      if (!isNaN(precioNoche)) {
+        totalInput.value = (diffDias * precioNoche).toFixed(2);
+      }
+    } catch (error) {
+      console.error("Error calculando reserva:", error);
+    }
+  }
+</script>
+</body>
+</html>

@@ -6,6 +6,7 @@ import com.demo.repository.HouseRepository;
 import com.demo.repository.UserRepository;
 
 import com.demo.service.BookingService;
+import jdk.jshell.Snippet;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,6 +55,15 @@ public class BookingController {
         return "redirect:/index";
 
     }
+
+    @GetMapping("/booking/edit/{id}")
+    public String editBooking (Model model, @PathVariable Long id) {
+
+        model.addAttribute("booking",bookingRepository.findById(id).orElseThrow());
+        model.addAttribute("estados", StatusBooking.values());
+        return "host/booking-form-update";
+    }
+
 
     // LADO ANFITRION
     @GetMapping("/host/pending/{id}")

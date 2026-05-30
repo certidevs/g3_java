@@ -40,6 +40,7 @@ public class HouseRecommended {
     private House houseRecommended;
 
     @ManyToOne
+    @ToString.Exclude
     private User userRecommended;
 
 }

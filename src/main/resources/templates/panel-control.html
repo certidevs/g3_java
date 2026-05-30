@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{layout/head :: head('PANEL DE CONTROL')}"></head>
 
@@ -77,7 +77,9 @@
 <!--  Acciones segun rol-->
 
   <div class="row gap-3">
-  <div class="dropdown col col-md-2 me-3">
+
+
+  <div sec:authorize="hasRole('ADMIN')" class="dropdown col col-md-2 me-3">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Acciones como Anfitrión
       </button>
