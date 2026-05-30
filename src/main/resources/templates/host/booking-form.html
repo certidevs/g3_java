@@ -89,18 +89,9 @@
             <input type="number" class="form-control" id="maxGuests" th:field="*{userHouse.maxGuests}" readonly/>
         </div>
 
-<!--                        Usuario de la reserva-->
-
-        <!-- Cuando pongmaos Srping Security ya no haría falta este selector -->
-        <div class="mb-3">
-            <label for="usuarios" class="form-label">Usuario</label>
-            <select class="form-select" id="usuarios" th:field="*{userBooking}">
-                <option value="" disabled selected>Selecciona un usuario</option>
-                <option th:each="usuario : ${usuarios}"
-                        th:value="${usuario.id}"
-                        th:text="${usuario.username}"></option>
-            </select>
-        </div>
+     <div class="mb-3">
+            <input type="text" class="form-control" th:field="*{userBooking}" readonly>
+     </div>
 
         <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
         <a th:href="@{/houses}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i>Cancelar</a>

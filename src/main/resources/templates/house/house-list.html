@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/head :: head('CASAS')}"></head>
 
 <body>
@@ -7,7 +7,7 @@
 <main class="container flex-grow-1">
 
     <div class="d-flex justify-content-end mb-3">
-        <a th:href="@{/houses/new}" class="btn btn-success">
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/houses/new}" class="btn btn-success">
             <i class="fa-solid fa-plus me-1"></i> Crear álquiler
         </a>
     </div>
@@ -76,7 +76,7 @@
                         <i class="fa-regular fa-eye me-1"></i> Ver Casa
                     </a>
 <!--                    boton de desactivar casa-->
-                    <a th:href="@{/houses/deactivate/{id}(id=${house.id})}"
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/houses/deactivate/{id}(id=${house.id})}"
                        class="btn btn-danger btn-sm w-40 ">
                         <i class="fa-solid fa-house-circle-xmark"></i> Desactivar
                     </a>

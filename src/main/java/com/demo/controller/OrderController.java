@@ -6,12 +6,14 @@ import com.demo.model.User;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.ReviewRepository;
 import com.demo.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class OrderController {
@@ -26,15 +28,19 @@ public class OrderController {
     }
 
     @GetMapping("/orders/new")
-    public String newOrder(Model model, @RequestParam Long houseId) {
+    public String newOrder(Model model, @RequestParam Long houseId,
+                           Authentication autorizacion
+                           ) {
         House house = houseRepository.findById(houseId).orElseThrow();
         Booking order = new Booking();
         order.setUserHouse(house);
         model.addAttribute("booking", order);
-        // Agregar esto:
-        List<User> usuarios = userRepository.findAll();  // ← Si tienes UserRepository
-        model.addAttribute("usuarios", usuarios);
-        return "host/booking-form";
 
+        Optional<User> usuario = userRepository.findByUsername(autorizacion.getName());
+        if (usuario.isPresent()) {
+            model.addAttribute("usuario", usuario);
+            return "host/booking-form";
+        }
+        return "redirect:/{houses}";
     }
 }

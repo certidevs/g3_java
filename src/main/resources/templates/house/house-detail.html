@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/head :: head('Detalles de casa')}"></head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -12,12 +12,12 @@
         <div>
             <h1 class="mb-2" th:text="${house.title}">Nombre</h1>
 
-            <a th:href="@{/houses/deactivate/{id}(id=${house.id})}"
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/houses/deactivate/{id}(id=${house.id})}"
                class="btn btn-warning btn-sm mt-1">
                 <i class="fa-solid fa-ban me-1"></i> Desactivar
             </a>
 
-            <a th:href="@{/houses/edit/{id}(id=${house.id})}"
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/houses/edit/{id}(id=${house.id})}"
                class="btn btn-success btn-sm mt-1">
                 <i class="fa-solid fa-pencil me-1"></i> Editar
             </a>
