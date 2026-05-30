@@ -33,7 +33,7 @@ public class HouseController {
 
     @GetMapping("/houses")
     public String houseList(Model model,
-        @RequestParam(required = false)StatusReserva reserve,//se agg el reques param para filtrar por parametro de reserva
+        @RequestParam(required = false) StatusReserva reserve,//se agg el reques param para filtrar por parametro de reserva
         @RequestParam(required = false) Double pricePerNight,
         @RequestParam(required = false) String title,
         @RequestParam(required = false) String province
