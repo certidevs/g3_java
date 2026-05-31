@@ -7,18 +7,13 @@
 
 <main class="container flex-grow-1">
 
+    <!-- TODO: I want to add images to Users and details of houses in each review -->
     <h1 class="mb-4">
         <i class="fa-regular fa-comments text-primary me-2"></i> Opiniones de clientes
     </h1>
 
     <div th:if="${reviews.isEmpty()}" class="alert alert-light border">
         Aún no hay reseñas.
-    </div>
-    <div th:if="${message}" class="alert alert-success fade show alert-dismissible" role="alert">
-        <i class="fa-solid fa-check-circle"></i>
-        <span th:text="${message}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-
     </div>
 
     <div class="row row-cols-1 row-cols-md-2 g-3">

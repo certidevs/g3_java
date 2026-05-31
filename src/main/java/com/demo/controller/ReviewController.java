@@ -68,31 +68,11 @@ class ReviewController {
     @PostMapping
     public String saveReview(@ModelAttribute Review review, RedirectAttributes redirectAttributes) {
         // TODO reviewService.isValid(review)
-        //         si no es correcta redirectAttributes.addFlashAttribute("error", "Tu review no cumple los terminos y condiciones de la plataforma");
+        //         si no es correcta redirectAttributes.addFlashAttribute("review_error", "Tu review no cumple los terminos y condiciones de la plataforma");
         reviewRepository.save(review);
-        redirectAttributes.addFlashAttribute("message", "Review saved successfully.");
-        // return "redirect:/houses/" + review.getHouse().getId();
-        return "redirect:/reviews"; // TODO: ahora mismo esta haciendo redirect a review-list, para mi tiene sentido que vaya a la foto a la que se hizo la review
-    }
+        redirectAttributes.addFlashAttribute("review_message", "La reseña se ha guardado correctamente.");
 
-    /*
-    @GetMapping("/deactivate/{id}")
-    public String reviewDeactivate(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        Optional<Review> reviewOptional = reviewRepository.findById(id);
-        if (reviewOptional.isPresent()) {
-            Review review = reviewOptional.get();
-            if (review.getActive() != false) {
-                review.setActive(false);
-                reviewRepository.save(review);
-                redirectAttributes.addFlashAttribute("message", "Review deactivated successfully.");
-            } else {
-                redirectAttributes.addFlashAttribute("message", "Review is already deactivated.");
-            }
-        } else {
-            redirectAttributes.addFlashAttribute("message", "Review not found.");
-        }
-        return "redirect:/reviews";
+        return "redirect:/houses/" + review.getHouse().getId() + "#reviews";
     }
-    */
 
 }

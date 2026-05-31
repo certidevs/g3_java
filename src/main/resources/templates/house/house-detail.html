@@ -104,21 +104,25 @@
     </section>
 
     <!-- Opiniones -->
-    <h2 class="mt-5">
+    <h2 id="reviews" class="mt-5">
         <i class="fa-regular fa-comments text-primary me-2"></i> Opiniones de nuestros clientes
     </h2>
+
+    <div th:if="${review_message}" class="alert alert-success fade show alert-dismissible" role="alert">
+        <i class="fa-solid fa-check-circle"></i>
+        <span th:text="${review_message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 
     <a class="btn btn-success mb-3"  th:href="@{/reviews/new(houseId=${house.id})}">
         <i class="fa-solid fa-plus"></i> Escribir reseña
     </a>
 
-<!--    <div th:if="${reviews.isEmpty()}" class="alert alert-light border">-->
     <div th:if="${#lists.isEmpty(reviews)}" class="alert alert-light border">
         <i class="fa-regular fa-face-smile me-1"></i>
         Nadie ha comentado todavía, sé el primero en escribir una opinión.
     </div>
 
-<!--    <div class="row row-cols-1 row-cols-md-2 g-3" th:unless="${reviews.isEmpty()}">-->
     <div class="row row-cols-1 row-cols-md-2 g-3" th:unless="${#lists.isEmpty(reviews)}">
         <div class="col" th:each="review : ${reviews}">
             <div class="card h-100 shadow-sm">
