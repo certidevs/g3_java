@@ -19,7 +19,12 @@
 
     <!--    Formulario de entrada de datos-->
 
-  <form th:action="@{/recommended}" method="post" th:object="${recommendation}">
+    <div>
+        <a th:href="@{/agenda}" class="btn btn-primary mb-2">
+            <i class="fa-solid fa-clipboard-list"></i>Agenda</a>
+    </div>
+
+    <form th:action="@{/recommended}" method="post" th:object="${recommendation}">
         <!--        Estimatedcheckin-->
       <input type="hidden" name="houseId" th:value="${recommendation.houseRecommended.id}" readonly/>
       <input type="hidden" name="userFromId" th:value="${recommendation.userRecommended.id}" readonly/>

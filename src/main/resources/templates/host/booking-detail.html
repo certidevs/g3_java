@@ -20,7 +20,14 @@
     <p class="card-text" th:text="| Nro. de noches : ${booking.numberNights}|"></p>
     <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |"></p>
     <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|"></p>
-    <a sec:authorize="hasRole('ADMIN')" th:href="@{/booking/edit/{id}(id=${booking.id})}" class="btn btn-primary">Editar</a>
+
+    <div sec:authorize="hasRole('ADMIN')" class="card-footer bg-transparent border-0 pt-0">
+        <a
+             th:href="@{/booking/edit/{id}(id=${booking.id})}"
+             class="btn btn-outline-primary btn-sm w-40">
+            <i class="fa-solid fa-pen-to-square"></i>Editar</a>
+    </div>
+
 </div>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
