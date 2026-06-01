@@ -3,44 +3,32 @@ package com.demo.controller;
 import com.demo.model.*;
 import com.demo.repository.BookingRepository;
 import com.demo.repository.HouseRepository;
-import com.demo.repository.UserRepository;
 
 import com.demo.service.BookingService;
-import jdk.jshell.Snippet;
+import com.demo.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import tools.jackson.databind.ser.std.DelegatingSerializer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Controller
 public class BookingController {
 
     private final BookingRepository bookingRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final HouseRepository houseRepository;
     private final BookingService bookingService;
 
-    public BookingController(BookingRepository bookingRepository,
-                             UserRepository userRepository,
-                             HouseRepository houseRepository,
-                             BookingService bookingService) {
-        this.bookingRepository = bookingRepository;
-        this.userRepository = userRepository;
-        this.houseRepository = houseRepository;
-        this.bookingService = bookingService;
-    }
-
-
     // BOOKING ID.
     @GetMapping("/booking/{id}")
-    public String getBookingById (Model model,@PathVariable Long id)
-    {
+    public String getBookingById(Model model, @PathVariable Long id) {
         Optional<Booking> booking = bookingRepository.findById(id);
         if (booking.isPresent()) {
 
@@ -57,9 +45,9 @@ public class BookingController {
     }
 
     @GetMapping("/booking/edit/{id}")
-    public String editBooking (Model model, @PathVariable Long id) {
+    public String editBooking(Model model, @PathVariable Long id) {
 
-        model.addAttribute("booking",bookingRepository.findById(id).orElseThrow());
+        model.addAttribute("booking", bookingRepository.findById(id).orElseThrow());
         model.addAttribute("estados", StatusBooking.values());
         return "host/booking-form-update";
     }
@@ -67,10 +55,9 @@ public class BookingController {
 
     // LADO ANFITRION
     @GetMapping("/host/pending/{id}")
-    public String listHostPending (Model model, @PathVariable Long id)
-    {
+    public String listHostPending(Model model, @PathVariable Long id) {
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             User validUser = user.get();
 
@@ -80,22 +67,20 @@ public class BookingController {
 
 
             // Atributos de listas pasados al HTML
-            model.addAttribute("user",validUser);
-            model.addAttribute("listBookingsHostPending",listBookingHost);
+            model.addAttribute("user", validUser);
+            model.addAttribute("listBookingsHostPending", listBookingHost);
 
             return "/host/booking-list-pending-host";
-        }
-        else {
+        } else {
             return "redirect:/index";
         }
 
     }
 
     @GetMapping("/host/confirmed/{id}")
-    public String listHostConfirmed (Model model, @PathVariable Long id)
-    {
+    public String listHostConfirmed(Model model, @PathVariable Long id) {
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             User validUser = user.get();
 
@@ -105,22 +90,20 @@ public class BookingController {
 
 
             // Atributos de listas pasados al HTML
-            model.addAttribute("user",validUser);
-            model.addAttribute("listBookingsHostConfirmed",listBookingHost);
+            model.addAttribute("user", validUser);
+            model.addAttribute("listBookingsHostConfirmed", listBookingHost);
 
             return "/host/booking-list-confirmed-host";
-        }
-        else {
+        } else {
             return "redirect:/index";
         }
 
     }
 
     @GetMapping("/host/cancelled/{id}")
-    public String listHostCancelled (Model model, @PathVariable Long id)
-    {
+    public String listHostCancelled(Model model, @PathVariable Long id) {
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             User validUser = user.get();
 
@@ -130,22 +113,20 @@ public class BookingController {
 
 
             // Atributos de listas pasados al HTML
-            model.addAttribute("user",validUser);
-            model.addAttribute("listBookingsHostCancelled",listBookingHost);
+            model.addAttribute("user", validUser);
+            model.addAttribute("listBookingsHostCancelled", listBookingHost);
 
             return "/host/booking-list-cancelled-host";
-        }
-        else {
+        } else {
             return "redirect:/index";
         }
 
     }
 
     @GetMapping("/host/completed/{id}")
-    public String listHostCompleted (Model model, @PathVariable Long id)
-    {
+    public String listHostCompleted(Model model, @PathVariable Long id) {
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             User validUser = user.get();
 
@@ -155,12 +136,11 @@ public class BookingController {
 
 
             // Atributos de listas pasados al HTML
-            model.addAttribute("user",validUser);
-            model.addAttribute("listBookingsHostCompleted",listBookingHost);
+            model.addAttribute("user", validUser);
+            model.addAttribute("listBookingsHostCompleted", listBookingHost);
 
             return "/host/booking-list-completed-host";
-        }
-        else {
+        } else {
             return "redirect:/index";
         }
 
@@ -169,10 +149,9 @@ public class BookingController {
     // LADO HUESPED
 
     @GetMapping("/guest/pending/{id}")
-    public String listGuestPending (Model model, @PathVariable Long id)
-    {
+    public String listGuestPending(Model model, @PathVariable Long id) {
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             User validUser = user.get();
 
@@ -182,22 +161,20 @@ public class BookingController {
 
 
             // Atributos de listas pasados al HTML
-            model.addAttribute("user",validUser);
-            model.addAttribute("listBookingsGuestPending",listBookingGuest);
+            model.addAttribute("user", validUser);
+            model.addAttribute("listBookingsGuestPending", listBookingGuest);
 
             return "/guest/booking-list-pending";
-        }
-        else {
+        } else {
             return "redirect:/index";
         }
 
     }
 
     @GetMapping("/guest/cancelled/{id}")
-    public String listGuestCancelled (Model model, @PathVariable Long id)
-    {
+    public String listGuestCancelled(Model model, @PathVariable Long id) {
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             User validUser = user.get();
 
@@ -207,22 +184,20 @@ public class BookingController {
 
 
             // Atributos de listas pasados al HTML
-            model.addAttribute("user",validUser);
-            model.addAttribute("listBookingsGuestCancelled",listBookingGuest);
+            model.addAttribute("user", validUser);
+            model.addAttribute("listBookingsGuestCancelled", listBookingGuest);
 
             return "/guest/booking-list-cancelled";
-        }
-        else {
+        } else {
             return "redirect:/index";
         }
 
     }
 
     @GetMapping("/guest/completed/{id}")
-    public String listGuestCompleted (Model model, @PathVariable Long id)
-    {
+    public String listGuestCompleted(Model model, @PathVariable Long id) {
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             User validUser = user.get();
 
@@ -232,22 +207,20 @@ public class BookingController {
 
 
             // Atributos de listas pasados al HTML
-            model.addAttribute("user",validUser);
-            model.addAttribute("listBookingsGuestCompleted",listBookingGuest);
+            model.addAttribute("user", validUser);
+            model.addAttribute("listBookingsGuestCompleted", listBookingGuest);
 
             return "/guest/booking-list-completed";
-        }
-        else {
+        } else {
             return "redirect:/index";
         }
 
     }
 
     @GetMapping("/guest/confirmed/{id}")
-    public String listGuestConfirmed (Model model, @PathVariable Long id)
-    {
+    public String listGuestConfirmed(Model model, @PathVariable Long id) {
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             User validUser = user.get();
 
@@ -257,12 +230,11 @@ public class BookingController {
 
 
             // Atributos de listas pasados al HTML
-            model.addAttribute("user",validUser);
-            model.addAttribute("listBookingsGuestConfirmed",listBookingGuest);
+            model.addAttribute("user", validUser);
+            model.addAttribute("listBookingsGuestConfirmed", listBookingGuest);
 
             return "/guest/booking-list-confirmed";
-        }
-        else {
+        } else {
             return "redirect:/index";
         }
 
@@ -272,24 +244,24 @@ public class BookingController {
 
     @GetMapping("/booking/from-pending-to-confirmed/{id}")
     // id del booking
-    public String actionFromPendingToConfirmed (@PathVariable Long id, Model model) {
+    public String actionFromPendingToConfirmed(@PathVariable Long id, Model model) {
 
         Optional<Booking> bookingOptional = bookingRepository.findById(id);
-            if (bookingOptional.isPresent()) {
-                Booking bookingPresent = bookingOptional.get();
-                bookingPresent.setStatusbooking(StatusBooking.CONFIRMED);
-                bookingRepository.save(bookingPresent);
-                User user = bookingPresent.getUserHouse().getHost();
-                return "redirect:/host/pending/" + user.getId();
-            }
+        if (bookingOptional.isPresent()) {
+            Booking bookingPresent = bookingOptional.get();
+            bookingPresent.setStatusbooking(StatusBooking.CONFIRMED);
+            bookingRepository.save(bookingPresent);
+            User user = bookingPresent.getUserHouse().getHost();
+            return "redirect:/host/pending/" + user.getId();
+        }
 
-            return "redirect:/houses";
+        return "redirect:/houses";
 
     }
 
     @GetMapping("/booking/from-pending-to-cancelled/{id}")
     // id del booking
-    public String actionFromPendingToCancelled (@PathVariable Long id, Model model) {
+    public String actionFromPendingToCancelled(@PathVariable Long id, Model model) {
 
         Optional<Booking> bookingOptional =
                 bookingRepository.findById(id);
@@ -306,7 +278,7 @@ public class BookingController {
 
     @GetMapping("/booking/from-confirmed-to-cancelled/{id}")
     // id del booking
-    public String actionFromConfirmedToCancelled (@PathVariable Long id, Model model) {
+    public String actionFromConfirmedToCancelled(@PathVariable Long id, Model model) {
 
         Optional<Booking> bookingOptional =
                 bookingRepository.findById(id);
@@ -323,7 +295,7 @@ public class BookingController {
     }
 
     @GetMapping("/booking/from-confirmed-to-completed/{id}")
-    public String actionFromConfirmedToCompleted (@PathVariable Long id,Model model) {
+    public String actionFromConfirmedToCompleted(@PathVariable Long id, Model model) {
 
         Optional<Booking> bookingOptional =
                 bookingRepository.findById(id);
@@ -338,7 +310,7 @@ public class BookingController {
             House house = bookingPresent.getUserHouse();
             house.setReserve(StatusReserva.DISPONIBLE);
 
-            User user=bookingPresent.getUserHouse().getHost();
+            User user = bookingPresent.getUserHouse().getHost();
 
             return "redirect:/host/completed/" + user.getId();
 
@@ -350,7 +322,7 @@ public class BookingController {
 
     @GetMapping("/booking/from-pending-to-cancelled-guest/{id}")
     // id del booking
-    public String actionFromPendingToCancelledGuest (@PathVariable Long id, Model model) {
+    public String actionFromPendingToCancelledGuest(@PathVariable Long id, Model model) {
 
         Optional<Booking> bookingOptional =
                 bookingRepository.findById(id);
@@ -379,7 +351,7 @@ public class BookingController {
             return ""; // TODO avisar al usuario de que las fechas están mal
 
         booking.setStatusbooking(StatusBooking.CONFIRMED);
-        User usuario = userRepository.findById(userid).orElseThrow();
+        User usuario = userService.findById(userid).orElseThrow();
 
         bookingService.recalculateBooking(booking);
 
@@ -392,7 +364,7 @@ public class BookingController {
 
     // El id es la casa seleccionada
     @GetMapping("booking/new/{houseId}")
-    public String newBooking(Model model,@PathVariable Long houseId) {
+    public String newBooking(Model model, @PathVariable Long houseId) {
 
         Optional<House> house = houseRepository.findById(houseId);
         if (house.isPresent()) {
@@ -407,7 +379,7 @@ public class BookingController {
             // Cargamos los tipos de reserva permitidos
             //model.addAttribute("tiposreserva", StatusBooking.values());
             // Cargamos todos los usuarios que son posibles huespedes.
-            model.addAttribute("usuarios", userRepository.findAll());
+            model.addAttribute("usuarios", userService.findAll());
 
             return "host/booking-form";
         }
@@ -418,13 +390,13 @@ public class BookingController {
 
     // Guarda el formulario de Reservas
     @PostMapping("booking")
-    public String createBooking (@ModelAttribute Booking booking, @AuthenticationPrincipal User user) {
+    public String createBooking(@ModelAttribute Booking booking, @AuthenticationPrincipal User user) {
 
         // Calculos de noches y precios
-        booking.setNumberNights(booking.calculateNights(booking.getEstimatedCheckin(),booking.getEstimatedCheckout()));
+        booking.setNumberNights(booking.calculateNights(booking.getEstimatedCheckin(), booking.getEstimatedCheckout()));
         booking.setTotalPrice(booking.calculateTotalPrice(booking.getNumberNights()));
 
-        if (!bookingService.validateDates(booking)){
+        if (!bookingService.validateDates(booking)) {
             // model.addatribute  error "Fechas incorrectas"
             return "";
         }

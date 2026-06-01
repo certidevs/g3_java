@@ -3,11 +3,11 @@ package com.demo.controller;
 import com.demo.model.House;
 import com.demo.model.HouseRecommended;
 import com.demo.model.User;
-import com.demo.repository.BookingRepository;
 import com.demo.repository.HouseRecommendedRepository;
 import com.demo.repository.HouseRepository;
-import com.demo.repository.UserRepository;
 import com.demo.service.BookingService;
+import com.demo.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,30 +17,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@AllArgsConstructor
 public class RecommendedController {
 
     private final HouseRepository houseRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final HouseRecommendedRepository houseRecommendedRepository;
 
-    public RecommendedController(
-                             HouseRepository houseRepository,
-                             UserRepository userRepository,
-                             HouseRecommendedRepository houseRecommendedRepository) {
-        this.houseRepository = houseRepository;
-        this.userRepository = userRepository;
-        this.houseRecommendedRepository = houseRecommendedRepository;
-    }
-
-
     @GetMapping("recommended/{token}/{idHouse}/{idUsuario}")
-    public String createRecommended (Model model,
-                         @PathVariable String token,
-                         @PathVariable Long idHouse,
-                         @PathVariable Long idUsuario) {
+    public String createRecommended(Model model,
+                                    @PathVariable String token,
+                                    @PathVariable Long idHouse,
+                                    @PathVariable Long idUsuario) {
 
         Optional<House> house = houseRepository.findById(idHouse);
-        Optional<User> user = userRepository.findById(idUsuario);
+        Optional<User> user = userService.findById(idUsuario);
 
         if (house.isPresent() && user.isPresent()) {
 
@@ -59,12 +50,10 @@ public class RecommendedController {
 
             recommendation.setEmailFrom(userValid.getEmail());
 
-            model.addAttribute("recommendation",recommendation);
+            model.addAttribute("recommendation", recommendation);
 
             return "/guest/house-recommended";
-        }
-        else
-        {
+        } else {
             return "redirect:/booking/" + idUsuario.toString();
         }
 
@@ -83,17 +72,10 @@ public class RecommendedController {
 
         // 1) Cargar entidades base (las que estaban en el formulario son referencias, las recargamos por id)
         House house = houseRepository.findById(houseId).orElseThrow();
-        User userFrom = userRepository.findById(userFromId).orElseThrow();
+        User userFrom = userService.findById(userFromId).orElseThrow();
 
-        // 2) Resolver destinatario: primero por token, si falla por email
-        User userTo = null;
-        if (tokenTo != null && !tokenTo.isBlank()) {
-            userTo = userRepository.verificarToken(tokenTo).orElse(null);
-        }
-        if (userTo == null && emailTo != null && !emailTo.isBlank()) {
-            userTo = userRepository.verificarEmail(emailTo).orElse(null);
-        }
-
+        // 2) Resolver destinatario, por token y luego email, abstraído en el UserService
+        User userTo = userService.resolveUserByTokenOrEmail(tokenTo, emailTo).orElse(null);
         if (userTo == null) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Ni el token ni el correo son válidos.");
@@ -132,21 +114,20 @@ public class RecommendedController {
     }
 
     @GetMapping("recommended-show/{idUsuario}")
-    public String showRecommendations(Model model,@PathVariable Long idUsuario)
-    {
+    public String showRecommendations(Model model, @PathVariable Long idUsuario) {
         // Recomendaciones lanzadas
         List<HouseRecommended> recommendedFrom = houseRecommendedRepository.listHousesFrom(idUsuario);
 
 
         // Recomendaciones obtenidas
-        User datosUsuario = userRepository.findById(idUsuario).orElseThrow();
+        User datosUsuario = userService.findById(idUsuario).orElseThrow();
         String token = datosUsuario.getTokenforRecommended();
         String email = datosUsuario.getEmail();
 
-        List<HouseRecommended> recommendedToTokenEmail  =   houseRecommendedRepository.listHousesToEmail(email,token);
+        List<HouseRecommended> recommendedToTokenEmail = houseRecommendedRepository.listHousesToEmail(email, token);
 
-        model.addAttribute("recommfrom",recommendedFrom);
-        model.addAttribute("recommto",recommendedToTokenEmail);
+        model.addAttribute("recommfrom", recommendedFrom);
+        model.addAttribute("recommto", recommendedToTokenEmail);
 
         return "/guest/recommended-list";
 
