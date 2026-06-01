@@ -76,6 +76,9 @@ class UserController {
             return "redirect:/users/" + user.getId();
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
+            if (userForm.getId() == null) {
+                return "redirect:/users/new";
+            }
             return "redirect:/users/edit/" + userForm.getId();
         }
 

@@ -6,7 +6,43 @@
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
 <main class="container flex-grow-1 my-4">
-    <p th:text="${user.id}"></p>
+
+    <h1 class="mb-3">
+        <i class="fa-solid fa-user text-primary me-2"></i>
+        <span th:text="${'Usuario: ' + user.username}"></span>
+    </h1>
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+            <!--
+            <div class="text-center mb-3">
+                <img th:if="${user.imageUrl != null}" th:src="${user.imageUrl}"
+                     class="rounded-circle object-fit-cover"
+                     width="150" height="150" alt="Foto perfil">
+            </div>
+            -->
+            <dl class="row mb-0">
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9" th:text="${user.id}"></dd>
+                <dt class="col-sm-3">Username</dt>
+                <dd class="col-sm-9" th:text="${user.username}"></dd>
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9" th:text="${user.email}"></dd>
+                <dt class="col-sm-3">Rol</dt>
+                <dd class="col-sm-9" th:text="${user.role}"></dd>
+            </dl>
+        </div>
+        <div class="card-footer text-end">
+            <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-sm btn-outline-success">
+                <i class="fa-solid fa-user-pen me-1"></i> Editar
+            </a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/users/deactivate/{id}(id=${user.id})}" class="btn btn-sm btn-outline-danger">
+                <i class="fa-solid fa-trash me-1"></i> Desactivar
+            </a>
+        </div>
+
+    </div>
 </main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
