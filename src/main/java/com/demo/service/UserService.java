@@ -1,17 +1,17 @@
 package com.demo.service;
 
-import com.demo.controller.dto.RegisterForm;
-import com.demo.model.House;
+import com.demo.dto.RegisterForm;
 import com.demo.model.Role;
 import com.demo.model.User;
 import com.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
-//import org.springframework.security.core.userdetails.User;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +22,11 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public User getByIdOrThrow(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+    }
 
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
@@ -36,6 +41,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
+    @NullMarked
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con username: " + username));
@@ -58,6 +64,71 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(form.getPassword())); // password cifrada con bcrypt
         user.setRole(Role.ROLE_USER);
         return userRepository.save(user);
+    }
+
+    public User update(User userForm, User actor) {
+        User userDB = getByIdOrThrow(userForm.getId());
+
+        userRepository.findByEmail(userForm.getEmail())
+                .filter(u -> !u.getId().equals(userForm.getId()))
+                .ifPresent(u -> {
+                    throw new IllegalArgumentException("El correo electrónico ya existe");
+                });
+
+        userRepository.findByUsername(userForm.getUsername())
+                .filter(u -> !u.getId().equals(userForm.getId()))
+                .ifPresent(u -> {
+                    throw new IllegalArgumentException("El nombre de usuario ya existe");
+                });
+
+        userDB.setUsername(userForm.getUsername());
+        userDB.setEmail(userForm.getEmail());
+        userDB.setFirstName(userForm.getFirstName());
+        userDB.setLastName(userForm.getLastName());
+        if (actor.getRole() == Role.ROLE_ADMIN) {
+            userDB.setRole(userForm.getRole());
+        } else {
+            userDB.setRole(Role.ROLE_USER);
+        }
+        // userDB.setImageUrl(userForm.getImageUrl());
+
+        if (StringUtils.hasText(userForm.getPassword())) {
+            userDB.setPassword(passwordEncoder.encode(userForm.getPassword()));
+        }
+
+        return userRepository.save(userDB);
+    }
+
+    public User create(User userForm, User actor) {
+        if (userRepository.existsByUsername(userForm.getUsername()))
+            throw new IllegalArgumentException("El nombre de usuario ya existe");
+
+        if (userRepository.existsByEmail(userForm.getEmail()))
+            throw new IllegalArgumentException("El correo electrónico ya existe");
+
+        if (!StringUtils.hasText(userForm.getPassword()))
+            throw new IllegalArgumentException("La contraseña es obligatoria");
+
+        if (userForm.getRole() == null) {
+            userForm.setRole(Role.ROLE_USER);
+        }
+
+        if (actor.getRole() != Role.ROLE_ADMIN && (userForm.getRole() != Role.ROLE_USER)) {
+            throw new IllegalArgumentException("No puedes asignar un rol diferente a USER");
+        }
+
+        User newUser = User.builder()
+                .username(userForm.getUsername())
+                .email(userForm.getEmail())
+                .firstName(userForm.getFirstName())
+                .lastName(userForm.getLastName())
+                .role(userForm.getRole())
+                .password(passwordEncoder.encode(userForm.getPassword()))
+                // .active(true)
+                // .imageUrl(...)
+                .build();
+
+        return userRepository.save(newUser);
     }
 
     public List<User> getAgendaUsers(String textFind) {

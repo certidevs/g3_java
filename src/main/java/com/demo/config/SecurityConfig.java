@@ -27,13 +27,11 @@ public class SecurityConfig {
 
         http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin())); // h2 usa iframes
 
-
-
         http.authorizeHttpRequests(
                 auth -> auth
                         // rutas publicas tanto GET como POST
                         .requestMatchers( "/", "/login",
-                                "/register", "/css/**", "/images/**", "/webjars/**").permitAll()
+                                "/register", "/css/**", "/images/**", "/js/**", "/webjars/**").permitAll()
 
                         // de golpe:
 //                .requestMatchers(HttpMethod.GET, "/restaurants", "/restaurants/*", "/dishes", "/dishes/*").permitAll()
@@ -48,14 +46,12 @@ public class SecurityConfig {
 //
                         .requestMatchers(HttpMethod.GET, "/panel-control/*").authenticated()
 
-
 //                        .requestMatchers(HttpMethod.GET, "/reviews").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/reviews").authenticated()
+//                        .requestMatchers(HttpMethod.GET, "/reviews/new").authenticated()
+//                        .requestMatchers(HttpMethod.GET , "/reviews/edit/*").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.GET , "/reviews/delete/*").hasRole("ADMIN")
 //                        .requestMatchers(HttpMethod.GET, "/reviews/*").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/reviews").hasRole("USER")
-//                        .requestMatchers(HttpMethod.GET, "/reviews/new").hasRole("USER")
-//                        .requestMatchers(HttpMethod.GET, "/reviews/edit/*").hasRole("USER")
-//                        .requestMatchers(HttpMethod.GET, "/reviews/disable/*").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.GET, "/reviews/delete/*").hasRole("ADMIN")
 
                         // solo user normal, no admin
 //                .requestMatchers(HttpMethod.GET, "/orders").hasRole("USER")
@@ -63,6 +59,9 @@ public class SecurityConfig {
 //                .requestMatchers(HttpMethod.POST, "/orders/**").hasRole("USER")
                         // todos los roles
                         .requestMatchers("/orders", "/orders/**").authenticated()
+                        .requestMatchers("/users/new").hasRole("ADMIN")
+
+                        .requestMatchers("/profile").authenticated()
 
                         // lo demás autenticado si o si
                         .anyRequest().authenticated()

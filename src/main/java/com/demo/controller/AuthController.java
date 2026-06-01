@@ -1,7 +1,7 @@
 package com.demo.controller;
 
 
-import com.demo.controller.dto.RegisterForm;
+import com.demo.dto.RegisterForm;
 import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
