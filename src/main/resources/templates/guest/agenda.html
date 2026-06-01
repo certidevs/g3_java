@@ -12,6 +12,10 @@
 
 <!--    Busqueda por nombre y apellidos-->
 
+    <div>
+        <button onclick="volverAtras()">Volver</button>
+    </div>
+
     <div id="DivFiltrado"  class="mb-3">
         <h5>Búsqueda avanzada de usuarios</h5>
         <form th:action="@{/agenda-filter}" method="get" class="row align-items-end">
@@ -47,5 +51,14 @@
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>
-</body>
-</html>
+<script>
+    function volverAtras() {
+        if (window.history.length > 1) {
+            // Retrocede una página en el historial
+            window.history.back();
+        } else {
+            // Si no hay historial, redirige a una página por defecto
+            window.location.href = '/';
+        }
+    }
+</script>
