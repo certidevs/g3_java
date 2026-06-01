@@ -219,11 +219,11 @@ public class DataInitializer implements CommandLineRunner {
 
         // Casa propiedad de Host1
         House house_test_booking11 = houseRepository.save(House.builder()
-                .title("Barcelona")
-                .description("con piscina")
-                .pricePerNight(145.0)
-                .location("Fuenlabrada")
-                .province("Madrid")
+                .title("Aparatemento")
+                .description("céntrico")
+                .pricePerNight(105.0)
+                .location("Barcelona")
+                .province("Barcelona")
                 .maxGuests(5)
                 .host(host_test_booking)
                 .houseType(HouseType.CASA)
@@ -235,12 +235,12 @@ public class DataInitializer implements CommandLineRunner {
 
         // Casa propiedad de Host1
         House house_test_booking12 = houseRepository.save(House.builder()
-                .title("Gerona")
-                .description("ventilado")
+                .title("Hostal el Limón")
+                .description("Barrio El Casar")
                 .pricePerNight(25.0)
-                .location("Madrid")
+                .location("Getafe")
                 .province("Madrid")
-                .maxGuests(1)
+                .maxGuests(3)
                 .host(host1)
                 .houseType(HouseType.CASA)
                 .imageUrl("h1.jpg")
