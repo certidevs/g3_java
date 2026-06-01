@@ -1,8 +1,8 @@
 package com.demo.controller;
 
 import com.demo.model.*;
-import com.demo.repository.UserRepository;
 import com.demo.service.BookingService;
+import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class ControlPanelController {
 
     private final BookingService bookingService;
-    private final UserRepository userRepository;
+    private final UserService userService;
     // private final HouseRecommendedRepository houseRecommendedRepository;
 
     @GetMapping("panel-control/{userId}")
@@ -28,7 +28,7 @@ public class ControlPanelController {
             return "redirect:/panel-control/" + currentUser.getId();
         }
 
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userService.findById(userId);
         if (user.isPresent()) {
             User validUser = user.get();
 
@@ -64,7 +64,7 @@ public class ControlPanelController {
                                 @RequestParam(required = false) LocalDateTime searchDate,
                                 @RequestParam(required = false) Double price) {
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             User validUser = user.get();
 

@@ -5,7 +5,7 @@ import com.demo.model.House;
 import com.demo.model.User;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.ReviewRepository;
-import com.demo.repository.UserRepository;
+import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,33 +21,28 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AgendaController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     // Obtiene la tabla entera
 
     @GetMapping("agenda")
     public String showAgenda(Model model) {
 
-        List<User> agenda = userRepository.userallOrderFirstName();
-
-        model.addAttribute("agenda",agenda);
+        List<User> agenda = userService.getAgendaUsers();
+        model.addAttribute("agenda", agenda);
 
         return "/guest/agenda";
-
-
     }
 
     // Para filtrar
     // FILTRADO
     @GetMapping("agenda-filter")
     public String listaFiltrada(Model model,
-                                @RequestParam(required = false) String textfind)
-
-    {
+                                @RequestParam(required = false) String textfind) {
 
 
-        List<User> agenda = userRepository.userallOrderFirstNameFilterText(textfind);
-        model.addAttribute("agenda",agenda);
+        List<User> agenda = userService.getAgendaUsers(textfind);
+        model.addAttribute("agenda", agenda);
 
         return "/guest/agenda";
 
