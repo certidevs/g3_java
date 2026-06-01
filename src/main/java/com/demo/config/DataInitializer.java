@@ -219,7 +219,7 @@ public class DataInitializer implements CommandLineRunner {
 
         // Casa propiedad de Host1
         House house_test_booking11 = houseRepository.save(House.builder()
-                .title("Aparatemento")
+                .title("Apartamento")
                 .description("céntrico")
                 .pricePerNight(105.0)
                 .location("Barcelona")
