@@ -59,7 +59,9 @@ public class SecurityConfig {
 //                .requestMatchers(HttpMethod.POST, "/orders/**").hasRole("USER")
                         // todos los roles
                         .requestMatchers("/orders", "/orders/**").authenticated()
+
                         .requestMatchers("/users/new").hasRole("ADMIN")
+                        .requestMatchers("/users/deactivate/*").hasRole("ADMIN")
 
                         .requestMatchers("/profile").authenticated()
 

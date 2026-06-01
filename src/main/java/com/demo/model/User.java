@@ -2,6 +2,7 @@ package com.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,6 @@ import java.util.List;
 @Setter
 @Table(name = "users")
 public class User implements UserDetails{
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +34,7 @@ public class User implements UserDetails{
     @Column(nullable = false, unique = true)
     private String email;
 
-//    /** Contraseña codificada con {@link org.springframework.security.crypto.password.DelegatingPasswordEncoder}. */
+    /** Contraseña codificada con {@link org.springframework.security.crypto.password.DelegatingPasswordEncoder}. */
     @Column(nullable = false)
     private String password;
 
@@ -43,10 +43,14 @@ public class User implements UserDetails{
     @Column(nullable = false)
     private Role role;
 
+    @Builder.Default
+    @Column(columnDefinition = "boolean default true", nullable = false)
+    private Boolean active = true;
+
     // Token para compartir entre usuarios bookings.
     private String tokenforRecommended;
 
-    public User() {
+    public User() { // TODO: QUE ES ESTO ??, debería moverse a la logica de creación desde la bdd o por el estilo, que pasa cuando un User no se crea desde aca?????
         // Creamos un token propio del usuario.
         SecureRandom scr = new SecureRandom();
         StringBuilder sb = new StringBuilder(8);
@@ -59,10 +63,15 @@ public class User implements UserDetails{
     }
 
     @Override
+    @NullMarked
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
+    @Override
+    public boolean isEnabled() {
+        return active;
+    }
 //    @Override
 //    public boolean isAccountNonExpired() {
 //        return UserDetails.super.isAccountNonExpired();
@@ -78,8 +87,4 @@ public class User implements UserDetails{
 //        return UserDetails.super.isCredentialsNonExpired();
 //    }
 //
-//    @Override
-//    public boolean isEnabled() {
-//        return UserDetails.super.isEnabled();
-//    }
 }

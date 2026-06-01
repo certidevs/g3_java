@@ -55,6 +55,18 @@ class UserController {
         return "users/user-form";
     }
 
+    @GetMapping("/users/deactivate/{id}")
+    public String deactivateUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            userService.deactivate(id);
+            redirectAttributes.addFlashAttribute("message", "Usuario desactivado");
+            return "redirect:/users/" + id;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/profile";
+        }
+    }
+
     @PostMapping("/users")
     public String save(@ModelAttribute("userForm") User userForm,
                        @AuthenticationPrincipal User currentUser,
@@ -81,6 +93,5 @@ class UserController {
             }
             return "redirect:/users/edit/" + userForm.getId();
         }
-
     }
 }

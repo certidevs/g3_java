@@ -47,6 +47,12 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con username: " + username));
     }
 
+    public void deactivate(Long id) {
+        User user = getByIdOrThrow(id);
+        user.setActive(false);
+        userRepository.save(user);
+    }
+
     public User register(RegisterForm form) {
         if (userRepository.existsByUsername(form.getUsername()))
             throw new IllegalArgumentException("El nombre de usuario ya existe");
