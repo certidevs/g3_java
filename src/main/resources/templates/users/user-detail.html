@@ -37,8 +37,10 @@
             <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-sm btn-outline-success">
                 <i class="fa-solid fa-user-pen me-1"></i> Editar
             </a>
-            <a sec:authorize="hasRole('ADMIN')" th:href="@{/users/deactivate/{id}(id=${user.id})}" class="btn btn-sm btn-outline-danger">
-                <i class="fa-solid fa-trash me-1"></i> Desactivar
+            <!-- si el user.id es igual a authorize no lo muestra -->
+
+            <a sec:authorize="hasRole('ADMIN')" th:if="${user.id != #authentication.principal.id}" th:href="@{/users/toggle/{id}(id=${user.id})}" class="btn btn-sm" th:classappend="${user.active} ? 'btn-outline-danger' : 'btn-outline-secondary'">
+                <i class="fa-solid fa-trash me-1"></i> <span th:text="${user.active} ? 'Desactivar' : 'Activar'"></span>
             </a>
         </div>
 

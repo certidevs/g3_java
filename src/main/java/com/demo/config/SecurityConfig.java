@@ -61,7 +61,7 @@ public class SecurityConfig {
                         .requestMatchers("/orders", "/orders/**").authenticated()
 
                         .requestMatchers("/users/new").hasRole("ADMIN")
-                        .requestMatchers("/users/deactivate/*").hasRole("ADMIN")
+                        .requestMatchers("/users/toggle/*").hasRole("ADMIN")
 
                         .requestMatchers("/profile").authenticated()
 

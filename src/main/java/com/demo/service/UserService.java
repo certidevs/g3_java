@@ -47,9 +47,9 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con username: " + username));
     }
 
-    public void deactivate(Long id) {
+    public void toggle(Long id) {
         User user = getByIdOrThrow(id);
-        user.setActive(false);
+        user.setActive(!user.getActive());
         userRepository.save(user);
     }
 

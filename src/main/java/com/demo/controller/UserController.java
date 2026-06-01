@@ -55,11 +55,11 @@ class UserController {
         return "users/user-form";
     }
 
-    @GetMapping("/users/deactivate/{id}")
-    public String deactivateUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/users/toggle/{id}")
+    public String toggleUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            userService.deactivate(id);
-            redirectAttributes.addFlashAttribute("message", "Usuario desactivado");
+            userService.toggle(id);
+            redirectAttributes.addFlashAttribute("message", "Usuario " + (userService.getByIdOrThrow(id).isEnabled() ? "habilitado" : "deshabilitado"));
             return "redirect:/users/" + id;
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
