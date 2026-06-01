@@ -81,7 +81,7 @@
 
   <div sec:authorize="hasRole('ADMIN')" class="dropdown col col-md-2 me-3">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Acciones como Anfitrión
+          Acc.Anfitrión
       </button>
       <ul class="dropdown-menu">
           <li><a class="dropdown-item" th:href="@{/host/pending/{id}(id=${user.id})}">Reservas pendientes</a></li>
@@ -93,7 +93,7 @@
 
   <div class="dropdown col col-md-2 me-3">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Acciones como Huésped
+          Acc.Huésped
       </button>
       <ul class="dropdown-menu">
           <li><a class="dropdown-item" th:href="@{/guest/pending/{id}(id=${user.id})}">Reservas pendientes</a></li>
