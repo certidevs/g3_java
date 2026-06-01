@@ -1,10 +1,9 @@
 package com.demo.controller;
 
 import com.demo.model.*;
-import com.demo.repository.BookingFilterRepository;
-import com.demo.repository.BookingRepository;
-import com.demo.repository.HouseRecommendedRepository;
 import com.demo.repository.UserRepository;
+import com.demo.service.BookingService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,46 +14,33 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class  ControlPanelController {
+@AllArgsConstructor
+public class ControlPanelController {
 
-    private final BookingRepository bookingRepository;
+    private final BookingService bookingService;
     private final UserRepository userRepository;
-    private final BookingFilterRepository bookingFilterRepository;
-    private final HouseRecommendedRepository houseRecommendedRepository;
-
-    public ControlPanelController(BookingRepository bookingRepository,
-                                  UserRepository userRepository,
-                                  BookingFilterRepository bookingFilterRepository,
-                                  HouseRecommendedRepository houseRecommendedRepository) {
-        this.bookingRepository = bookingRepository;
-        this.userRepository = userRepository;
-        this.bookingFilterRepository = bookingFilterRepository;
-        this.houseRecommendedRepository = houseRecommendedRepository;
-    }
+    // private final HouseRecommendedRepository houseRecommendedRepository;
 
     @GetMapping("panel-control/{userId}")
     public String panelControl(Model model, @PathVariable Long userId, @AuthenticationPrincipal User currentUser) {
 
-        if (currentUser.getRole() != Role.ROLE_ADMIN && !userId.equals(currentUser.getId()))
-        {
+        if (currentUser.getRole() != Role.ROLE_ADMIN && !userId.equals(currentUser.getId())) {
             return "redirect:/panel-control/" + currentUser.getId();
         }
-
-
 
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             User validUser = user.get();
 
             // Casas que pone en alquiler
-            List<House> listHouseHost = bookingRepository.houseBookingHost(userId);
+            List<House> listHouseHost = bookingService.getHostProperties(userId);
             // Casas alquiladas
-            List<House> listHouseGuest = bookingRepository.housesBookingGuest(userId);
+            List<House> listHouseGuest = bookingService.getGuestProperties(userId);
 
             // Reservas del Host
-            List<Booking> listBookingHost = bookingRepository.bookingsHost(userId);
+            List<Booking> listBookingHost = bookingService.getHostBookings(userId);
             // Reservas del Guest
-            List<Booking> listBookingGuest = bookingRepository.bookingsGuest(userId);
+            List<Booking> listBookingGuest = bookingService.getGuestBookings(userId);
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
@@ -82,10 +68,10 @@ public class  ControlPanelController {
         if (user.isPresent()) {
             User validUser = user.get();
 
-            List<House> housesHost = bookingFilterRepository.houseBookinHostFilter(id,price);
-            List<House> housesGuest = bookingFilterRepository.houseBookingGuestFilter(id,price);
-            List<Booking> bookingsHost = bookingFilterRepository.bookingsHostFilter(id,searchDate,price);
-            List<Booking> bookingsGuest = bookingFilterRepository.bookingsGuestFilter(id,searchDate,price);
+            List<House> housesHost = bookingService.getHostProperties(id, price);
+            List<House> housesGuest = bookingService.getGuestProperties(id, price);
+            List<Booking> bookingsHost = bookingService.getHostBookings(id, searchDate, price);
+            List<Booking> bookingsGuest = bookingService.getGuestBookings(id, searchDate, price);
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
@@ -98,9 +84,8 @@ public class  ControlPanelController {
 
             return "panel-control";
 
-        }
-        else {
-            return "redirect:/panel-control/" + id.toString();
+        } else {
+            return "redirect:/panel-control/" + id;
         }
 
     }
