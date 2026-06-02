@@ -2,6 +2,7 @@ package com.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,13 +30,17 @@ public class Booking {
     private User userBooking;
 
     // Tiempo de chequeo estimado
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime estimatedCheckin;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime estimatedCheckout;
 
     private Long numberNights;
 
     // Tiempos de chequeos confirmados
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime checkin;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime checkout;
 
     private Double totalPrice;

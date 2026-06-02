@@ -12,19 +12,24 @@
   </h1>
 
   <form th:action="@{/booking}" method="post" th:object="${booking}">
-    <!-- TODO casa precargada -->
+    <input type="hidden"  id="estimatedCheckin"
+           name="estimatedCheckin" th:field="*{estimatedCheckin}"/>
+    <input type="hidden"  id="estimatedCheckout"
+           name="estimatedCheckout" th:field="*{estimatedCheckout}"/>
+    <!-- TODO revisar si hay que poner aquí en hidden el rsto de campos -->
+
     <input type="text" th:field="*{userHouse}" readonly>
 
     <div class="mb-3">
       <label for="checkin" class="form-label">Checkin</label>
-      <input type="text" class="form-control" id="checkin"
+      <input type="datetime-local" class="form-control" id="checkin"
              name="checkin" th:field="*{checkin}"
              onchange="calcularDiferencia()"/>
     </div>
 
     <div class="mb-3">
       <label for="checkout" class="form-label">Checkout</label>
-      <input type="text" class="form-control" id="checkout"
+      <input type="datetime-local" class="form-control" id="checkout"
              name="checkout" th:field="*{checkout}"
              onchange="calcularDiferencia()"/>
     </div>
@@ -37,7 +42,7 @@
     <div class="mb-3">
       <label for="priceNight" class="form-label">Precio por Noche (€)</label>
       <input type="number" class="form-control" id="priceNight" th:field="*{userHouse.pricePerNight}"
-             onchange="calcularDiferencia()" readonly/>
+             onchange="calcularDiferencia()"/>
     </div>
 
     <div class="mb-3">
@@ -108,6 +113,7 @@
       console.error("Error calculando reserva:", error);
     }
   }
+  calcularDiferencia();
 </script>
 </body>
 </html>

@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
 
     public User getByIdOrThrow(Long id) {
         return userRepository.findById(id)
@@ -69,7 +71,19 @@ public class UserService implements UserDetailsService {
         // user.setPassword(form.getPassword()); // texto plano sin cifrar
         user.setPassword(passwordEncoder.encode(form.getPassword())); // password cifrada con bcrypt
         user.setRole(Role.ROLE_USER);
+        user.setTokenforRecommended(generateRecommendedToken());
         return userRepository.save(user);
+    }
+
+    public String generateRecommendedToken() {
+        SecureRandom scr = new SecureRandom();
+        StringBuilder sb = new StringBuilder(8);
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (int i = 0; i < 8; i++) {
+            int index = scr.nextInt(caracteres.length());
+            sb.append(caracteres.charAt(index));
+        }
+        return sb.toString();
     }
 
     public User update(User userForm, User actor) {

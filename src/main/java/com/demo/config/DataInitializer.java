@@ -2,6 +2,8 @@ package com.demo.config;
 
 import com.demo.model.*;
 import com.demo.repository.*;
+import com.demo.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +18,7 @@ import java.util.Set;
 //@Profile("!test")
 @Component
 @Profile("!test")
+@AllArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
     private final HouseRepository houseRepository;
@@ -24,18 +27,20 @@ public class DataInitializer implements CommandLineRunner {
     private final ReviewRepository reviewRepository;
     private final AmenityRepository amenityRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    public DataInitializer(HouseRepository houseRepository, UserRepository userRepository,
-                           BookingRepository bookingRepository, ReviewRepository reviewRepository,
-                           AmenityRepository amenityRepository,
-                           PasswordEncoder passwordEncoder) {
-        this.houseRepository = houseRepository;
-        this.userRepository = userRepository;
-        this.bookingRepository = bookingRepository;
-        this.reviewRepository = reviewRepository;
-        this.amenityRepository = amenityRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+//    public DataInitializer(HouseRepository houseRepository, UserRepository userRepository,
+//                           BookingRepository bookingRepository, ReviewRepository reviewRepository,
+//                           AmenityRepository amenityRepository,
+//                           PasswordEncoder passwordEncoder, UserService userService) {
+//        this.houseRepository = houseRepository;
+//        this.userRepository = userRepository;
+//        this.bookingRepository = bookingRepository;
+//        this.reviewRepository = reviewRepository;
+//        this.amenityRepository = amenityRepository;
+//        this.passwordEncoder = passwordEncoder;
+//        this.userService = userService;
+//    }
 
     @Override
     public void run(String... args) {
@@ -332,6 +337,7 @@ public class DataInitializer implements CommandLineRunner {
         host2_booking.setEmail("alba@test7.com");
         host2_booking.setPassword("password");
         host2_booking.setRole(Role.ROLE_USER);
+        host2_booking.setTokenforRecommended(userService.generateRecommendedToken());
         userRepository.save(host2_booking);
 
         User host3_booking = new User();

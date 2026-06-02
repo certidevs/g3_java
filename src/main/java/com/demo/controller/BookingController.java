@@ -336,7 +336,7 @@ public class BookingController {
         return "redirect:/houses";
     }
 
-
+// TODO unificar con @PostMapping("booking")
     @PostMapping("booking/update-dates")
     public String updateBooking(
             @RequestParam Long id,
@@ -393,6 +393,9 @@ public class BookingController {
     public String createBooking(@ModelAttribute Booking booking, @AuthenticationPrincipal User user) {
 
         // Calculos de noches y precios
+        // TODO alternativa: bookingRepository.findById(booking.getId())
+        // Booking bookingDB = bookingRepository.findById(booking.getId()).orElseThrow();
+
         booking.setNumberNights(booking.calculateNights(booking.getEstimatedCheckin(), booking.getEstimatedCheckout()));
         booking.setTotalPrice(booking.calculateTotalPrice(booking.getNumberNights()));
 
@@ -405,7 +408,8 @@ public class BookingController {
             // Si el usuario no es admin, entonces asigno el User user cargado por Spring Security
             // para que no nos asignen una reserva a otro usuario diferente y evitar problemas de seguridad.
             // Si eres ROLE_ADMIN no entra en este if y sí permite que asocie el usuario que llega de formulario
-            booking.setUserBooking(user);
+
+            booking.setUserBooking(bookingRepository.findById(booking.getId()).orElseThrow().getUserBooking());
         }
         bookingRepository.save(booking);
 
