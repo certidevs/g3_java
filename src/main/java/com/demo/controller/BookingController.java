@@ -434,8 +434,16 @@ public class BookingController {
         }
 
         // 4) Calculo de noches y precio (usa la casa gestionada -> pricePerNight valido).
-        toSave.setNumberNights(toSave.calculateNights(toSave.getEstimatedCheckin(), toSave.getEstimatedCheckout()));
-        toSave.setTotalPrice(toSave.calculateTotalPrice(toSave.getNumberNights()));
+        if ((toSave.getStatusbooking()==StatusBooking.PENDING)
+            || (toSave.getStatusbooking()==StatusBooking.CANCELLED)) {
+            toSave.setNumberNights(toSave.calculateNights(toSave.getEstimatedCheckin(), toSave.getEstimatedCheckout()));
+            toSave.setTotalPrice(toSave.calculateTotalPrice(toSave.getNumberNights()));
+        }
+        if ((toSave.getStatusbooking()==StatusBooking.CONFIRMED)
+                || (toSave.getStatusbooking()==StatusBooking.COMPLETED)) {
+            toSave.setNumberNights(toSave.calculateNights(toSave.getCheckin(), toSave.getCheckout()));
+            toSave.setTotalPrice(toSave.calculateTotalPrice(toSave.getNumberNights()));
+        }
 
         bookingRepository.save(toSave);
 
