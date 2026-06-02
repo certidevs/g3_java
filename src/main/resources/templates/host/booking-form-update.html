@@ -12,13 +12,18 @@
   </h1>
 
   <form th:action="@{/booking}" method="post" th:object="${booking}">
+    <!-- id del booking: imprescindible para que sea UPDATE y no un INSERT nuevo -->
+    <input type="hidden" th:field="*{id}"/>
+    <!-- id de la casa: el controller recarga la entidad gestionada por este id (evita transient) -->
+    <input type="hidden" th:field="*{userHouse.id}"/>
+
     <input type="hidden"  id="estimatedCheckin"
            name="estimatedCheckin" th:field="*{estimatedCheckin}"/>
     <input type="hidden"  id="estimatedCheckout"
            name="estimatedCheckout" th:field="*{estimatedCheckout}"/>
     <!-- TODO revisar si hay que poner aquí en hidden el rsto de campos -->
 
-    <input type="text" th:field="*{userHouse}" readonly>
+    <input type="text" th:value="*{userHouse.title}" readonly>
 
     <div class="mb-3">
       <label for="checkin" class="form-label">Checkin</label>

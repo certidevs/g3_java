@@ -336,7 +336,7 @@ public class BookingController {
         return "redirect:/houses";
     }
 
-// TODO unificar con @PostMapping("booking")
+
     @PostMapping("booking/update-dates")
     public String updateBooking(
             @RequestParam Long id,
@@ -388,43 +388,67 @@ public class BookingController {
         return "redirect:/houses";
     }
 
-    // Guarda el formulario de Reservas
+    // Guarda el formulario de Reservas (sirve para ALTA y EDICION; ambos formularios hacen POST /booking)
     @PostMapping("booking")
     public String createBooking(@ModelAttribute Booking booking, @AuthenticationPrincipal User user) {
 
-        // Calculos de noches y precios
-        // TODO alternativa: bookingRepository.findById(booking.getId())
-        // Booking bookingDB = bookingRepository.findById(booking.getId()).orElseThrow();
+        // 1) La casa SIEMPRE se recarga gestionada desde BD a partir de su id.
+        //    El formulario solo envia *{userHouse.id}; nunca confiamos en el objeto House que
+        //    construye el binding (seria una entidad transitoria sin id -> TransientObjectException al guardar).
+        Long houseId = (booking.getUserHouse() != null) ? booking.getUserHouse().getId() : null;
+        if (houseId == null) {
+            return "redirect:/houses";
+        }
+        Optional<House> houseOpt = houseRepository.findById(houseId);
+        if (houseOpt.isEmpty()) {
+            return "redirect:/houses";
+        }
+        House house = houseOpt.get();
 
-        booking.setNumberNights(booking.calculateNights(booking.getEstimatedCheckin(), booking.getEstimatedCheckout()));
-        booking.setTotalPrice(booking.calculateTotalPrice(booking.getNumberNights()));
+        // 2) Distinguimos ALTA de EDICION segun llegue id de booking.
+        Booking toSave;
+        if (booking.getId() != null) {
+            // EDICION: partimos del booking gestionado y copiamos SOLO los campos editables.
+            // Asi conservamos el userBooking original (no se pierde al editar como admin) y hacemos UPDATE real.
+            toSave = bookingRepository.findById(booking.getId()).orElseThrow();
+            toSave.setEstimatedCheckin(booking.getEstimatedCheckin());
+            toSave.setEstimatedCheckout(booking.getEstimatedCheckout());
+            toSave.setCheckin(booking.getCheckin());
+            toSave.setCheckout(booking.getCheckout());
+            toSave.setStatusbooking(booking.getStatusbooking());
+        } else {
+            // ALTA nueva.
+            toSave = booking;
+            if (user != null && user.getRole() == Role.ROLE_USER) {
+                // Si no es admin, el huesped es el usuario logueado: evitamos que asignen la reserva a otro.
+                // Si es ROLE_ADMIN se respeta el userBooking que llegue del formulario (selector de usuario).
+                toSave.setUserBooking(user);
+            }
+        }
+        toSave.setUserHouse(house);
 
-        if (!bookingService.validateDates(booking)) {
-            // model.addatribute  error "Fechas incorrectas"
-            return "";
+        // 3) Validacion de fechas estimadas.
+        if (!bookingService.validateDates(toSave)) {
+            // TODO: avisar al usuario con un mensaje de error "Fechas incorrectas"
+            return "redirect:/houses";
         }
 
-        if (user != null && user.getRole() == Role.ROLE_USER) {
-            // Si el usuario no es admin, entonces asigno el User user cargado por Spring Security
-            // para que no nos asignen una reserva a otro usuario diferente y evitar problemas de seguridad.
-            // Si eres ROLE_ADMIN no entra en este if y sí permite que asocie el usuario que llega de formulario
+        // 4) Calculo de noches y precio (usa la casa gestionada -> pricePerNight valido).
+        toSave.setNumberNights(toSave.calculateNights(toSave.getEstimatedCheckin(), toSave.getEstimatedCheckout()));
+        toSave.setTotalPrice(toSave.calculateTotalPrice(toSave.getNumberNights()));
 
-            booking.setUserBooking(bookingRepository.findById(booking.getId()).orElseThrow().getUserBooking());
+        bookingRepository.save(toSave);
+
+        // 5) Sincronizamos el estado de la casa con el estado de la reserva.
+        if (toSave.getStatusbooking() == StatusBooking.CANCELLED
+                || toSave.getStatusbooking() == StatusBooking.COMPLETED) {
+            house.setReserve(StatusReserva.DISPONIBLE);
+        } else {
+            house.setReserve(StatusReserva.RESERVADA);
         }
-        bookingRepository.save(booking);
+        houseRepository.save(house);
 
-        // Al hacer el cambio dee estado se pierde el "HOST_ID" de la "HOUSE"
-        Long idHouseModificada = booking.getUserHouse().getId();
-
-        // Esta casa debe de estar como reservada
-        Optional<House> casaParaReservar = houseRepository.findById(idHouseModificada);
-        if (casaParaReservar.isPresent()) {
-            House casaParaReservarValid = casaParaReservar.get();
-            casaParaReservarValid.setReserve(StatusReserva.RESERVADA);
-            houseRepository.save(casaParaReservarValid);
-        }
-
-        return "redirect:/booking/" + booking.getId();
+        return "redirect:/booking/" + toSave.getId();
 
     }
 

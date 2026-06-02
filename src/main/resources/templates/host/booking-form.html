@@ -14,8 +14,8 @@
     <form th:action="@{/booking}" method="post" th:object="${booking}">
 <!--        <input type="text" th:field="*{id}" readonly />-->
 
-        <!-- TODO casa precargada -->
-        <input type="hidden" th:field="*{userHouse}">
+        <!-- id de la casa: el controller recarga la entidad gestionada por este id (evita transient) -->
+        <input type="hidden" th:field="*{userHouse.id}">
 
         <!--        Estimatedcheckin-->
         <div class="mb-3">
@@ -89,9 +89,8 @@
             <input type="number" class="form-control" id="maxGuests" th:field="*{userHouse.maxGuests}" readonly/>
         </div>
 
-     <div class="mb-3">
-            <input type="hidden" class="form-control" th:field="*{userBooking}" readonly>
-     </div>
+     <!-- userBooking no se envia desde el form: el controller fija el huesped = usuario logueado
+          (un huesped normal no puede reservar a nombre de otro). Admin necesitaria un selector; pendiente. -->
 
         <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>Guardar</button>
         <a th:href="@{/houses}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i>Cancelar</a>
