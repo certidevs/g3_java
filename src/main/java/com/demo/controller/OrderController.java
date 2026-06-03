@@ -37,7 +37,7 @@ public class OrderController {
         Optional<User> usuario = userService.findByUsername(autorizacion.getName());
         if (usuario.isPresent()) {
             model.addAttribute("usuario", usuario);
-            return "host/booking-form";
+            return "booking/booking-form";
         }
         return "redirect:/{houses}";
     }

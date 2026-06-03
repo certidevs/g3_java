@@ -24,7 +24,7 @@ public class AuthController {
         // model.addAttribute("user", new User());
         // opcion 2: dto UserRegisterDTO
         model.addAttribute("user", new RegisterForm()); // UserRegisterDTO o RegisterForm
-        return "login/register";
+        return "auth/register";
     }
 
     // @PostMapping /register
@@ -42,7 +42,7 @@ public class AuthController {
 
     @GetMapping("login")
     public String login() {
-        return "login/login";
+        return "auth/login";
     }
     // NO hace falta
     // @PostMapping /login   porque Spring Security lo hace automaticamente

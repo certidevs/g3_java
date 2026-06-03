@@ -18,7 +18,7 @@ class UserController {
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("user", userService.getByIdOrThrow(user.getId()));
-        return "users/user-detail";
+        return "user/user-detail";
     }
 
     @GetMapping("/users/{id}")
@@ -29,7 +29,7 @@ class UserController {
         User user = userService.getByIdOrThrow(id);
         user.setPassword(null);
         model.addAttribute("user", user);
-        return "users/user-detail";
+        return "user/user-detail";
     }
 
     @GetMapping("/users/new")
@@ -37,7 +37,7 @@ class UserController {
         model.addAttribute("user", new User());
         model.addAttribute("roles", Role.values());
         model.addAttribute("edit", false);
-        return "users/user-form";
+        return "user/user-form";
     }
 
     @GetMapping("/users/edit/{id}")
@@ -52,7 +52,7 @@ class UserController {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         model.addAttribute("edit", true);
-        return "users/user-form";
+        return "user/user-form";
     }
 
     @GetMapping("/users/toggle/{id}")

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{layout/head :: head(${viewTitle})}"></head>
+
+<body>
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<h2 th:text="${viewTitle}">Reservas</h2>
+<br>
+<div th:each="booking : ${bookings}" class="card w-75 mb-3" style="margin-left: 50px;">
+    <h5><i class="fa-solid fa-house"></i><span class="card-title" th:text="| ${booking.userHouse.title} : ${booking.userHouse.location} |" >Titulo</span></h5>
+    <p class="card-text" th:text="| ${booking.userHouse.description} , ${booking.userHouse.maxGuests} personas |">Texto de explicaciones.</p>
+    <p class="card-text" th:text="| Precio por noche : ${booking.userHouse.pricePerNight} . Provincia : ${booking.userHouse.province}|">Texto de explicaciones.</p>
+    
+    <h5><i class="fa-regular fa-user"></i><span class="card-title" th:text="| Usuario : ${booking.userBooking.username} . ${booking.userBooking.email} |">Titulo</span></h5>
+    <p class="card-text" th:text="| ${booking.userBooking.firstName} ${booking.userBooking.lastName} |">Texto de explicaciones.</p>
+    
+    <h5><i class="fa-solid fa-place-of-worship"></i><span class="card-title">Datos reserva :</span></h5>
+    
+    <!-- Pending / Cancelled logic uses estimated dates -->
+    <div th:if="${booking.statusbooking.name() == 'PENDING' or booking.statusbooking.name() == 'CANCELLED'}">
+        <p class="card-text" th:text="| Estimado checkin y checkout : ${booking.estimatedCheckin} / ${booking.estimatedCheckout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
+    </div>
+    
+    <!-- Confirmed / Completed logic uses actual dates -->
+    <div th:if="${booking.statusbooking.name() == 'CONFIRMED' or booking.statusbooking.name() == 'COMPLETED'}">
+        <p class="card-text" th:text="| Checkin y checkout : ${booking.checkin} / ${booking.checkout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
+    </div>
+    
+    <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |">Datos reserva</p>
+    <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|">Datos reserva</p>
+
+    <!-- Actions for HOST -->
+    <div th:if="${viewRole == 'HOST'}">
+        <div th:if="${booking.statusbooking.name() == 'PENDING'}">
+            <form th:action="@{/booking/update-dates}" method="post">
+                <input type="hidden" name="id" th:value="${booking.id}"/>
+                <input type="hidden" name="userid" th:value="${user.id}"/>
+                <input type="datetime-local" name="checkin" th:value="${booking.checkin}" required>
+                <input type="datetime-local" name="checkout" th:value="${booking.checkout}" required>
+                <button type="submit" class="btn btn-success ms-2"><i class="fa-solid fa-floppy-disk"></i>Guardar reserva </button>
+                <a th:href="@{/booking/from-pending-to-cancelled/{id}(id=${booking.id})}" class="btn btn-primary ms-2">Cancelar reserva</a>
+            </form>
+        </div>
+        <div th:if="${booking.statusbooking.name() == 'CONFIRMED'}">
+            <a th:href="@{/booking/from-confirmed-to-cancelled/{id}(id=${booking.id})}" class="btn btn-primary me-2">Cancelar reserva</a>
+            <a th:href="@{/booking/from-confirmed-to-completed/{id}(id=${booking.id})}" class="btn btn-primary">Completado</a>
+        </div>
+    </div>
+
+    <!-- Actions for GUEST -->
+    <div th:if="${viewRole == 'GUEST'}">
+        <div th:if="${booking.statusbooking.name() == 'PENDING'}">
+            <a th:href="@{/booking/from-pending-to-cancelled-guest/{id}(id=${booking.id})}" class="btn btn-primary">Cancelar reserva</a>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+<script th:replace="~{layout/footer :: scripts}"></script>
+</body>
+</html>

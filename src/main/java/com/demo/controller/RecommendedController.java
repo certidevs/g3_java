@@ -52,7 +52,7 @@ public class RecommendedController {
 
             model.addAttribute("recommendation", recommendation);
 
-            return "/guest/house-recommended";
+            return "house/house-recommended";
         } else {
             return "redirect:/booking/" + idUsuario.toString();
         }
@@ -129,7 +129,7 @@ public class RecommendedController {
         model.addAttribute("recommfrom", recommendedFrom);
         model.addAttribute("recommto", recommendedToTokenEmail);
 
-        return "/guest/recommended-list";
+        return "house/recommended-list";
 
     }
 

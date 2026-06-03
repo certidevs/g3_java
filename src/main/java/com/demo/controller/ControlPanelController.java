@@ -52,7 +52,7 @@ public class ControlPanelController {
             model.addAttribute("listBookingGuest", listBookingGuest);
 
 
-            return "panel-control";
+            return "user/panel-control";
         } else {
             return "redirect:/index";
         }
@@ -82,7 +82,7 @@ public class ControlPanelController {
             model.addAttribute("listBookingsHost", bookingsHost);
             model.addAttribute("listBookingGuest", bookingsGuest);
 
-            return "panel-control";
+            return "user/panel-control";
 
         } else {
             return "redirect:/panel-control/" + id;

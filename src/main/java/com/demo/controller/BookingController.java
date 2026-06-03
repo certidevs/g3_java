@@ -37,7 +37,7 @@ public class BookingController {
             model.addAttribute("booking", validBooking);
             // A futuro AddOn
             // addons   addonRepository.findByBookingId
-            return "host/booking-detail";
+            return "booking/booking-detail";
 
         }
         return "redirect:/index";
@@ -49,7 +49,7 @@ public class BookingController {
 
         model.addAttribute("booking", bookingRepository.findById(id).orElseThrow());
         model.addAttribute("estados", StatusBooking.values());
-        return "host/booking-form-update";
+        return "booking/booking-form";
     }
 
 
@@ -68,9 +68,11 @@ public class BookingController {
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
-            model.addAttribute("listBookingsHostPending", listBookingHost);
+            model.addAttribute("bookings", listBookingHost);
+            model.addAttribute("viewRole", "HOST");
+            model.addAttribute("viewTitle", "Reservas pendientes");
 
-            return "/host/booking-list-pending-host";
+            return "booking/booking-list";
         } else {
             return "redirect:/index";
         }
@@ -91,9 +93,11 @@ public class BookingController {
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
-            model.addAttribute("listBookingsHostConfirmed", listBookingHost);
+            model.addAttribute("bookings", listBookingHost);
+            model.addAttribute("viewRole", "HOST");
+            model.addAttribute("viewTitle", "Reservas confirmadas");
 
-            return "/host/booking-list-confirmed-host";
+            return "booking/booking-list";
         } else {
             return "redirect:/index";
         }
@@ -114,9 +118,11 @@ public class BookingController {
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
-            model.addAttribute("listBookingsHostCancelled", listBookingHost);
+            model.addAttribute("bookings", listBookingHost);
+            model.addAttribute("viewRole", "HOST");
+            model.addAttribute("viewTitle", "Reservas canceladas");
 
-            return "/host/booking-list-cancelled-host";
+            return "booking/booking-list";
         } else {
             return "redirect:/index";
         }
@@ -137,9 +143,11 @@ public class BookingController {
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
-            model.addAttribute("listBookingsHostCompleted", listBookingHost);
+            model.addAttribute("bookings", listBookingHost);
+            model.addAttribute("viewRole", "HOST");
+            model.addAttribute("viewTitle", "Reservas completadas");
 
-            return "/host/booking-list-completed-host";
+            return "booking/booking-list";
         } else {
             return "redirect:/index";
         }
@@ -162,9 +170,11 @@ public class BookingController {
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
-            model.addAttribute("listBookingsGuestPending", listBookingGuest);
+            model.addAttribute("bookings", listBookingGuest);
+            model.addAttribute("viewRole", "GUEST");
+            model.addAttribute("viewTitle", "Reservas pendientes");
 
-            return "/guest/booking-list-pending";
+            return "booking/booking-list";
         } else {
             return "redirect:/index";
         }
@@ -185,9 +195,11 @@ public class BookingController {
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
-            model.addAttribute("listBookingsGuestCancelled", listBookingGuest);
+            model.addAttribute("bookings", listBookingGuest);
+            model.addAttribute("viewRole", "GUEST");
+            model.addAttribute("viewTitle", "Reservas canceladas");
 
-            return "/guest/booking-list-cancelled";
+            return "booking/booking-list";
         } else {
             return "redirect:/index";
         }
@@ -208,9 +220,11 @@ public class BookingController {
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
-            model.addAttribute("listBookingsGuestCompleted", listBookingGuest);
+            model.addAttribute("bookings", listBookingGuest);
+            model.addAttribute("viewRole", "GUEST");
+            model.addAttribute("viewTitle", "Reservas completadas");
 
-            return "/guest/booking-list-completed";
+            return "booking/booking-list";
         } else {
             return "redirect:/index";
         }
@@ -231,9 +245,11 @@ public class BookingController {
 
             // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
-            model.addAttribute("listBookingsGuestConfirmed", listBookingGuest);
+            model.addAttribute("bookings", listBookingGuest);
+            model.addAttribute("viewRole", "GUEST");
+            model.addAttribute("viewTitle", "Reservas confirmadas");
 
-            return "/guest/booking-list-confirmed";
+            return "booking/booking-list";
         } else {
             return "redirect:/index";
         }
@@ -381,7 +397,7 @@ public class BookingController {
             // Cargamos todos los usuarios que son posibles huespedes.
             model.addAttribute("usuarios", userService.findAll());
 
-            return "host/booking-form";
+            return "booking/booking-form";
         }
 
         // Utilizar un @RequestParam para saber el usuario al que volver
@@ -419,9 +435,8 @@ public class BookingController {
         } else {
             // ALTA nueva.
             toSave = booking;
-            if (user != null && user.getRole() == Role.ROLE_USER) {
-                // Si no es admin, el huesped es el usuario logueado: evitamos que asignen la reserva a otro.
-                // Si es ROLE_ADMIN se respeta el userBooking que llegue del formulario (selector de usuario).
+            if (user != null) {
+                // Tanto para huéspedes como anfitriones: el usuario logueado es quien reserva.
                 toSave.setUserBooking(user);
             }
         }

@@ -31,7 +31,7 @@ public class AgendaController {
         List<User> agenda = userService.getAgendaUsers();
         model.addAttribute("agenda", agenda);
 
-        return "/guest/agenda";
+        return "user/agenda";
     }
 
     // Para filtrar
@@ -44,7 +44,7 @@ public class AgendaController {
         List<User> agenda = userService.getAgendaUsers(textfind);
         model.addAttribute("agenda", agenda);
 
-        return "/guest/agenda";
+        return "user/agenda";
 
     }
 
