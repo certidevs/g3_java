@@ -1,66 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="es">
 <body>
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4 shadow-sm">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
-            <img th:src="@{/images/logo.png}" alt="RODS" height="90" class="me-2">
-            <span th:href="@{/}">Alquiler Vacacional</span>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);">
+    <div class="container-xxl">
+        <!-- Brand -->
+        <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" th:href="@{/}">
+            <img th:src="@{/images/logo.png}" alt="RODS" height="40" class="me-2">
+            RODS
         </a>
-
-        <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse" data-bs-target="#mainNav"
-                aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        
+        <!-- Hamburger Button -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav ms-auto align-items-lg-center">
+        
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-medium align-items-lg-center">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">
-                        <i class="fa-solid fa-house me-1"></i> Home
+                    <a class="nav-link px-3" th:href="@{/}">
+                        <i class="fa-solid fa-house me-1"></i> Inicio
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/houses}">
+                    <a class="nav-link px-3" th:href="@{/houses}">
                         <i class="fa-solid fa-house-chimney me-1"></i> Casas
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/reviews}">
+                    <a class="nav-link px-3" th:href="@{/reviews}">
                         <i class="fa-regular fa-comments me-1"></i> Reseñas
                     </a>
                 </li>
-                <li sec:authorize="!isAuthenticated()" class="nav-item">
-                    <a class="nav-link" th:href="@{/login}">
-                        <i class="fa-solid fa-arrow-right-to-bracket me-1"></i> Login
-                    </a>
-                </li>
-                <li sec:authorize="!isAuthenticated()" class="nav-item">
-                    <a class="nav-link" th:href="@{/register}">
-                        <i class="fa-solid fa-user-plus me-1"></i></i> Registro
-                    </a>
-                </li>
+                
                 <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <a class="nav-link" th:href="@{/panel-control/{id}(id=${#authentication.principal.id})}">
-                        <i class="fa-solid fa-code-fork me-1"></i>Panel control
+                    <a class="nav-link px-3" th:href="@{/panel-control/{id}(id=${#authentication.principal.id})}">
+                        <i class="fa-solid fa-code-fork me-1"></i> Panel control
                     </a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item me-1">
-                    <a class="nav-link" th:href="@{/profile}">
-                        <i class="fa-solid fa-user me-1"></i>
-                        <th:block sec:authentication="name"></th:block>
+                    <a class="nav-link px-3" th:href="@{/profile}">
+                        <i class="fa-solid fa-user me-1"></i> <th:block sec:authentication="name"></th:block>
                     </a>
                 </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <form th:action="@{/logout}" method="post" class="d-inline">
-                        <button type="submit" class="nav-link btn btn-link p-1 border-0">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Salir
-                        </button>
-                    </form>
-                </li>
-
             </ul>
+            
+            <!-- Action Buttons -->
+            <div class="d-flex flex-column flex-lg-row gap-2 ms-lg-3 mt-3 mt-lg-0">
+                <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-outline-light rounded-pill px-4 text-decoration-none">
+                    <i class="fa-solid fa-arrow-right-to-bracket me-1"></i> Iniciar Sesión
+                </a>
+                <a sec:authorize="!isAuthenticated()" th:href="@{/register}" class="btn btn-brand rounded-pill px-4 fw-medium text-white text-decoration-none">
+                    <i class="fa-solid fa-user-plus me-1"></i> Registrarse
+                </a>
+                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="d-inline m-0 p-0">
+                    <button type="submit" class="btn btn-outline-light rounded-pill px-4 w-100">
+                        <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Salir
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </nav>

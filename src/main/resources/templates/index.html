@@ -1,136 +1,183 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{layout/head :: head('Alquiler de casa')}"></head>
 
 <body>
 
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-<!-- CARRUSEL DE IMÁGENES -->
-<section class="carousel-section">
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+<main class="container-xxl p-0 position-relative">
+    <div id="carouselHero" class="carousel slide overflow-hidden rounded-bottom shadow" data-bs-ride="carousel" data-bs-interval="4000">
+        <div class="carousel-indicators z-3">
+            <button type="button" data-bs-target="#carouselHero" data-bs-slide-to="0" class="active" aria-current="true"
+                    aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselHero" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselHero" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
 
         <div class="carousel-inner">
-            <div class="carousel-item active">
+            <div class="carousel-item active" data-bs-interval="4000">
                 <img th:src="@{/images/carrusel1.jpg}" class="d-block w-100" alt="Casa frente al mar">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Escapadas inolvidables</h5>
-                    <p>Descubre casas únicas junto al mar.</p>
+                <div class="w-100 h-100 d-flex flex-column justify-content-center z-1 position-absolute top-50 start-50 translate-middle text-center text-light p-4 pe-none">
+                    <h1 class="display-3 fw-bold mb-3 text-shadow pe-auto">Escapadas inolvidables</h1>
+                    <p class="lead mb-0 text-light fs-4 pe-auto">Descubre casas únicas junto al mar.</p>
                 </div>
             </div>
-            <div class="carousel-item">
+            <div class="carousel-item" data-bs-interval="4000">
                 <img th:src="@{/images/carrusel2.jpg}" class="d-block w-100" alt="Casa con piscina">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Relájate con estilo</h5>
-                    <p>Casas con piscina privada para tu comodidad.</p>
+                <div class="w-100 h-100 d-flex flex-column justify-content-center z-1 position-absolute top-50 start-50 translate-middle text-center text-light p-4 pe-none">
+                    <h1 class="display-3 fw-bold mb-3 text-shadow pe-auto">Relájate con estilo</h1>
+                    <p class="lead mb-0 text-light fs-4 pe-auto">Casas con piscina privada para tu comodidad.</p>
                 </div>
             </div>
-            <div class="carousel-item">
+            <div class="carousel-item" data-bs-interval="4000">
                 <img th:src="@{/images/carrusel3.jpg}" class="d-block w-100" alt="Casa rural">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Naturaleza y tranquilidad</h5>
-                    <p>Alquila casas rurales en entornos únicos.</p>
+                <div class="w-100 h-100 d-flex flex-column justify-content-center z-1 position-absolute top-50 start-50 translate-middle text-center text-light p-4 pe-none">
+                    <h1 class="display-3 fw-bold mb-3 text-shadow pe-auto">Naturaleza y tranquilidad</h1>
+                    <p class="lead mb-0 text-light fs-4 pe-auto">Alquila casas rurales en entornos únicos.</p>
                 </div>
             </div>
         </div>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <button class="carousel-control-prev z-3" type="button" data-bs-target="#carouselHero" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+            <span class="visually-hidden">Anterior</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <button class="carousel-control-next z-3" type="button" data-bs-target="#carouselHero" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+            <span class="visually-hidden">Siguiente</span>
         </button>
     </div>
-</section>
 
-<!-- HERO -->
-<div class="hero">
-    <h1>🌍 Descubre tu próxima escapada</h1>
-    <p>Casas únicas para experiencias inolvidables</p>
-    <a class="btn" href="/houses">Explorar casas</a>
-</div>
+    <div class="z-3 position-relative search-container-overlay">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-9">
+                <!-- Search Card -->
+                <div class="card search-card p-2 p-md-4 shadow-lg">
+                    <form th:action="@{/houses}" class="card-body" method="get">
+                        <div class="row g-3 align-items-end">
 
+                            <div class="col-md-12 col-lg-4">
+                                <label class="form-label text-dark fw-bold mb-1">Provincia de España</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fa-solid fa-map"></i></span>
+                                    <!-- TODO aún no hay provincias, pero como es index no se como hacerlo! -->
+                                    <select th:name="province" class="form-select form-control"
+                                            th:value="${selectedProvince}">
+                                        <option value="">Todas las provincias</option>
+                                        <option th:each="p : ${provinces}"
+                                                th:value="${p}"
+                                                th:text="${p}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-4">
+                                <label class="form-label text-dark fw-bold mb-1">Precio por noche</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i
+                                            class="fa-solid fa-dollar-sign"></i></span>
+                                    <input type="number"
+                                           th:name="pricePerNight"
+                                           class="form-control border-left-0 bg-white"
+                                           placeholder="Precio máximo por noche"/>
+                                </div>
+                            </div>
 
-<!-- RESEÑAS -->
-<section class="section">
-    <h2>⭐ Reseñas de nuestros huéspedes</h2>
-    <div class="grid">
-        <div class="card review-card">
-            <p>"¡Increíble experiencia! La casa frente al mar era perfecta para nuestras vacaciones familiares."</p>
-            <cite>- María González</cite>
-        </div>
-        <div class="card review-card">
-            <p>"La piscina privada y las vistas fueron lo mejor. Recomiendo totalmente."</p>
-            <cite>- Juan Pérez</cite>
-        </div>
-        <div class="card review-card">
-            <p>"Casa rural con encanto, ideal para desconectar. Volveremos pronto."</p>
-            <cite>- Ana López</cite>
-        </div>
-    </div>
-</section>
-
-<!-- CASAS DESTACADAS -->
-<section class="section">
-    <h2>🏡 Casas destacadas</h2>
-    <div class="grid">
-        <div class="card" th:each="house : ${houses}">
-            <h3 th:text="${house.title}"></h3>
-            <p>📍 <span th:text="${house.location}"></span></p>
-            <p th:text="${house.description}"></p>
-            <div class="price">
-                💰 <span th:text="${house.pricePerNight}"></span> €/noche
+                            <div class="col-12 col-lg-2 mt-4 mt-lg-0">
+                                <button class="btn btn-brand w-100 py-2 rounded-3 fw-bold text-white shadow-sm" type="submit">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                                </button>
+                            </div>
+                            <!-- TODO se puede agregar un botón para ver todas las casas por ejemplo -->
+                        </div>
+                    </form>
+                </div>
             </div>
-            <a th:href="@{'/houses/' + ${house.id}}" class="btn-small">Ver detalle</a>
         </div>
     </div>
-</section>
 
-<!-- CARACTERÍSTICAS Y UBICACIONES -->
-<section class="section">
-    <h2>🌟 Características y ubicaciones</h2>
-    <div class="features-grid">
-        <div class="feature-card">
-            <i class="fa-solid fa-umbrella-beach"></i>
-            <h4>Frente al mar</h4>
-            <p>Casas con acceso directo a playas paradisíacas.</p>
+    <!-- RESEÑAS -->
+    <!-- TODO: Se pueden agregar reseñas reales? creo -->
+    <section class="container my-5 pb-5">
+        <h2 class="text-center fw-bold mb-5 text-dark h1">⭐ Reseñas de nuestros huéspedes</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0 bg-light rounded-4 p-4 text-center property-card">
+                    <p class="fst-italic mb-3 text-secondary">"¡Increíble experiencia! La casa frente al mar era perfecta para nuestras vacaciones familiares."</p>
+                    <h5 class="fw-bold text-primary mb-0">- María González</h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0 bg-light rounded-4 p-4 text-center property-card">
+                    <p class="fst-italic mb-3 text-secondary">"La piscina privada y las vistas fueron lo mejor. Recomiendo totalmente."</p>
+                    <h5 class="fw-bold text-primary mb-0">- Juan Pérez</h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0 bg-light rounded-4 p-4 text-center property-card">
+                    <p class="fst-italic mb-3 text-secondary">"Casa rural con encanto, ideal para desconectar. Volveremos pronto."</p>
+                    <h5 class="fw-bold text-primary mb-0">- Ana López</h5>
+                </div>
+            </div>
         </div>
-        <div class="feature-card">
-            <i class="fa-solid fa-swimming-pool"></i>
-            <h4>Con piscina</h4>
-            <p>Disfruta de piscinas privadas en entornos exclusivos.</p>
+    </section>
+
+    <!-- CARACTERÍSTICAS Y UBICACIONES -->
+    <!-- TODO: Amenities es esto xd? -->
+    <section class="container my-5 pb-5">
+        <h2 class="text-center fw-bold mb-5 text-dark h1">🌟 Características y ubicaciones</h2>
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
+                    <i class="fa-solid fa-umbrella-beach fs-1 text-success mb-3"></i>
+                    <h4 class="h6 fw-bold text-dark">Frente al mar</h4>
+                    <p class="small text-muted mb-0">Acceso directo a playas paradisíacas.</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
+                    <i class="fa-solid fa-swimming-pool fs-1 text-success mb-3"></i>
+                    <h4 class="h6 fw-bold text-dark">Con piscina</h4>
+                    <p class="small text-muted mb-0">Piscinas privadas en entornos exclusivos.</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
+                    <i class="fa-solid fa-tree fs-1 text-success mb-3"></i>
+                    <h4 class="h6 fw-bold text-dark">Rurales</h4>
+                    <p class="small text-muted mb-0">Naturaleza para escapadas tranquilas.</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
+                    <i class="fa-solid fa-city fs-1 text-success mb-3"></i>
+                    <h4 class="h6 fw-bold text-dark">Céntricas</h4>
+                    <p class="small text-muted mb-0">Ubicaciones con fácil acceso a servicios.</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
+                    <i class="fa-solid fa-mountain fs-1 text-success mb-3"></i>
+                    <h4 class="h6 fw-bold text-dark">Montaña</h4>
+                    <p class="small text-muted mb-0">Entornos montañosos para aventuras.</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
+                    <i class="fa-solid fa-wifi fs-1 text-success mb-3"></i>
+                    <h4 class="h6 fw-bold text-dark">Conectadas</h4>
+                    <p class="small text-muted mb-0">WiFi de alta velocidad en las propiedades.</p>
+                </div>
+            </div>
         </div>
-        <div class="feature-card">
-            <i class="fa-solid fa-tree"></i>
-            <h4>Rurales</h4>
-            <p>Casas en la naturaleza, perfectas para escapadas tranquilas.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fa-solid fa-city"></i>
-            <h4>Céntricas</h4>
-            <p>Ubicaciones urbanas con fácil acceso a servicios.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fa-solid fa-mountain"></i>
-            <h4>Montaña</h4>
-            <p>Casas en entornos montañosos para aventuras al aire libre.</p>
-        </div>
-        <div class="feature-card">
-            <i class="fa-solid fa-wifi"></i>
-            <h4>Conectadas</h4>
-            <p>WiFi de alta velocidad en todas nuestras propiedades.</p>
-        </div>
+    </section>
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h2 class="display-5 fw-bold text-dark mb-3">🌍 Descubre tu próxima escapada</h2>
+        <p class="lead text-muted mb-4">Casas únicas para experiencias inolvidables</p>
+        <a class="btn btn-brand btn-lg px-5 py-3 rounded-pill shadow-sm fw-semibold" href="/houses">Explorar casas</a>
     </div>
-</section>
 
-
+</main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>

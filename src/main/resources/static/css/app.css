@@ -1,13 +1,46 @@
-
-/* Roboto desde Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    --brand-primary: #ef7c6d;
-    --brand-secondary: #2E91B3;
-    --brand-hover: #B32E8D;
     --text-dark: #333;
-    --bg-main: #cacaca;
+    --bg-main: #ffffff;
+    --brand-color: #f83a3c;
+    --brand-color-hover: #d72c2e;
+}
+
+/* Clases de color de marca personalizadas */
+.text-brand {
+    color: var(--brand-color) !important;
+}
+
+.bg-brand {
+    background-color: var(--brand-color) !important;
+}
+
+.btn-brand {
+    background-color: var(--brand-color) !important;
+    border-color: var(--brand-color) !important;
+    color: white !important;
+}
+
+.btn-brand:hover, .btn-brand:focus, .btn-brand:active {
+    background-color: var(--brand-color-hover) !important;
+    border-color: var(--brand-color-hover) !important;
+    color: white !important;
+}
+
+.btn-outline-brand {
+    color: var(--brand-color) !important;
+    border-color: var(--brand-color) !important;
+}
+
+.btn-outline-brand:hover, .btn-outline-brand:focus, .btn-outline-brand:active {
+    background-color: var(--brand-color) !important;
+    color: white !important;
+    border-color: var(--brand-color) !important;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 /* Estilos generales */
@@ -41,7 +74,36 @@ h1, h2, h3, .navbar-brand {
     object-fit: contain;
 }
 
-/* Hero */
+.carousel-item img {
+    height: 70vh;
+    max-height: 70vh;
+    min-height: 450px;
+    object-fit: cover;
+}
+
+.carousel-item > div {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), center/cover no-repeat;
+}
+
+.carousel-indicators {
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin-right: 15%;
+    margin-top: 1rem;
+    margin-left: 15%;
+}
+
+.search-container-overlay {
+    margin-top: -3rem;
+}
+
+/* Hero
 .hero {
     background: linear-gradient(to right, #4facfe, #00f2fe);
     color: white;
@@ -60,41 +122,9 @@ h1, h2, h3, .navbar-brand {
     margin-bottom: 30px;
 }
 
-/* Botones */
-.btn {
-    background-color: #dfb82b;
-    color: #ffffff;
-    padding: 12px 24px;
-    text-decoration: none;
-    border-radius: 5px;
-    display: inline-block;
-    transition: background-color 0.3s;
-}
+/* Botones (Antiguos removidos para usar Bootstrap nativo)
 
-.btn:hover {
-    background-color: #7faedd;
-}
-
-.btn-small {
-    background-color: #28a745;
-    color: white;
-    padding: 8px 16px;
-    text-decoration: none;
-    border-radius: 3px;
-    font-size: 0.9em;
-    transition: background-color 0.3s;
-}
-
-.btn-small:hover {
-    background-color: #218838;
-}
-
-/* Sección general */
-.section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-}
+/* Sección general
 
 .section h2 {
     text-align: center;
@@ -102,14 +132,14 @@ h1, h2, h3, .navbar-brand {
     font-size: 2em;
 }
 
-/* Grid de casas */
+/* Grid de casas
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
 }
 
-/* Tarjetas */
+/* Tarjetas
 .card,
 .feature-card {
     background: #ffffff;
@@ -134,7 +164,7 @@ h1, h2, h3, .navbar-brand {
     margin: 10px 0;
 }
 
-/* Precio */
+/* Precio
 .price {
     font-weight: bold;
     font-size: 1.1em;
@@ -142,13 +172,11 @@ h1, h2, h3, .navbar-brand {
     margin: 15px 0;
 }
 
-/* Carrusel */
-.carousel-section {
-    margin-bottom: 50px;
-}
 
 .carousel-item img {
-    height: 500px;
+    height: 70vh;
+    max-height: 70vh;
+    min-height: 450px;
     object-fit: cover;
 }
 
@@ -158,7 +186,7 @@ h1, h2, h3, .navbar-brand {
     padding: 10px;
 }
 
-/* Reseñas */
+/* Reseñas
 .review-card {
     text-align: center;
     font-style: italic;
@@ -171,7 +199,7 @@ h1, h2, h3, .navbar-brand {
     color: #007bff;
 }
 
-/* Características */
+/* Características
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -193,7 +221,7 @@ h1, h2, h3, .navbar-brand {
     color: #007bff;
 }
 
-/* Hover de tarjetas específicas */
+/* Hover de tarjetas específicas
 .card-restaurant {
     transition: all .15s ease-in-out;
 }
@@ -202,4 +230,101 @@ h1, h2, h3, .navbar-brand {
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
     transform: translateY(-2px);
 }
-/*---------------LOGIN--------------------*/
+/*---------------LOGIN--------------------
+
+/* --- NUEVOS ESTILOS ALQUILAYA ---
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f8f9fa;
+}
+
+main.container {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+/* Hero Section Styling
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    margin-top: -80px; /* Counteracts body padding so hero starts at the top edge
+    padding-top: 100px; /* Space inside hero for navbar
+}
+
+/* Search Form Styling
+.search-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Property Cards Styling
+.property-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* Search Overlay Styling
+.search-container-overlay {
+    z-index: 10;
+}
+
+@media (min-width: 992px) {
+    .search-container-overlay {
+        margin-top: -60px; 
+    }
+    /* Ajuste para que el hero tenga suficiente espacio abajo antes del overlap
+    .hero-section {
+        padding-bottom: 80px;
+    }
+}
+
+.property-img {
+    height: 250px;
+    object-fit: cover;
+}
+
+/* Form Controls
+.form-control:focus, .form-select:focus {
+    box-shadow: none;
+    border-color: #0d6efd;
+}
+
+.input-group-text {
+    background-color: transparent;
+    border-right: none;
+}
+
+.form-control.border-left-0 {
+    border-left: none;
+}
+
+/* Footer Newsletter Styling
+.newsletter-input-group {
+    background-color: white;
+    border-radius: 50px;
+    padding: 0.25rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.newsletter-input-group .form-control {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    padding-left: 1.5rem;
+}
+
+.newsletter-input-group .btn {
+    border-radius: 50px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+*/
