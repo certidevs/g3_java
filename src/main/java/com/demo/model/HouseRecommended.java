@@ -30,6 +30,7 @@ public class HouseRecommended {
     private String firstNameTo;
     private String lastNameTo;
 
+    @Column(length = 1000)
     private String message;
 
     @Builder.Default
