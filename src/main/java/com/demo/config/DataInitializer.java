@@ -202,6 +202,8 @@ public class DataInitializer implements CommandLineRunner {
         //////////////////////
 
         User user1 = new User();
+        user1.setFirstName("user1");
+        user1.setLastName("user1");
         user1.setUsername("user1");
         user1.setEmail("user1@gmail.com");
         user1.setPassword(passwordEncoder.encode("user1"));
@@ -209,6 +211,8 @@ public class DataInitializer implements CommandLineRunner {
         userRepository.save(user1);
 
         User user2 = new User();
+        user2.setFirstName("user2");
+        user2.setLastName("user2");
         user2.setUsername("user2");
         user2.setEmail("user2@gmail.com");
         user2.setPassword(passwordEncoder.encode("user2"));
