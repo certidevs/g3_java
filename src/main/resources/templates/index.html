@@ -8,7 +8,8 @@
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
 <main class="container-xxl p-0 position-relative">
-    <div id="carouselHero" class="carousel slide overflow-hidden rounded-bottom shadow" data-bs-ride="carousel" data-bs-interval="4000">
+    <div id="carouselHero" class="carousel slide overflow-hidden rounded-bottom shadow" data-bs-ride="carousel"
+         data-bs-interval="4000">
         <div class="carousel-indicators z-3">
             <button type="button" data-bs-target="#carouselHero" data-bs-slide-to="0" class="active" aria-current="true"
                     aria-label="Slide 1"></button>
@@ -17,28 +18,39 @@
         </div>
 
         <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="4000">
-                <img th:src="@{/images/carrusel1.jpg}" class="d-block w-100" alt="Casa frente al mar">
-                <div class="w-100 h-100 d-flex flex-column justify-content-center z-1 position-absolute top-50 start-50 translate-middle text-center text-light p-4 pe-none">
-                    <h1 class="display-3 fw-bold mb-3 text-shadow pe-auto">Escapadas inolvidables</h1>
-                    <p class="lead mb-0 text-light fs-4 pe-auto">Descubre casas únicas junto al mar.</p>
+            <th:block th:each="i : ${#numbers.sequence(0, 2)}">
+                <div th:if="${houses != null and i < houses.size()}" class="carousel-item" th:classappend="${i == 0 ? 'active' : ''}" data-bs-interval="4000">
+                    <img th:src="${'/images/' + houses[i].imageUrl}" class="d-block w-100" th:alt="${houses[i].title}">
+                    
+                    <div class="position-absolute start-0 w-100 pe-none d-flex justify-content-center justify-content-lg-end pe-lg-5" style="bottom: 18%; z-index: 10;">
+                        <a th:href="@{/houses/{id}(id=${houses[i].id})}" class="pe-auto d-inline-flex align-items-center shadow-lg text-decoration-none" style="background: rgba(0, 0, 0, 0.75); border-radius: 50px; padding: 4px 5px 4px 12px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" title="Ver detalles">
+                            <span class="d-flex align-items-center fw-bold me-2 text-warning" style="font-size: 0.75rem;">
+                                <i class="fa-solid fa-star me-1"></i> 4.9
+                            </span>
+                            <span class="fw-bold text-white text-truncate me-3" style="max-width: 140px; font-size: 0.75rem; letter-spacing: 0.3px;" th:text="${houses[i].title}"></span>
+                            <span class="bg-brand rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 26px; height: 26px; min-width: 26px; box-shadow: 0 0 10px rgba(255, 75, 75, 0.6);">
+                                <i class="fa-solid fa-arrow-right text-white" style="font-size: 0.7rem;"></i>
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="carousel-caption-overlay w-100 h-100 d-flex flex-column justify-content-center z-1 position-absolute top-50 start-50 translate-middle text-center text-light p-4 pe-none">
+                        <h1 class="display-3 fw-bold mb-3 text-shadow pe-auto" th:text="${houses_titles[i]}"></h1>
+                        <p class="lead mb-0 text-light fs-4 pe-auto" th:text="${houses_descriptions[i]}"></p>
+                    </div>
                 </div>
-            </div>
-            <div class="carousel-item" data-bs-interval="4000">
-                <img th:src="@{/images/carrusel2.jpg}" class="d-block w-100" alt="Casa con piscina">
-                <div class="w-100 h-100 d-flex flex-column justify-content-center z-1 position-absolute top-50 start-50 translate-middle text-center text-light p-4 pe-none">
-                    <h1 class="display-3 fw-bold mb-3 text-shadow pe-auto">Relájate con estilo</h1>
-                    <p class="lead mb-0 text-light fs-4 pe-auto">Casas con piscina privada para tu comodidad.</p>
+
+                <div th:unless="${houses != null and i < houses.size()}" class="carousel-item" th:classappend="${i == 0 ? 'active' : ''}" data-bs-interval="4000">
+                    <img th:src="${'/images/carrusel' + (i + 1) + '.jpg'}" class="d-block w-100"
+                         th:alt="${houses_titles[i]}">
+                    <div class="carousel-caption-overlay w-100 h-100 d-flex flex-column justify-content-center z-1 position-absolute top-50 start-50 translate-middle text-center text-light p-4 pe-none">
+                        <h1 class="display-3 fw-bold mb-3 text-shadow pe-auto" th:text="${houses_titles[i]}"></h1>
+                        <p class="lead mb-0 text-light fs-4 pe-auto" th:text="${houses_descriptions[i]}"></p>
+                    </div>
                 </div>
-            </div>
-            <div class="carousel-item" data-bs-interval="4000">
-                <img th:src="@{/images/carrusel3.jpg}" class="d-block w-100" alt="Casa rural">
-                <div class="w-100 h-100 d-flex flex-column justify-content-center z-1 position-absolute top-50 start-50 translate-middle text-center text-light p-4 pe-none">
-                    <h1 class="display-3 fw-bold mb-3 text-shadow pe-auto">Naturaleza y tranquilidad</h1>
-                    <p class="lead mb-0 text-light fs-4 pe-auto">Alquila casas rurales en entornos únicos.</p>
-                </div>
-            </div>
+            </th:block>
         </div>
+
         <button class="carousel-control-prev z-3" type="button" data-bs-target="#carouselHero" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Anterior</span>
@@ -49,7 +61,7 @@
         </button>
     </div>
 
-    <div class="z-3 position-relative search-container-overlay">
+    <div class="z-3 position-relative search-container-overlay overflow-hidden">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-9">
                 <!-- Search Card -->
@@ -84,7 +96,8 @@
                             </div>
 
                             <div class="col-12 col-lg-2 mt-4 mt-lg-0">
-                                <button class="btn btn-brand w-100 py-2 rounded-3 fw-bold text-white shadow-sm" type="submit">
+                                <button class="btn btn-brand w-100 py-2 rounded-3 fw-bold text-white shadow-sm"
+                                        type="submit">
                                     <i class="fa-solid fa-magnifying-glass"></i> Buscar
                                 </button>
                             </div>
@@ -103,19 +116,22 @@
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card h-100 shadow-sm border-0 bg-light rounded-4 p-4 text-center property-card">
-                    <p class="fst-italic mb-3 text-secondary">"¡Increíble experiencia! La casa frente al mar era perfecta para nuestras vacaciones familiares."</p>
+                    <p class="fst-italic mb-3 text-secondary">"¡Increíble experiencia! La casa frente al mar era
+                        perfecta para nuestras vacaciones familiares."</p>
                     <h5 class="fw-bold text-primary mb-0">- María González</h5>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card h-100 shadow-sm border-0 bg-light rounded-4 p-4 text-center property-card">
-                    <p class="fst-italic mb-3 text-secondary">"La piscina privada y las vistas fueron lo mejor. Recomiendo totalmente."</p>
+                    <p class="fst-italic mb-3 text-secondary">"La piscina privada y las vistas fueron lo mejor.
+                        Recomiendo totalmente."</p>
                     <h5 class="fw-bold text-primary mb-0">- Juan Pérez</h5>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card h-100 shadow-sm border-0 bg-light rounded-4 p-4 text-center property-card">
-                    <p class="fst-italic mb-3 text-secondary">"Casa rural con encanto, ideal para desconectar. Volveremos pronto."</p>
+                    <p class="fst-italic mb-3 text-secondary">"Casa rural con encanto, ideal para desconectar.
+                        Volveremos pronto."</p>
                     <h5 class="fw-bold text-primary mb-0">- Ana López</h5>
                 </div>
             </div>
