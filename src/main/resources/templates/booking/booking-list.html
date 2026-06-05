@@ -8,6 +8,9 @@
 
 <h2 th:text="${viewTitle}">Reservas</h2>
 <br>
+<div th:if="${bookings.isEmpty()}">
+    <span>No hay datos actualmente para esta vista en concreto</span>
+</div>
 <div th:each="booking : ${bookings}" class="card w-75 mb-3" style="margin-left: 50px;">
     <h5><i class="fa-solid fa-house"></i><span class="card-title" th:text="| ${booking.userHouse.title} : ${booking.userHouse.location} |" >Titulo</span></h5>
     <p class="card-text" th:text="| ${booking.userHouse.description} , ${booking.userHouse.maxGuests} personas |">Texto de explicaciones.</p>

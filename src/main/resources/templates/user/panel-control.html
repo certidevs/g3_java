@@ -81,7 +81,7 @@
 
   <div sec:authorize="hasRole('ADMIN')" class="dropdown col col-md-2 me-3">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Acc.Anfitrión
+          Administración
       </button>
       <ul class="dropdown-menu">
           <li><a class="dropdown-item" th:href="@{/host/pending/{id}(id=${user.id})}">Reservas pendientes</a></li>
@@ -91,9 +91,9 @@
       </ul>
   </div>
 
-  <div class="dropdown col col-md-2 me-3">
+  <div sec:authorize="hasRole('USER')" class="dropdown col col-md-2 me-3">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Acc.Huésped
+          Vistas
       </button>
       <ul class="dropdown-menu">
           <li><a class="dropdown-item" th:href="@{/guest/pending/{id}(id=${user.id})}">Reservas pendientes</a></li>
@@ -176,7 +176,6 @@
                               <th>Max.Huesped</th>
                               <th>Estado</th>
                               <th>Ver</th>
-                              <th>Reserva</th>
                           </tr>
                           </thead>
                           <tbody>
@@ -189,11 +188,6 @@
                               <td th:text="${casa.maxGuests}">1</td>
                               <td th:text="${casa.reserve}">OK</td>
                               <td><a th:href="@{/houses/{id}(id=${casa.id})}" class="btn btn-primary btn-sm">Ver</a></td>
-                              <td>
-                              <div th:if="${casa.reserve.name() == 'DISPONIBLE'}">
-                                 <a th:href="@{/booking/new/{id}(id=${casa.id})}" class="btn btn-primary btn-sm">Reservar</a>
-                              </div>
-                              </td>
                           </tr>
                           </tbody>
                       </table>
@@ -348,7 +342,7 @@
                                   <td th:text="${booking.totalPrice}">0</td>
                                   <td th:text="${booking.statusbooking}"></td>
                                   <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver casa</a></td>
-                                  <td><a th:href="@{/houses/{id}(id=${booking.getUserHouse().getId()})}" class="btn btn-primary btn-sm">Ver reserva</a></td>
+                                  <td><a th:href="@{/booking/{id}(id=${booking.getId})}" class="btn btn-primary btn-sm">Ver reserva</a></td>
                               </tr>
                               </tbody>
                           </table>
