@@ -35,7 +35,9 @@
     <div  th:if="${booking.statusbooking.name()=='PENDING'}" sec:authorize="hasRole('USER')">
 
 <!--Formulario de pago        -->
-        <form th:action="@{/booking/{id}/finish(id=${booking.id})}" method="post"
+        <div class="card-body">
+            <h5 class="mb-3">Sección de pago</h5>
+            <form th:action="@{/booking/{id}/finish(id=${booking.id})}" method="post"
               class="row g-3">
 
             <div class="col-md-6">
@@ -73,9 +75,8 @@
                 </button>
             </div>
         </form>
-
+        </div>
     </div>
-
 </div>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
