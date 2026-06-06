@@ -56,6 +56,11 @@ public class Booking {
     @ToString.Exclude
     private House userHouse;
 
+    // pago
+    // private PaymentMethod method; // CASH, CARD
+    private String cardOwner; // titular
+    private String cardNumber; // XXXXYYYYZZZZWWWW
+    private String cardExpirationDate; // MM-YY
 
     public Long calculateNights (LocalDateTime tiempoin,LocalDateTime tiempoout)
     {

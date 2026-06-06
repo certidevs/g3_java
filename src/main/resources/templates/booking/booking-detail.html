@@ -10,6 +10,8 @@
 <h2><i class="fa-solid fa-restroom text-primary me-2"></i>Reserva</h2>
 </div>
 <br>
+<div th:if="${error}" class="alert alert-danger my-3" th:text="${error}"></div>
+<div th:if="${message}" class="alert alert-success my-3" th:text="${message}"></div>
 <div  class="card w-75 mb-3" style="margin-left: 50px;">
     <h5 class="card-title" th:text="| ${booking.userHouse.getTitle()} : ${booking.userHouse.getLocation()} |" >Titulo</h5>
     <p class="card-text" th:text="| ${booking.userHouse.getDescription()} , ${booking.userHouse.getMaxGuests()} personas |">Texto de explicaciones.</p>
@@ -28,6 +30,50 @@
              th:href="@{/booking/edit/{id}(id=${booking.id})}"
              class="btn btn-outline-primary btn-sm w-40">
             <i class="fa-solid fa-pen-to-square"></i>Editar</a>
+    </div>
+    <hr>
+    <div  th:if="${booking.statusbooking.name()=='PENDING'}" sec:authorize="hasRole('USER')">
+
+<!--Formulario de pago        -->
+        <form th:action="@{/booking/{id}/finish(id=${booking.id})}" method="post"
+              class="row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label" for="cardOwner">Titular de la tarjeta</label>
+                <input type="text" id="cardOwner" name="cardOwner"
+                       class="form-control" required>
+                <small class="text-muted">Tu nombre completo</small>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label" for="cardNumber">Número de la tarjeta</label>
+                <input type="text" id="cardNumber" name="cardNumber"
+                       class="form-control" maxlength="16" required>
+                <small class="text-muted">Formato: 1111222233334444</small>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="cardExpirationDate">Fecha expiración tarjeta</label>
+                <input type="text" id="cardExpirationDate" name="cardExpirationDate"
+                       class="form-control" maxlength="5" required>
+                <small class="text-muted">Formato: MM/YY</small>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="cardSecretCode">CVV Código tarjeta</label>
+                <input type="text" id="cardSecretCode" name="cardSecretCode"
+                       class="form-control" maxlength="3" required>
+                <small class="text-muted">Formato: 111</small>
+            </div>
+
+            <div class="col-12 text-end">
+                <button type="submit" class="btn btn-sm btn-success">
+                    <i class="fa-solid fa-credit-card"></i>
+                    Pagar y finalizar
+                </button>
+            </div>
+        </form>
+
     </div>
 
 </div>

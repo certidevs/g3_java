@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,6 +52,57 @@ public class BookingController {
         model.addAttribute("estados", StatusBooking.values());
         return "booking/booking-form";
     }
+
+
+    // Pago de una reserva pendiente
+    // Si en la finalización se envían datos sensibles de pago mejor que sea PostMapping
+    @PostMapping("booking/{id}/finish")
+    public String finish(
+            @PathVariable Long id,
+            @RequestParam(required = false) String cardOwner,
+            @RequestParam(required = false) String cardNumber,
+            @RequestParam(required = false) String cardExpirationDate,
+            @RequestParam(required = false) String cardSecretCode,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        Booking booking = bookingRepository.findById(id).orElseThrow();
+
+
+        // 1111 2222 3333 4444 -> 1111222233334444
+        String number = cardNumber == null ? "" : cardNumber.replace("\\s", "");
+        if (!number.matches("\\d{16}")) {
+            redirectAttributes.addFlashAttribute("error", "Invalid card number");
+            return "redirect:/booking/" + id;
+        }
+        // TODO verificar que no esté caducada
+        if(cardExpirationDate == null || !cardExpirationDate.matches("\\d{2}/\\d{2}")) {
+            redirectAttributes.addFlashAttribute("error", "La caducidad debe tener formato MM/YY");
+            return "redirect:/booking/" + id;
+        }
+        if(cardSecretCode == null ||  !cardSecretCode.matches("\\d{3}")) {
+            redirectAttributes.addFlashAttribute("error", "Invalid card secret code");
+            return "redirect:/booking/" + id;
+        }
+        if(cardOwner == null || cardOwner.isBlank()) {
+            redirectAttributes.addFlashAttribute("error", "Card owner is required");
+            return "redirect:/booking/" + id;
+        }
+
+        booking.setCardNumber(cardNumber);
+        booking.setCardOwner(cardOwner);
+        booking.setCardExpirationDate(cardExpirationDate);
+        booking.setStatusbooking(StatusBooking.CONFIRMED);
+        booking.setCheckin(booking.getEstimatedCheckin());
+        booking.setCheckout(booking.getEstimatedCheckout());
+
+        bookingRepository.save(booking);
+
+        redirectAttributes.addFlashAttribute("message", "Pedido finalizado correctamente");
+        return "redirect:/booking/" + id;
+
+    }
+
 
 
     // LADO ANFITRION
