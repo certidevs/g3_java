@@ -16,6 +16,11 @@
         <input type="hidden" th:field="*{id}"/>
         <input type="hidden" th:field="*{userHouse.id}">
 
+        <div class="mb-3">
+            <label for="title" class="form-label">Casa</label>
+            <input type="text" class="form-control" id="title" th:field="*{userHouse.title}" readonly/>
+        </div>
+
         <!-- Campos para NUEVA reserva -->
         <div th:if="${booking.id == null}">
             <div class="mb-3">
@@ -78,10 +83,6 @@
         </div>
 
         <!-- Detalles de la casa -->
-        <div class="mb-3">
-            <label for="title" class="form-label">House</label>
-            <input type="text" class="form-control" id="title" th:field="*{userHouse.title}" readonly/>
-        </div>
 
         <div class="mb-3" th:if="${booking.id == null}">
             <label for="description" class="form-label">Descripción</label>
