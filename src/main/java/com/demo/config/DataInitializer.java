@@ -29,55 +29,9 @@ public class DataInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
-//    public DataInitializer(HouseRepository houseRepository, UserRepository userRepository,
-//                           BookingRepository bookingRepository, ReviewRepository reviewRepository,
-//                           AmenityRepository amenityRepository,
-//                           PasswordEncoder passwordEncoder, UserService userService) {
-//        this.houseRepository = houseRepository;
-//        this.userRepository = userRepository;
-//        this.bookingRepository = bookingRepository;
-//        this.reviewRepository = reviewRepository;
-//        this.amenityRepository = amenityRepository;
-//        this.passwordEncoder = passwordEncoder;
-//        this.userService = userService;
-//    }
-
     @Override
     public void run(String... args) {
 
-//        if (amenityRepository.count() == 0) {
-//
-//            amenityRepository.save(
-//                    Amenity.builder()
-//                            .name("Wifi")
-//                            .description("Internet de alta velocidad")
-//                            .icon("wifi")
-//                            .build()
-//            );
-//
-//            amenityRepository.save(
-//                    Amenity.builder()
-//                            .name("Piscina")
-//                            .description("Piscina privada")
-//                            .icon("water-ladder")
-//                            .build()
-//            );
-//
-//            amenityRepository.save(
-//                    Amenity.builder()
-//                            .name("Parking")
-//                            .description("Estacionamiento gratuito")
-//                            .icon("square-parking")
-//                            .build()
-//            );
-//
-//            amenityRepository.save(
-//                    Amenity.builder()
-//                            .name("Cocina")
-//                            .description("Cocina equipada")
-//                            .icon("utensils")
-//                            .build()
-//            );
         Amenity wifi = amenityRepository.save(
                 Amenity.builder()
                         .name("Wifi")
@@ -135,7 +89,7 @@ public class DataInitializer implements CommandLineRunner {
         guest_test_booking.setFirstName("Guest 1");
         guest_test_booking.setLastName("Guest 1");
         guest_test_booking.setEmail("guest1@test1.com");
-        guest_test_booking.setPassword("password");
+        guest_test_booking.setPassword(passwordEncoder.encode("guest1"));
         guest_test_booking.setRole(Role.ROLE_USER);
         userRepository.save(guest_test_booking);
 
@@ -144,7 +98,7 @@ public class DataInitializer implements CommandLineRunner {
         guest_test_booking_1.setFirstName("Guest 2");
         guest_test_booking_1.setLastName("Guest 2");
         guest_test_booking_1.setEmail("guest2@test1.com");
-        guest_test_booking_1.setPassword("password");
+        guest_test_booking_1.setPassword(passwordEncoder.encode("guest2"));
         guest_test_booking_1.setRole(Role.ROLE_USER);
         userRepository.save(guest_test_booking_1);
 
@@ -154,7 +108,7 @@ public class DataInitializer implements CommandLineRunner {
         host_test_booking.setFirstName("Host 1");
         host_test_booking.setLastName("Host 1");
         host_test_booking.setEmail("host1@test1.com");
-        host_test_booking.setPassword("password");
+        host_test_booking.setPassword(passwordEncoder.encode("host1"));
         host_test_booking.setRole(Role.ROLE_ADMIN);
         userRepository.save(host_test_booking);
 
@@ -202,8 +156,8 @@ public class DataInitializer implements CommandLineRunner {
         //////////////////////
 
         User user1 = new User();
-        user1.setFirstName("user1");
-        user1.setLastName("user1");
+        user1.setFirstName("Miguel");
+        user1.setLastName("Pérez");
         user1.setUsername("user1");
         user1.setEmail("user1@gmail.com");
         user1.setPassword(passwordEncoder.encode("user1"));
@@ -211,8 +165,8 @@ public class DataInitializer implements CommandLineRunner {
         userRepository.save(user1);
 
         User user2 = new User();
-        user2.setFirstName("user2");
-        user2.setLastName("user2");
+        user2.setFirstName("Castaño");
+        user2.setLastName("Alejandro");
         user2.setUsername("user2");
         user2.setEmail("user2@gmail.com");
         user2.setPassword(passwordEncoder.encode("user2"));
@@ -221,6 +175,8 @@ public class DataInitializer implements CommandLineRunner {
 
         User host1 = new User();
         host1.setUsername("host1");
+        host1.setFirstName("Joaquín");
+        host1.setLastName("Ibáñez");
         host1.setEmail("host1@gmail.com");
         host1.setPassword(passwordEncoder.encode("host1"));
         host1.setRole(Role.ROLE_ADMIN);
@@ -228,14 +184,14 @@ public class DataInitializer implements CommandLineRunner {
 
         // Casa propiedad de Host1
         House house_test_booking11 = houseRepository.save(House.builder()
-                .title("Apartamento")
+                .title("Apartamento Barcelona")
                 .description("céntrico")
                 .pricePerNight(105.0)
                 .location("Barcelona")
                 .province("Barcelona")
                 .maxGuests(5)
                 .host(host_test_booking)
-                .houseType(HouseType.CASA)
+                .houseType(HouseType.APARTAMENTO)
                 .imageUrl("h1.jpg")
                 .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
                 .host(host1)
@@ -251,40 +207,32 @@ public class DataInitializer implements CommandLineRunner {
                 .province("Madrid")
                 .maxGuests(3)
                 .host(host1)
-                .houseType(HouseType.CASA)
+                .houseType(HouseType.HABITACION)
                 .imageUrl("h1.jpg")
                 .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
                 .build()
         );
 
 
-
-
-        // user host
-        // casa
-
-        // user guest
-        // booking
-
         // Crear usuarios (hosts)
         User host11 = new User();
         host11.setUsername("juan");
         host11.setEmail("juan@test.com");
-        host11.setPassword("password");
+        host11.setPassword(passwordEncoder.encode("juan"));
         host11.setRole(Role.ROLE_ADMIN);
         userRepository.save(host11);
 
         User host2 = new User();
         host2.setUsername("maria");
         host2.setEmail("nala@test.com");
-        host2.setPassword("password");
+        host2.setPassword(passwordEncoder.encode("maria"));
         host2.setRole(Role.ROLE_ADMIN);
         userRepository.save(host2);
 
         User host3 = new User();
         host3.setUsername("PRUEBA");
         host3.setEmail("PRUEBA@test.com");
-        host3.setPassword("password");
+        host3.setPassword(passwordEncoder.encode("PRUEBA"));
         host3.setRole(Role.ROLE_ADMIN);
         userRepository.save(host3);
 
@@ -294,7 +242,7 @@ public class DataInitializer implements CommandLineRunner {
         guest1_booking.setFirstName("Luis");
         guest1_booking.setLastName("López");
         guest1_booking.setEmail("luis@test1.com");
-        guest1_booking.setPassword("password");
+        guest1_booking.setPassword(passwordEncoder.encode("luis1"));
         guest1_booking.setRole(Role.ROLE_USER);
         userRepository.save(guest1_booking);
 
@@ -303,28 +251,28 @@ public class DataInitializer implements CommandLineRunner {
         guest2_booking.setFirstName("Alba");
         guest2_booking.setLastName("Martínez");
         guest2_booking.setEmail("alba@test2.com");
-        guest2_booking.setPassword("password");
+        guest2_booking.setPassword(passwordEncoder.encode("alba2"));
         guest2_booking.setRole(Role.ROLE_USER);
         userRepository.save(guest2_booking);
 
         User guest3_booking = new User();
         guest3_booking.setUsername("jose3");
         guest3_booking.setEmail("jose@test3.com");
-        guest3_booking.setPassword("password");
+        guest3_booking.setPassword(passwordEncoder.encode("jose3"));
         guest3_booking.setRole(Role.ROLE_USER);
         userRepository.save(guest3_booking);
 
         User guest4_booking = new User();
         guest4_booking.setUsername("carlos4");
         guest4_booking.setEmail("carlos@4test.com");
-        guest4_booking.setPassword("password");
+        guest4_booking.setPassword(passwordEncoder.encode("carlos4"));
         guest4_booking.setRole(Role.ROLE_USER);
         userRepository.save(guest4_booking);
 
         User guest5_booking = new User();
         guest5_booking.setUsername("pedro5");
         guest5_booking.setEmail("pedro@5test.com");
-        guest5_booking.setPassword("password");
+        guest5_booking.setPassword(passwordEncoder.encode("pedro5"));
         guest5_booking.setRole(Role.ROLE_USER);
         userRepository.save(guest5_booking);
 
@@ -332,14 +280,14 @@ public class DataInitializer implements CommandLineRunner {
         User host1_booking = new User();
         host1_booking.setUsername("luis6");
         host1_booking.setEmail("luis@test6.com");
-        host1_booking.setPassword("password");
+        host1_booking.setPassword(passwordEncoder.encode("luis6"));
         host1_booking.setRole(Role.ROLE_USER);
         userRepository.save(host1_booking);
 
         User host2_booking = new User();
         host2_booking.setUsername("alba7");
         host2_booking.setEmail("alba@test7.com");
-        host2_booking.setPassword("password");
+        host2_booking.setPassword(passwordEncoder.encode("alba7"));
         host2_booking.setRole(Role.ROLE_USER);
         host2_booking.setTokenforRecommended(userService.generateRecommendedToken());
         userRepository.save(host2_booking);
@@ -347,21 +295,21 @@ public class DataInitializer implements CommandLineRunner {
         User host3_booking = new User();
         host3_booking.setUsername("jose8");
         host3_booking.setEmail("jose@test.8com");
-        host3_booking.setPassword("password");
+        host3_booking.setPassword(passwordEncoder.encode("jose8"));
         host3_booking.setRole(Role.ROLE_USER);
         userRepository.save(host3_booking);
 
         User host4_booking = new User();
         host4_booking.setUsername("carlos9");
         host4_booking.setEmail("carlos@test9.com");
-        host4_booking.setPassword("password");
+        host4_booking.setPassword(passwordEncoder.encode("carlos9"));
         host4_booking.setRole(Role.ROLE_USER);
         userRepository.save(host4_booking);
 
         User host5_booking = new User();
         host5_booking.setUsername("pedro10");
         host5_booking.setEmail("pedro@test10.com");
-        host5_booking.setPassword("password");
+        host5_booking.setPassword(passwordEncoder.encode("pedro10"));
         host5_booking.setRole(Role.ROLE_USER);
         userRepository.save(host5_booking);
 
@@ -384,7 +332,7 @@ public class DataInitializer implements CommandLineRunner {
                 .title("tu Casita")
                 .description("Casa 2 descripción")
                 .pricePerNight(100d)
-                .location("Por ahi")
+                .location("Barcelona")
                 .province("Barcelona")
                 .maxGuests(6)
                 .imageUrl("h5.jpg")
@@ -399,8 +347,8 @@ public class DataInitializer implements CommandLineRunner {
                         .title("Parcela el Viso")
                         .description("con piscina")
                         .pricePerNight(145.0)
-                        .location("Toledo")
-                        .province("Madrid")
+                        .location("Viso de San Juan")
+                        .province("Toledo")
                         .imageUrl("h6.jpg")
                         .maxGuests(5)
                         .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
@@ -414,8 +362,8 @@ public class DataInitializer implements CommandLineRunner {
                 .title("Apartamento")
                 .description("Playa cercana")
                 .pricePerNight(145.0)
-                .location("alicante")
-                .province("Madrid")
+                .location("Alicante")
+                .province("Alicante")
                 .maxGuests(3)
                 .imageUrl("h7.jpg")
                 .houseType(HouseType.CASA)
@@ -429,6 +377,8 @@ public class DataInitializer implements CommandLineRunner {
                 .title("Rural Torres")
                 .description("senderismo sierra")
                 .pricePerNight(45.0)
+                .location("Genave")
+                .province("Jaén")
                 .maxGuests(4)
                 .imageUrl("h8.jpg")
                 .houseType(HouseType.CASA)
@@ -442,6 +392,8 @@ public class DataInitializer implements CommandLineRunner {
                 .title("Camping")
                 .description("en playa con piscina")
                 .pricePerNight(105.0)
+                .location("Gava")
+                .province("Barcelona")
                 .maxGuests(4)
                 .imageUrl("h1.jpg")
                 .houseType(HouseType.CASA)
@@ -455,7 +407,8 @@ public class DataInitializer implements CommandLineRunner {
                 .title("Ático")
                 .description("centro ciudad")
                 .pricePerNight(250.6)
-                .province("Gijón")
+                .location("Calle Madrid,8")
+                .province("Asturias")
                 .maxGuests(2)
                 .imageUrl("h2.jpg")
                 .houseType(HouseType.CASA)
@@ -469,7 +422,8 @@ public class DataInitializer implements CommandLineRunner {
                 .title("Ático1")
                 .description("centro ciudad1")
                 .pricePerNight(167.6)
-                .province("Gijón1")
+                .location("Calle Herreros,9")
+                .province("Sevilla")
                 .maxGuests(6)
                 .imageUrl("h3.jpg")
                 .houseType(HouseType.CASA)
@@ -483,7 +437,8 @@ public class DataInitializer implements CommandLineRunner {
                 .title("Ático2")
                 .description("centro ciudad2")
                 .pricePerNight(280.6)
-                .province("Gijón2")
+                .location("Plaza el Bierzo,9")
+                .province("Barcelona")
                 .maxGuests(4)
                 .imageUrl("h5.jpg")
                 .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
@@ -600,8 +555,6 @@ public class DataInitializer implements CommandLineRunner {
         bookingRepository.save(reserva7);
 
     }
-
-
 
 }
 

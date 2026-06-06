@@ -8,7 +8,7 @@
   <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
   <main class="container flex-grow-1">
-      <div class="row">
+      <div class="row mt-3">
           <div class="col-sm-9 mb-3 mb-sm-0">
 <!--  Carta1    -->
 
@@ -19,10 +19,9 @@
       <i class="fa-brands fa-whmcs"></i>
       <span th:text="|Panel de control del usuario &quot;${user.getUsername()}&quot;|">Panel de Control</span>
     </h3>
-        <h3>
-            <i class="fa-brands fa-whmcs"></i>
-            <span th:text="|Panel de control del usuario &quot;${user.getId()}&quot;|">Panel de Control</span>
-        </h3>
+    <h5>
+        <span th:text="|Usuario &quot;${user.getId()}&quot;|">Panel de Control</span>
+    </h5>
 
 
 <!--      Datos de usuario  -->
@@ -102,11 +101,11 @@
           <li><a class="dropdown-item" th:href="@{/guest/completed/{id}(id=${user.id})}">Reservas completadas</a></li>
       </ul>
   </div>
-    <div class="col col-md-2 me-3">
+    <div sec:authorize="hasRole('USER')" class="col col-md-2 me-3">
         <a th:href="@{/recommended-show/{id}(id=${user.id})}" class="btn btn-primary">
             <i class="fa-solid fa-people-arrows"></i>Revista</a>
     </div>
-      <div class="col col-md-2 me-3">
+      <div sec:authorize="hasRole('USER')" class="col col-md-2 me-3">
           <a th:href="@{/agenda}" class="btn btn-primary">
               <i class="fa-solid fa-clipboard-list"></i>Agenda</a>
       </div>

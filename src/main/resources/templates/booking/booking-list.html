@@ -5,11 +5,12 @@
 
 <body>
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
-
-<h2 th:text="${viewTitle}">Reservas</h2>
+<div class="ms-3">
+    <h2 th:text="${viewTitle}">Reservas</h2>
+</div>
 <br>
-<div th:if="${bookings.isEmpty()}">
-    <span>No hay datos actualmente para esta vista en concreto</span>
+<div th:if="${bookings.isEmpty()}" class="ms-3" >
+    <h4>No hay datos actualmente para esta vista en concreto</h4>
 </div>
 <div th:each="booking : ${bookings}" class="card w-75 mb-3" style="margin-left: 50px;">
     <h5><i class="fa-solid fa-house"></i><span class="card-title" th:text="| ${booking.userHouse.title} : ${booking.userHouse.location} |" >Titulo</span></h5>

@@ -6,7 +6,9 @@
 <body>
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-<h2>Reserva</h2>
+<div class="ms-3 mt-3">
+<h2><i class="fa-solid fa-restroom text-primary me-2"></i>Reserva</h2>
+</div>
 <br>
 <div  class="card w-75 mb-3" style="margin-left: 50px;">
     <h5 class="card-title" th:text="| ${booking.userHouse.getTitle()} : ${booking.userHouse.getLocation()} |" >Titulo</h5>
