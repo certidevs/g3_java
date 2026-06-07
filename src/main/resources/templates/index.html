@@ -139,50 +139,18 @@
     </section>
 
     <!-- CARACTERÍSTICAS Y UBICACIONES -->
-    <!-- TODO: Amenities es esto xd? -->
     <section class="container my-5 pb-5">
         <h2 class="text-center fw-bold mb-5 text-dark h1">🌟 Características y ubicaciones</h2>
-        <div class="row g-4 text-center">
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
-                    <i class="fa-solid fa-umbrella-beach fs-1 text-success mb-3"></i>
-                    <h4 class="h6 fw-bold text-dark">Frente al mar</h4>
-                    <p class="small text-muted mb-0">Acceso directo a playas paradisíacas.</p>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
-                    <i class="fa-solid fa-swimming-pool fs-1 text-success mb-3"></i>
-                    <h4 class="h6 fw-bold text-dark">Con piscina</h4>
-                    <p class="small text-muted mb-0">Piscinas privadas en entornos exclusivos.</p>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
-                    <i class="fa-solid fa-tree fs-1 text-success mb-3"></i>
-                    <h4 class="h6 fw-bold text-dark">Rurales</h4>
-                    <p class="small text-muted mb-0">Naturaleza para escapadas tranquilas.</p>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
-                    <i class="fa-solid fa-city fs-1 text-success mb-3"></i>
-                    <h4 class="h6 fw-bold text-dark">Céntricas</h4>
-                    <p class="small text-muted mb-0">Ubicaciones con fácil acceso a servicios.</p>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
-                    <i class="fa-solid fa-mountain fs-1 text-success mb-3"></i>
-                    <h4 class="h6 fw-bold text-dark">Montaña</h4>
-                    <p class="small text-muted mb-0">Entornos montañosos para aventuras.</p>
-                </div>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <div class="p-3 property-card rounded-4 bg-light h-100 shadow-sm border-0">
-                    <i class="fa-solid fa-wifi fs-1 text-success mb-3"></i>
-                    <h4 class="h6 fw-bold text-dark">Conectadas</h4>
-                    <p class="small text-muted mb-0">WiFi de alta velocidad en las propiedades.</p>
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-4" th:each="amenity : ${amenities}">
+                <div class="d-flex align-items-center p-4 border rounded-4 bg-white shadow-sm h-100 property-card">
+                    <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-4" style="width: 60px; height: 60px; min-width: 60px;">
+                        <i th:class="'fa-solid fa-' + ${amenity.icon} + ' fs-3 text-brand'"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-1 fw-bold h5 text-dark" th:text="${amenity.name}">Amenity</h4>
+                        <p class="mb-0 text-muted small" th:text="${amenity.description}">Desc</p>
+                    </div>
                 </div>
             </div>
         </div>
