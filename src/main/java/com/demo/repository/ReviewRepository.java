@@ -2,6 +2,7 @@ package com.demo.repository;
 
 import com.demo.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,4 +26,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 //    List<Review> findByHouseIdAndRatingOrderByCreationDateDesc(Long houseId, Integer rating);
 
     List<Review> findTop5ByOrderByRatingAsc();
+
+    @Query("""
+        SELECT AVG(CAST(r.rating AS double)) FROM Review r
+        WHERE r.house.id = :houseId AND r.rating IS NOT NULL
+    """)
+    Double getAverageRatingForHouse(Long houseId);
 }

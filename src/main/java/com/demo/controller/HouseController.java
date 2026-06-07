@@ -4,7 +4,8 @@ import com.demo.model.House;
 import com.demo.model.Review;
 import com.demo.model.StatusReserva;
 import com.demo.repository.HouseRepository;
-import com.demo.repository.ReviewRepository;
+import com.demo.service.ReviewService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,16 +21,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-
+@AllArgsConstructor
 public class HouseController {
 
     private final HouseRepository houseRepository;
-    private final ReviewRepository reviewRepository;
-
-    public HouseController(HouseRepository houseRepository, ReviewRepository reviewRepository) {
-        this.houseRepository = houseRepository;
-        this.reviewRepository = reviewRepository;
-    }
+    private final ReviewService reviewService;
 
     @GetMapping("/houses")
     public String houseList(Model model,
@@ -47,6 +43,12 @@ public class HouseController {
         model.addAttribute("houses", houseStatus);
         model.addAttribute("provinces", provinces);
         model.addAttribute("selectedProvince", province);
+
+        java.util.Map<Long, Double> houseRatings = new java.util.HashMap<>();
+        for (House h : houseStatus) {
+            houseRatings.put(h.getId(), reviewService.getAverageRating(h.getId()));
+        }
+        model.addAttribute("houseRatings", houseRatings);
 
 //        List <House>  houses = houseRepository.findByActiveTrue();
 //        model.addAttribute("houses", houses);
@@ -81,10 +83,12 @@ public class HouseController {
             // casa sí existe
             House house = houseOptional.get();
             model.addAttribute("house", house);
+            
+            Double averageRating = reviewService.getAverageRating(house.getId());
+            model.addAttribute("averageRating", averageRating);
 
             // reviews
-            List<Review> reviews = reviewRepository.findByHouse_IdOrderByCreatedAtDesc(house.getId());
-//            List<Review> reviews = reviewRepository.findByHouseIdOrderByCreationDateDesc(house.getId());
+            List<Review> reviews = reviewService.findByHouseIdOrderByCreatedAtDesc(house.getId());
             model.addAttribute("reviews", reviews); // accesibles desde HTML
 
             return "house/house-detail";

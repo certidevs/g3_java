@@ -2,7 +2,8 @@ package com.demo.controller;
 
 import com.demo.model.Review;
 import com.demo.repository.HouseRepository;
-import com.demo.repository.ReviewRepository;
+import com.demo.service.ReviewService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,29 +15,29 @@ import java.util.Optional;
 
 @RequestMapping("/reviews")
 @Controller
-@RequiredArgsConstructor
+@AllArgsConstructor
 class ReviewController {
-    private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
     private final HouseRepository houseRepository;
 
     @GetMapping // /reviews
     public String reviewList(Model model) {
-        List<Review> reviews = reviewRepository.findAll();
+        List<Review> reviews = reviewService.findAll();
         model.addAttribute("reviews", reviews);
         return "review/review-list";
     }
 
     @GetMapping("/{id}")
     public String review(Model model, @PathVariable Long id) {
-        model.addAttribute("review", reviewRepository.findById(id).orElseThrow());
+        model.addAttribute("review", reviewService.findById(id).orElseThrow());
         return "review/review-detail";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteReview(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        Optional<Review> reviewOptional = reviewRepository.findById(id);
+        Optional<Review> reviewOptional = reviewService.findById(id);
         if (reviewOptional.isPresent()) {
-            reviewRepository.delete(reviewOptional.get());
+            reviewService.delete(reviewOptional.get());
             redirectAttributes.addFlashAttribute("message", "Review deleted successfully.");
         } else {
             redirectAttributes.addFlashAttribute("message", "Review not found.");
@@ -56,7 +57,7 @@ class ReviewController {
 
     @GetMapping("/edit/{id}")
     public String editReview(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        Optional<Review> reviewOptional = reviewRepository.findById(id);
+        Optional<Review> reviewOptional = reviewService.findById(id);
         if (reviewOptional.isPresent()) {
             model.addAttribute("review", reviewOptional.get());
             return "review/review-form";
@@ -69,7 +70,7 @@ class ReviewController {
     public String saveReview(@ModelAttribute Review review, RedirectAttributes redirectAttributes) {
         // TODO reviewService.isValid(review)
         //         si no es correcta redirectAttributes.addFlashAttribute("review_error", "Tu review no cumple los terminos y condiciones de la plataforma");
-        reviewRepository.save(review);
+        reviewService.save(review);
         redirectAttributes.addFlashAttribute("review_message", "La reseña se ha guardado correctamente.");
 
         return "redirect:/houses/" + review.getHouse().getId() + "#reviews";

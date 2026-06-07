@@ -44,5 +44,12 @@ public interface HouseRepository extends JpaRepository<House, Long> {
     );
 
     //FILTRAR REVIEW CON MEJORES RESEÑAS
-
+    @Query("""
+    SELECT h FROM House h
+    LEFT JOIN Review r ON r.house = h
+    WHERE (h.active IS NULL OR h.active = true)
+    GROUP BY h
+    ORDER BY COALESCE(AVG(CAST(r.rating AS double)), 0.0) DESC
+    """)
+    List<House> findTop3ByOrderByAverageRatingDesc();
 }

@@ -24,8 +24,12 @@
                     
                     <div class="position-absolute start-0 w-100 pe-none d-flex justify-content-center justify-content-lg-end pe-lg-5" style="bottom: 18%; z-index: 10;">
                         <a th:href="@{/houses/{id}(id=${houses[i].id})}" class="pe-auto d-inline-flex align-items-center shadow-lg text-decoration-none" style="background: rgba(0, 0, 0, 0.75); border-radius: 50px; padding: 4px 5px 4px 12px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" title="Ver detalles">
-                            <span class="d-flex align-items-center fw-bold me-2 text-warning" style="font-size: 0.75rem;">
-                                <i class="fa-solid fa-star me-1"></i> 4.9
+                            <span th:if="${houseRatings[houses[i].id] >= 4.0}" class="d-flex align-items-center fw-bold me-2 text-warning" style="font-size: 0.75rem;">
+                                <i class="fa-solid fa-star me-1"></i> 
+                                <span th:text="${#numbers.formatDecimal(houseRatings[houses[i].id], 1, 1)}">4.9</span>
+                            </span>
+                            <span th:if="${houseRatings[houses[i].id] < 4.0}" class="d-flex align-items-center fw-bold me-2 text-info" style="font-size: 0.75rem;">
+                                <i class="fa-solid fa-thumbs-up me-1"></i>
                             </span>
                             <span class="fw-bold text-white text-truncate me-3" style="max-width: 140px; font-size: 0.75rem; letter-spacing: 0.3px;" th:text="${houses[i].title}"></span>
                             <span class="bg-brand rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 26px; height: 26px; min-width: 26px; box-shadow: 0 0 10px rgba(255, 75, 75, 0.6);">
