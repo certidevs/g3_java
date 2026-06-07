@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="es">
 <body>
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);">
+<nav th:fragment="navbar" class=" navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);">
     <div class="container-xxl">
         <!-- Brand -->
         <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" th:href="@{/}">
@@ -23,8 +23,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link px-3" th:href="@{/houses}">
-                        <i class="fa-solid fa-house-chimney me-1"></i> Casas
+                    <a class="nav-link px-3 d-flex align-items-center" th:href="@{/houses}">
+                        <span><i class="fa-solid fa-house-chimney me-1"></i> Casas</span>
+                        <span sec:authorize="isAuthenticated()" 
+                              th:if="${favoritesHouses != null and not #sets.isEmpty(favoritesHouses)}" 
+                              class="badge rounded-pill bg-danger ms-2 d-flex align-items-center" 
+                              title="Mis Favoritos">
+                            <i class="fa-solid fa-heart me-1"></i>
+                            <span th:text="${#sets.size(favoritesHouses)}"></span>
+                        </span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -38,6 +45,7 @@
                         <i class="fa-solid fa-code-fork me-1"></i> Panel control
                     </a>
                 </li>
+
                 <li sec:authorize="isAuthenticated()" class="nav-item me-1">
                     <a class="nav-link px-3" th:href="@{/profile}">
                         <i class="fa-solid fa-user me-1"></i> <th:block sec:authentication="name"></th:block>

@@ -329,4 +329,11 @@ main.container {
     padding-right: 1.5rem;
 }
 
+/* Botón de favoritos */
+.favorite-btn {
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+.favorite-btn:hover {
+    transform: scale(1.15);
+}
 */
