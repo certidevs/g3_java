@@ -16,9 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @AllArgsConstructor
@@ -33,18 +31,19 @@ public class HouseController {
         @RequestParam(required = false) Double pricePerNight,
         @RequestParam(required = false) String title,
         @RequestParam(required = false) String province
-
+        // TODO: Para el admin podría recibir el valor de "active", por defecto enseñar todas para el admin, incluidas las desactivadas, y filtrar con esté parámetro (solo si es admin)
     ){
         List<House>  houseStatus = houseRepository.findByReserve(reserve,pricePerNight,title,province);//NUEVO METODO POR QUERY
 
         // lista de provincias para el select
+        // TODO
         List<String> provinces = Arrays.asList("Madrid", "Barcelona", "Valencia", "Sevilla", "Málaga", "Bilbao");
 
         model.addAttribute("houses", houseStatus);
         model.addAttribute("provinces", provinces);
         model.addAttribute("selectedProvince", province);
 
-        java.util.Map<Long, Double> houseRatings = new java.util.HashMap<>();
+        Map<Long, Double> houseRatings = new HashMap<>();
         for (House h : houseStatus) {
             houseRatings.put(h.getId(), reviewService.getAverageRating(h.getId()));
         }

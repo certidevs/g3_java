@@ -63,6 +63,14 @@
                         <i class="fa-solid fa-store text-primary me-2"></i>
                         <span th:text="${house.title}">Nombre</span>
                     </h5>
+                    <div class="mb-2">
+                        <span th:if="${houseRatings[house.id] > 0.0}" class="badge bg-warning text-dark">
+                            <i class="fa-solid fa-star me-1"></i> <span th:text="${#numbers.formatDecimal(houseRatings[house.id], 1, 1)}"></span>
+                        </span>
+                        <span th:if="${houseRatings[house.id] == 0.0}" class="badge bg-secondary">
+                            Nuevo
+                        </span>
+                    </div>
                     <p class="card-text">
                         <span class="badge bg-success">
                             <i class="fa-solid fa-euro-sign me-1"></i>
