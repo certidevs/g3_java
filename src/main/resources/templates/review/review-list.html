@@ -1,72 +1,69 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/head :: head('Reviews')}"></head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-<main class="container flex-grow-1">
+<main class="container flex-grow-1 py-5">
 
     <!-- TODO: I want to add images to Users and details of houses in each review -->
     <h1 class="mb-4">
-        <i class="fa-regular fa-comments text-primary me-2"></i> Opiniones de clientes
+        <i class="fa-regular fa-comments text-brand me-2"></i> Opiniones de clientes
     </h1>
 
     <div th:if="${reviews.isEmpty()}" class="alert alert-light border">
         Aún no hay reseñas.
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 g-3">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
         <div class="col" th:each="review : ${reviews}">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="card-title mb-0" th:text="${review.title}">Título</h5>
-                        <span class="badge bg-warning text-dark">
-                            <i class="fa-solid fa-star me-1"></i>
-                            <span th:text="${review.rating + ' / 5'}"></span>
-                        </span>
+            <div class="card h-100 border-0 shadow-sm rounded-4 property-card position-relative">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <div>
+                                <div class="text-warning small d-flex align-items-center gap-1 mb-1">
+                                    <div><i class="fa-solid fa-star" th:each="i : ${#numbers.sequence(1, review.rating)}" th:if="${review.rating > 0}"></i><i class="fa-regular fa-star" th:each="i : ${#numbers.sequence(review.rating + 1, 5)}" th:if="${review.rating < 5}"></i></div>
+                                    <span class="fw-bold ms-1" th:text="|${review.rating}.0/5.0|">5.0/5.0</span>
+                                </div>
+                                <div th:if="${review.user != null}">
+                                    <a th:href="@{/users/{id}(id=${review.user.id})}" class="fw-bold text-dark text-hover-brand text-decoration-none mb-0 d-block position-relative" style="z-index: 2;" 
+                                       th:text="${review.user.firstName != null and review.user.lastName != null ? review.user.firstName + ' ' + review.user.lastName : review.user.username}">Usuario</a>
+                                </div>
+                                <div th:unless="${review.user != null}">
+                                    <span class="fw-bold text-dark mb-0 d-block">Usuario anónimo</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="text-muted small bg-light px-2 py-1 rounded border" th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy')}"></span>
                     </div>
-                    <p class="card-text" th:text="${review.comment}">Descripción</p>
-                    <p class="text-muted small mb-0">
-                        <i class="fa-regular fa-calendar me-1"></i>
-                        <span th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
-                    </p>
+                    <a th:href="@{/reviews/{id}(id=${review.id})}" class="text-decoration-none text-dark stretched-link">
+                        <h6 class="fw-bold mb-2" th:text="${review.title}">Título</h6>
+                        <p class="card-text text-muted small mb-0" th:text="${review.comment}">Descripción</p>
+                    </a>
                 </div>
-                <div class="card-footer bg-transparent small">
+                <div class="card-footer bg-light border-0 px-4 py-3 rounded-bottom-4 d-flex justify-content-between align-items-center position-relative" style="z-index: 2;">
                     <div th:if="${review.house != null}">
-                        <i class="fa-solid fa-store text-primary me-1"></i>
                         <a th:href="@{/houses/{id}(id=${review.house.id})}"
-                           th:text="${review.house.title}">Casa</a>
+                           class="text-decoration-none fw-semibold text-secondary text-hover-brand position-relative" style="z-index: 2;">
+                           <i class="fa-solid fa-house me-1"></i><span th:text="${review.house.title}">Casa</span>
+                        </a>
                     </div>
-
-                    <!--          <div th:if="${review.dish != null}">-->
-                    <!--            <i class="fa-solid fa-utensils text-primary me-1"></i>-->
-                    <!--            <a th:href="@{/dishes/{id}(id=${review.dish.id})}"-->
-                    <!--               th:text="${review.dish.name}">Plato</a>-->
-                    <!--            <span th:if="${review.dish.restaurant != null}"-->
-                    <!--                  class="text-muted">-->
-                    <!--                            — en-->
-                    <!--                            <a th:href="@{/restaurants/{id}(id=${review.dish.restaurant.id})}"-->
-                    <!--                               th:text="${review.dish.restaurant.name}">Restaurante</a>-->
-                    <!--                        </span>-->
-                    <!--          </div>-->
-
-                    <div class="my-3">
-                        <!-- Botón de borrar -->
-                        <a class="btn btn-secondary" th:href="@{/reviews/{id}(id=${review.id})}">
-                            <i class="fa-solid fa-eye mr-2"></i> Ver
+                    <div th:unless="${review.house != null}"></div>
+                    
+                    <div class="d-flex gap-2 align-items-center">
+                        <th:block th:if="${#authorization.expression('hasRole(''ADMIN'')') or (#authentication.principal != null and review.user != null and #authentication.principal.id == review.user.id)}">
+                            <a class="btn btn-outline-success btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" th:href="@{/reviews/edit/{id}(id=${review.id})}" title="Editar">
+                                <i class="fa-solid fa-pencil"></i>
+                            </a>
+                            <a class="btn btn-outline-danger btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" th:href="@{/reviews/delete/{id}(id=${review.id})}" onclick="return confirm('Esta acción borra, ¿quiere borrar esta reseña?')" title="Borrar">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </th:block>
+                        <a th:if="${review.house != null}" class="btn btn-outline-dark btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" th:href="@{|/houses/${review.house.id}#review-${review.id}|}" title="Ver reseña en la casa">
+                            <i class="fa-solid fa-eye"></i>
                         </a>
-
-                        <a class="btn btn-success" th:href="@{/reviews/edit/{id}(id=${review.id})}">
-                            <i class="fa-solid fa-pencil mr-2"></i> Editar
-                        </a>
-
-                        <a class="btn btn-danger" th:href="@{/reviews/delete/{id}(id=${review.id})}"
-                           onclick="return confirm('Esta acción borra, ¿quiere borrar esta reseña?')">
-                            <i class="fa-solid fa-trash mr-2"></i> Borrar
-                        </a>
-
                     </div>
                 </div>
             </div>

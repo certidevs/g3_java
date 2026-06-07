@@ -12,6 +12,23 @@
     color: var(--brand-color) !important;
 }
 
+.text-hover-brand {
+    transition: color 0.2s ease-in-out;
+}
+
+.text-hover-brand:hover {
+    color: var(--brand-color) !important;
+}
+
+.property-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.property-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
 .bg-brand {
     background-color: var(--brand-color) !important;
 }

@@ -1,6 +1,8 @@
 package com.demo.controller;
 
+import com.demo.model.Amenity;
 import com.demo.model.House;
+import com.demo.model.Review;
 import com.demo.repository.HouseRepository;
 import com.demo.service.ReviewService;
 import com.demo.repository.AmenityRepository;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,19 +26,22 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("reviews", reviewService.findTop5ByOrderByRatingAsc());
-        
-        java.util.List<House> topHouses = houseRepository.findTop3ByOrderByAverageRatingDesc();
-        
+        List<House> topHouses = houseRepository.findTop3ByOrderByAverageRatingDesc();
+        model.addAttribute("houses", topHouses);
+
         Map<Long, Double> houseRatings = new HashMap<>();
         for (House h : topHouses) {
             houseRatings.put(h.getId(), reviewService.getAverageRating(h.getId()));
         }
-        
-        model.addAttribute("houses", topHouses);
         model.addAttribute("houseRatings", houseRatings);
-        model.addAttribute("amenities", amenityRepository.findAll());
-        // Array con los textos definidos
+
+        List<Review> indexReviews = new ArrayList<>(reviewService.findTop3Reviews(4));
+        model.addAttribute("reviews", indexReviews);
+
+        List<Amenity> amenities = amenityRepository.findAll();
+        model.addAttribute("amenities", amenities);
+
+        // Placeholders para casas
         model.addAttribute("houses_titles", new String[]{
                 "Escapadas inolvidables",
                 "Relájate con estilo",
@@ -46,6 +52,24 @@ public class IndexController {
                 "Casas con piscina privada para tu comodidad.",
                 "Alquila casas rurales en entornos únicos."
         });
+
+        // Placeholders para reseñas
+        model.addAttribute("reviews_titles", new String[]{
+                "Lugar Soñado",
+                "Muy recomendable",
+                "Pura tranquilidad"
+        });
+        model.addAttribute("reviews_comments", new String[]{
+                "¡Increíble! Perfecta para la familia.",
+                "Piscina y vistas espectaculares.",
+                "Ideal para desconectar."
+        });
+        model.addAttribute("reviews_users", new String[]{
+                "María González",
+                "Juan Pérez",
+                "Ana López"
+        });
+
         return "index";
     }
 }
