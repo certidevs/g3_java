@@ -1,10 +1,12 @@
 package com.demo.controller;
 
 import com.demo.model.Review;
+import com.demo.model.User;
 import com.demo.repository.HouseRepository;
 import com.demo.service.ReviewService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -67,9 +69,10 @@ class ReviewController {
     }
 
     @PostMapping
-    public String saveReview(@ModelAttribute Review review, RedirectAttributes redirectAttributes) {
+    public String saveReview(@ModelAttribute Review review, @AuthenticationPrincipal User currentUser, RedirectAttributes redirectAttributes) {
         // TODO reviewService.isValid(review)
         //         si no es correcta redirectAttributes.addFlashAttribute("review_error", "Tu review no cumple los terminos y condiciones de la plataforma");
+        review.setUser(currentUser);
         reviewService.save(review);
         redirectAttributes.addFlashAttribute("review_message", "La reseña se ha guardado correctamente.");
 

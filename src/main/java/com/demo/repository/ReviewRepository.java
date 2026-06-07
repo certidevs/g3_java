@@ -27,6 +27,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findTop5ByOrderByRatingAsc();
 
+    List<Review> findTop3ByRatingGreaterThanEqualOrderByRatingDescCreatedAtDesc(Integer rating);
+
     @Query("""
         SELECT AVG(CAST(r.rating AS double)) FROM Review r
         WHERE r.house.id = :houseId AND r.rating IS NOT NULL

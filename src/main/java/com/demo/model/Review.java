@@ -41,4 +41,9 @@ public class Review {
     @JoinColumn(name = "house_id")
     private House house;
 
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }

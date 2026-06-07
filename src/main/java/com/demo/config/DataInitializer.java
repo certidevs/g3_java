@@ -469,6 +469,7 @@ public class DataInitializer implements CommandLineRunner {
                 .house(house_test_booking1)
                 .title("IDEAL PARA PAREJAS")
                 .rating(5)
+                .user(guest1_booking)
                 .build();
 
         Review review2 = Review.builder()
@@ -476,6 +477,7 @@ public class DataInitializer implements CommandLineRunner {
                 .house(house_test_booking)
                 .title("HERMOSO LUGAR PARA IR EN FAMILIA")
                 .rating(1)
+                .user(guest2_booking)
                 .build();
 
         Review review3 = Review.builder()
@@ -483,6 +485,7 @@ public class DataInitializer implements CommandLineRunner {
                 .house(house1_booking)
                 .title("Comí y no me morí")
                 .rating(3)
+                .user(guest3_booking)
                 .build();
 
         Review review4 = Review.builder()
@@ -490,6 +493,7 @@ public class DataInitializer implements CommandLineRunner {
                 .house(house2_booking)
                 .title("Me pusieron de menos")
                 .rating(2)
+                .user(guest4_booking)
                 .build();
 
         Review review5 = Review.builder()
@@ -497,6 +501,7 @@ public class DataInitializer implements CommandLineRunner {
                 .house(house3_booking)
                 .title("Guay")
                 .rating(5)
+                .user(guest5_booking)
                 .build();
 
         reviewRepository.saveAll(List.of(review1, review2, review3, review4,  review5));

@@ -37,6 +37,10 @@ public class ReviewService {
         return reviewRepository.findTop5ByOrderByRatingAsc();
     }
 
+    public List<Review> findTop3Reviews(Integer minRating) {
+        return reviewRepository.findTop3ByRatingGreaterThanEqualOrderByRatingDescCreatedAtDesc(minRating);
+    }
+
     public Double getAverageRating(Long houseId) {
         Double avg = reviewRepository.getAverageRatingForHouse(houseId);
         return avg != null ? avg : 0.0;
