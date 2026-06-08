@@ -139,7 +139,7 @@
                     
                     <!-- Acciones de Admin (Escritorio) -->
                     <div sec:authorize="hasRole('ADMIN')" class="mt-4 pt-3 border-top">
-                        <p class="text-muted small fw-bold mb-2 text-center"><i class="fa-solid fa-gear me-1"></i> Acciones de Administrador</p>
+                        <p class="text-muted small fw-bold mb-2 text-center"><i class="fa-solid fa-gear me-1"></i> Acciones de administrador</p>
                         <div class="d-flex gap-2 flex-column">
                             <a th:href="@{/houses/edit/{id}(id=${house.id})}" class="btn btn-outline-success">
                                 <i class="fa-solid fa-pencil me-1"></i> Editar

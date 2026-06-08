@@ -1,11 +1,10 @@
 package com.demo.controller;
 
-import com.demo.model.House;
-import com.demo.model.Review;
-import com.demo.model.StatusReserva;
+import com.demo.model.*;
 import com.demo.repository.HouseRepository;
 import com.demo.service.ReviewService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,21 +26,50 @@ public class HouseController {
 
     @GetMapping("/houses")
     public String houseList(Model model,
-        @RequestParam(required = false) StatusReserva reserve,//se agg el reques param para filtrar por parametro de reserva
+        @RequestParam(required = false) StatusReserva reserve,
         @RequestParam(required = false) Double pricePerNight,
         @RequestParam(required = false) String title,
-        @RequestParam(required = false) String province
-        // TODO: Para el admin podría recibir el valor de "active", por defecto enseñar todas para el admin, incluidas las desactivadas, y filtrar con esté parámetro (solo si es admin)
-    ){
-        List<House>  houseStatus = houseRepository.findByReserve(reserve,pricePerNight,title,province);//NUEVO METODO POR QUERY
+        @RequestParam(required = false) String province,
+        @RequestParam(required = false) HouseType houseType,
+        @RequestParam(required = false) Double minRating,
+        @RequestParam(required = false) Boolean active,
+        @RequestParam(required = false) Boolean favoritesOnly,
+        @AuthenticationPrincipal User user,
+        @ModelAttribute("favoritesHouses") Set<Long> favoritesHouses
+    ) {
+        // TODO: Casi todo esto se puede abstraer al HouseService si existiera, o probablemente usando un Dto para los RequestParam
+        boolean isAdmin = user != null && user.getRole() == Role.ROLE_ADMIN;
+        if (!isAdmin) {
+            active = true;
+        }
 
-        // lista de provincias para el select
-        // TODO
+        // TODO: Mover esto para usarlo desde el index y house-form
         List<String> provinces = Arrays.asList("Madrid", "Barcelona", "Valencia", "Sevilla", "Málaga", "Bilbao");
+        model.addAttribute("provinces", provinces);
+
+        boolean filterFavorites = Boolean.TRUE.equals(favoritesOnly);
+        List<House> houseStatus;
+
+        if (filterFavorites && (favoritesHouses == null || favoritesHouses.isEmpty())) {
+            houseStatus = new ArrayList<>();
+        } else {
+            List<Long> favIds = (favoritesHouses != null && !favoritesHouses.isEmpty())
+                    ? new ArrayList<>(favoritesHouses)
+                    : List.of(-1L);
+                    
+            houseStatus = houseRepository.findByReserve(
+                    reserve, pricePerNight, title, province, houseType, minRating, active,
+                    filterFavorites, favIds
+            );
+        }
 
         model.addAttribute("houses", houseStatus);
-        model.addAttribute("provinces", provinces);
         model.addAttribute("selectedProvince", province);
+        model.addAttribute("selectedHouseType", houseType);
+        model.addAttribute("selectedPricePerNight", pricePerNight);
+        model.addAttribute("selectedMinRating", minRating);
+        model.addAttribute("selectedActive", active);
+        model.addAttribute("selectedFavoritesOnly", favoritesOnly);
 
         Map<Long, Double> houseRatings = new HashMap<>();
         for (House h : houseStatus) {
@@ -49,10 +77,7 @@ public class HouseController {
         }
         model.addAttribute("houseRatings", houseRatings);
 
-//        List <House>  houses = houseRepository.findByActiveTrue();
-//        model.addAttribute("houses", houses);
         return "house/house-list";
-
     }
 
     @GetMapping("/houses/deactivate/{id}")

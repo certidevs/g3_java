@@ -1,102 +1,226 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/head :: head('CASAS')}"></head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
-<main class="container flex-grow-1">
+<main class="container-xl flex-grow-1 my-5">
 
-    <div class="d-flex justify-content-end mb-3">
-        <a sec:authorize="hasRole('ADMIN')" th:href="@{/houses/new}" class="btn btn-success">
-            <i class="fa-solid fa-plus me-1"></i> Crear álquiler
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <h1 class="mb-0 fw-bold">
+            <i class="fa-solid fa-house-chimney text-brand me-2"></i> Alojamientos
+        </h1>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/houses/new}"
+           class="btn btn-brand fw-bold rounded-pill shadow-sm px-4">
+            <i class="fa-solid fa-plus me-1"></i> Publicar Alojamiento
         </a>
     </div>
 
-    <form th:action="@{/houses}" method="get">
-<!--        <div class="mb-3">-->
-<!--            <h5>Filtros rápidos</h5>-->
-<!--            <a th:href="@{/houses(reserve='DISPONIBLE')}" class="btn btn-sm btn-secondary">Casas Disponible</a>-->
-<!--            <a th:href="@{/houses(reserve='RESERVADA')}" class="btn btn-sm btn-secondary">Casas Reservadas</a>-->
-<!--            <a th:href="@{/houses}" class="btn btn-sm btn-secondary">Todas</a>-->
-<!--        </div>-->
+    <div class="row g-4">
+        <!-- Barra Lateral de Filtros -->
+        <aside class="col-12 col-lg-3">
+            <!-- max-height y overflow-y para que sea scrolleable en pantallas con poca altura -->
+            <!-- z-index: 1 para que quede debajo del nav, top: 100px para igualar margen de compra -->
+            <div class="card border-0 shadow-sm rounded-4 p-3 sticky-top custom-scrollbar"
+                 style="top: 100px; z-index: 1; max-height: calc(100vh - 120px); overflow-y: auto; background-color: #f8f9fc;">
+                <h5 class="fw-bold mb-3 border-bottom pb-3"><i class="fa-solid fa-filter me-2 text-brand"></i>Filtros
+                </h5>
 
-        <div class="mb-3 row">
-            <div class="col-sm-4">
-                <input type="number"
-                       th:name="pricePerNight"
-                       class="form-control"
-                       placeholder="Precio máximo por noche" />
-            </div>
+                <form th:action="@{/houses}" method="get" class="d-flex flex-column">
 
-            <div class="col-sm-4">
-                <select th:name="province" class="form-select form-control" th:value="${selectedProvince}">
-                    <option value="">Todas las provincias</option>
-                    <option th:each="p : ${provinces}"
-                            th:value="${p}"
-                            th:text="${p}"></option>
-                </select>
-            </div>
-        </div>
-
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary btn-sm">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                Buscar
-            </button>
-            <a th:href="@{/houses}" class="btn btn-danger btn-sm">
-                <i class="fa-solid fa-broom"></i>
-                Limpiar filtros
-            </a>
-        </div>
-    </form>
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mt-1">
-        <div class="col" th:each="house : ${houses}">
-            <div class="card card-restaurant h-100 shadow-sm">
-                <img th:src="@{'/images/' + ${house.imageUrl}}"
-                     class="card-img-top"
-                     alt="Imagen de la casa"
-                     style="height: 200px; object-fit: cover;">
-
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <i class="fa-solid fa-store text-primary me-2"></i>
-                        <span th:text="${house.title}">Nombre</span>
-                    </h5>
-                    <div class="mb-2">
-                        <span th:if="${houseRatings[house.id] > 0.0}" class="badge bg-warning text-dark">
-                            <i class="fa-solid fa-star me-1"></i> <span th:text="${#numbers.formatDecimal(houseRatings[house.id], 1, 1)}"></span>
-                        </span>
-                        <span th:if="${houseRatings[house.id] == 0.0}" class="badge bg-secondary">
-                            Nuevo
-                        </span>
-                    </div>
-                    <p class="card-text">
-                        <span class="badge bg-success">
-                            <i class="fa-solid fa-euro-sign me-1"></i>
-                            <span th:text="${house.pricePerNight}">0</span>
-                        </span>
-                    </p>
-                </div>
-                <div class="card-footer bg-transparent border-0 pt-0 d-flex justify-content-between align-items-center">
-                    <div>
-                        <a th:href="@{/houses/{id}(id=${house.id})}"
-                           class="btn btn-outline-primary btn-sm w-40">
-                            <i class="fa-regular fa-eye me-1"></i> Ver Casa
-                        </a>
-                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/houses/deactivate/{id}(id=${house.id})}"
-                           class="btn btn-danger btn-sm w-40 ">
-                            <i class="fa-solid fa-house-circle-xmark"></i> Desactivar
-                        </a>
-                    </div>
-                    <form sec:authorize="isAuthenticated()" th:action="@{/favorites/toggle}" method="post" class="m-0 p-0">
-                        <input type="hidden" name="id" th:value="${house.id}" />
-                        <input type="hidden" name="redirectUrl" value="/houses" />
-                        <button type="submit" class="btn btn-sm btn-link text-decoration-none favorite-btn p-0"
-                                th:classappend="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'text-danger' : 'text-secondary'">
-                            <i th:class="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'fa-solid fa-heart fs-4' : 'fa-regular fa-heart fs-4'"></i>
+                    <!-- Botones de Búsqueda -->
+                    <div class="d-flex gap-2 mb-3 pb-3 border-bottom order-last order-lg-0 mt-4 mt-lg-0 pt-4 pt-lg-0 border-lg-0">
+                        <button type="submit" class="btn btn-brand fw-bold p-2 rounded-3 shadow-sm flex-grow-1">
+                            <i class="fa-solid fa-magnifying-glass me-2"></i> Buscar
                         </button>
-                    </form>
+                        <a th:href="@{/houses}" class="btn btn-outline-secondary p-2 rounded-3 shadow-sm"
+                           title="Limpiar filtros" style="width: 46px;">
+                            <i class="fa-solid fa-eraser"></i>
+                        </a>
+                    </div>
+
+                    <!-- Estado (Admin) -->
+                    <div sec:authorize="hasRole('ADMIN')" class="mb-4 pb-3 border-bottom">
+                        <label class="form-label text-dark fw-bold mb-2 small text-brand"><i
+                                class="fa-solid fa-shield-halved me-1"></i>Estado (Admin)</label>
+                        <select th:name="active"
+                                class="form-select border-0 shadow-sm p-2 rounded-3 border border-brand bg-white">
+                            <option value="" th:selected="${selectedActive == null}">Todas</option>
+                            <option value="true" th:selected="${selectedActive == true}">Solo Activas</option>
+                            <option value="false" th:selected="${selectedActive == false}">Solo Inactivas</option>
+                        </select>
+                    </div>
+
+                    <!-- Favoritas -->
+                    <div sec:authorize="isAuthenticated()" class="mb-4">
+                        <div class="form-check ms-1">
+                            <input class="form-check-input border-danger" type="checkbox" id="favoritesOnly"
+                                   th:name="favoritesOnly" value="true" th:checked="${selectedFavoritesOnly}">
+                            <label class="form-check-label text-dark fw-bold" for="favoritesOnly">
+                                <i class="fa-solid fa-heart text-danger me-1"></i> Solo Favoritas
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de Alojamiento -->
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold mb-1 small"><i class="fa-solid fa-building me-1"></i>Tipo</label>
+                        <select th:name="houseType" class="form-select border-0 shadow-sm p-2 rounded-3">
+                            <option value="">Cualquiera</option>
+                            <option th:each="type : ${T(com.demo.model.HouseType).values()}"
+                                    th:value="${type}"
+                                    th:text="${type.label}"
+                                    th:selected="${type == selectedHouseType}"></option>
+                        </select>
+                    </div>
+
+                    <!-- Ubicación -->
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold mb-1 small"><i
+                                class="fa-solid fa-map-location-dot me-1"></i>Ubicación</label>
+                        <select th:name="province" class="form-select border-0 shadow-sm p-2 rounded-3">
+                            <option value="">Todas</option>
+                            <option th:each="p : ${provinces}"
+                                    th:value="${p}"
+                                    th:text="${p}"
+                                    th:selected="${p == selectedProvince}"></option>
+                        </select>
+                    </div>
+
+                    <!-- Precio Maximo -->
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold mb-1 small"><i
+                                class="fa-solid fa-euro-sign me-1"></i>Precio Máximo</label>
+                        <input type="number" step="1" th:name="pricePerNight" th:value="${selectedPricePerNight}"
+                               class="form-control border-0 shadow-sm p-2 rounded-3" placeholder="Ej. 100"/>
+                    </div>
+
+                    <!-- Valoración -->
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold mb-1 small"><i
+                                class="fa-solid fa-star me-1 text-warning"></i>Valoración</label>
+                        <select th:name="minRating" class="form-select border-0 shadow-sm p-2 rounded-3">
+                            <option value="" th:selected="${selectedMinRating == null}">Todas</option>
+                            <option value="0.0" th:selected="${selectedMinRating == 0.0}">Con reseñas</option>
+                            <option value="3.0" th:selected="${selectedMinRating == 3.0}">3+ Estrellas</option>
+                            <option value="4.0" th:selected="${selectedMinRating == 4.0}">4+ Estrellas</option>
+                            <option value="5.0" th:selected="${selectedMinRating == 5.0}">5 Estrellas</option>
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+        </aside>
+
+        <!-- Grid de Alojamientos -->
+        <div class="col-12 col-lg-9">
+
+            <!-- Vista vacía -->
+            <div th:if="${houses.isEmpty()}" class="p-4 py-5 bg-light rounded-4 border border-dashed text-center">
+                <i class="fa-solid fa-house-circle-xmark fs-1 text-muted mb-3"></i>
+                <h5 class="text-muted fw-semibold">No se encontraron alojamientos</h5>
+                <p class="text-muted mb-0">Intenta ajustar los filtros de búsqueda.</p>
+            </div>
+
+            <div class="row row-cols-1 row-cols-lg-3 g-4">
+                <div class="col" th:each="house : ${houses}" th:id="'house-card-' + ${house.id}">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 property-card position-relative d-flex flex-column">
+
+                        <!-- Badge Admin Status -->
+                        <div sec:authorize="hasRole('ADMIN')" class="position-absolute top-0 end-0 m-3 z-2">
+                            <span th:if="${house.active}" class="badge bg-success shadow-sm"><i
+                                    class="fa-solid fa-eye me-1"></i>Activa</span>
+                            <span th:unless="${house.active}" class="badge bg-danger shadow-sm"><i
+                                    class="fa-solid fa-eye-slash me-1"></i>Inactiva</span>
+                        </div>
+
+                        <a th:href="@{/houses/{id}(id=${house.id})}"
+                           class="text-decoration-none text-dark d-block flex-grow-1">
+                            <img th:src="@{'/images/' + ${house.imageUrl}}" class="card-img-top rounded-top-4"
+                                 alt="House Image" style="height: 220px; object-fit: cover;">
+                            <div class="card-body p-4 d-flex flex-column">
+                                <div class="mb-2">
+                                    <h5 class="fw-bold mb-2 text-dark"
+                                        style="min-height: 2.8rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"
+                                        th:text="${house.title}">Nombre de la Casa</h5>
+
+                                    <!-- Rating -->
+                                    <div class="d-flex align-items-center">
+                                        <span th:if="${houseRatings[house.id] > 0.0}"
+                                              class="d-flex align-items-center fw-bold small text-dark">
+                                            <i class="fa-solid fa-star text-warning me-1"></i> <span
+                                                th:text="${#numbers.formatDecimal(houseRatings[house.id], 1, 1)}">5.0</span>
+                                        </span>
+                                        <span th:if="${houseRatings[house.id] == 0.0}"
+                                              class="text-muted small fw-semibold d-flex align-items-center">
+                                            <i class="fa-solid fa-star-half-stroke me-1"></i> Sin reseñas
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="text-muted small mb-3">
+                                    <i class="fa-solid fa-location-dot me-1"></i> <span th:text="${house.province}">Provincia</span>
+                                    <span class="mx-1">•</span>
+                                    <span th:text="${house.houseType != null ? house.houseType.label : 'Alojamiento'}">Tipo</span>
+                                </div>
+
+                                <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center position-relative z-2">
+                                    <div class="d-flex align-items-center">
+                                        <span class="fw-bold text-dark fs-5 mb-0"
+                                              th:text="${house.pricePerNight} + ' €'">0 €</span>
+                                        <span class="text-muted small ms-1 mb-0">/ noche</span>
+                                    </div>
+                                    <form sec:authorize="isAuthenticated()" th:action="@{/favorites/toggle}"
+                                          method="post" class="m-0 p-0">
+                                        <input type="hidden" name="id" th:value="${house.id}"/>
+                                        <input type="hidden" name="redirectUrl"
+                                               th:value="'/houses#house-card-' + ${house.id}"/>
+                                        <button type="submit" class="btn btn-sm btn-link text-decoration-none p-0"
+                                                title="Agregar a favoritos"
+                                                th:classappend="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'text-danger' : 'text-secondary'">
+                                            <i th:class="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'fa-solid fa-heart fs-3' : 'fa-regular fa-heart fs-3'"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Admin Actions -->
+                        <div sec:authorize="hasRole('ADMIN')"
+                             class="card-footer bg-light border-0 pb-3 px-4 position-relative rounded-bottom-4 border-top">
+
+                            <p class="text-muted small fw-bold mb-2 text-center"><i class="fa-solid fa-gear me-1"></i>
+                                Acciones de administrador</p>
+                            <div class="d-flex gap-2 flex-column">
+                                <a th:href="@{/houses/edit/{id}(id=${house.id})}" class="btn btn-outline-success">
+                                    <i class="fa-solid fa-pencil me-1"></i> Editar
+                                </a>
+                                <a th:href="@{/houses/deactivate/{id}(id=${house.id})}" class="btn"
+                                   th:classappend="${house.active ? 'btn-outline-danger' : 'btn-outline-primary'}"
+                                   onclick="return confirm('¿Seguro que quieres cambiar el estado de esta casa?');">
+                                    <i class="fa-solid fa-ban me-1" th:if="${house.active}"></i>
+                                    <i class="fa-solid fa-check me-1" th:unless="${house.active}"></i>
+                                    <span th:text="${house.active ? 'Desactivar' : 'Activar'}"></span>
+                                </a>
+                            </div>
+                            <!--
+                            <span class="d-block text-muted small fw-bold mb-2 text-uppercase letter-spacing-1"><i class="fa-solid fa-screwdriver-wrench me-1"></i>Acciones de Administrador</span>
+                            <div class="d-flex flex-column gap-2">
+                                <a th:href="@{/houses/edit/{id}(id=${house.id})}" class="btn btn-outline-success btn-sm fw-bold">
+                                    <i class="fa-solid fa-pencil me-1"></i> Editar Propiedad
+                                </a>
+                                <a th:href="@{/houses/deactivate/{id}(id=${house.id})}" class="btn btn-sm fw-bold"
+                                   th:classappend="${house.active ? 'btn-outline-danger' : 'btn-outline-primary'}"
+                                   onclick="return confirm('¿Seguro que quieres cambiar el estado de esta casa?');">
+                                    <i class="fa-solid fa-ban me-1" th:if="${house.active}"></i>
+                                    <i class="fa-solid fa-check me-1" th:unless="${house.active}"></i>
+                                    <span th:text="${house.active ? 'Desactivar Propiedad' : 'Activar Propiedad'}"></span>
+                                </a>
+                            </div>
+                            -->
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
