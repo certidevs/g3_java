@@ -6,7 +6,7 @@
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
 <main class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center p-5">
         <div class="col-md-6 col-lg-5">
             <form th:action="@{/register}" method="post" class="card shadow-sm p-4" th:object="${user}">
 
