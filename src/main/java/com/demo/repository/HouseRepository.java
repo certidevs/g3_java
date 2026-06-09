@@ -63,4 +63,11 @@ public interface HouseRepository extends JpaRepository<House, Long> {
     ORDER BY COALESCE(AVG(CAST(r.rating AS double)), 0.0) DESC
     """)
     List<House> findTop3ByOrderByAverageRatingDesc();
+
+
+
+    @Query("""
+    select distinct h.province from House h where h.province is not null
+    """)
+    List<String> getTopProvinces();
 }
