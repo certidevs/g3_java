@@ -28,6 +28,7 @@ public class IndexController {
     public String index(Model model) {
         List<House> topHouses = houseRepository.findTop3ByOrderByAverageRatingDesc();
         model.addAttribute("houses", topHouses);
+        model.addAttribute("housesProvinces", houseRepository.getTopProvinces());
 
         Map<Long, Double> houseRatings = new HashMap<>();
         for (House h : topHouses) {

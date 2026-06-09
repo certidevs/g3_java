@@ -77,11 +77,10 @@
                                 <label class="form-label text-dark fw-bold mb-1">Provincia de España</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-white"><i class="fa-solid fa-map"></i></span>
-                                    <!-- TODO aún no hay provincias, pero como es index no se como hacerlo! -->
                                     <select th:name="province" class="form-select form-control"
                                             th:value="${selectedProvince}">
                                         <option value="">Todas las provincias</option>
-                                        <option th:each="p : ${provinces}"
+                                        <option th:each="p : ${housesProvinces}"
                                                 th:value="${p}"
                                                 th:text="${p}"></option>
                                     </select>
@@ -119,7 +118,7 @@
         <div class="row g-4">
             <th:block th:each="i : ${#numbers.sequence(0, 2)}">
                 <div class="col-md-4">
-                    <a th:if="${reviews != null and i < reviews.size()}" th:href="@{/reviews/{id}(id=${reviews[i].id})}" class="text-decoration-none text-dark d-block h-100">
+                    <a th:if="${reviews != null and i < reviews.size()}" th:href="@{/reviews/{id}(id=${reviews[i].id})}" class="text-decoration-none text-dark d-block h-100 border">
                         <div class="card h-100 shadow-sm bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between">
                             <div>
                                 <div class="text-warning mb-2 fs-5">
@@ -139,7 +138,7 @@
                             </div>
                         </div>
                     </a>
-                    <div th:unless="${reviews != null and i < reviews.size()}" class="card h-100 shadow-sm border-0 bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between">
+                    <div th:unless="${reviews != null and i < reviews.size()}" class="card h-100 shadow-sm border bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between">
                         <div>
                             <div class="text-warning mb-2 fs-5">
                                 <i class="fa-solid fa-star" th:each="star : ${#numbers.sequence(1, 5)}"></i>

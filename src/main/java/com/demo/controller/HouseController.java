@@ -21,6 +21,11 @@ import java.util.*;
 @AllArgsConstructor
 public class HouseController {
 
+    // TODO: Sería mejor en un HouseService
+    private static final List<String> FORM_PROVINCES = Arrays.asList(
+            "Madrid", "Barcelona", "Valencia", "Sevilla", "Málaga", "Bilbao", "Asturias", "Alicante", "Zaragoza"
+    );
+
     private final HouseRepository houseRepository;
     private final ReviewService reviewService;
 
@@ -43,9 +48,7 @@ public class HouseController {
             active = true;
         }
 
-        // TODO: Mover esto para usarlo desde el index y house-form
-        List<String> provinces = Arrays.asList("Madrid", "Barcelona", "Valencia", "Sevilla", "Málaga", "Bilbao");
-        model.addAttribute("provinces", provinces);
+        model.addAttribute("provinces", houseRepository.getTopProvinces());
 
         boolean filterFavorites = Boolean.TRUE.equals(favoritesOnly);
         List<House> houseStatus;
@@ -123,19 +126,17 @@ public class HouseController {
     }
 
 
-//ruta para entrar al formulario de casa
     @GetMapping("houses/new")
     public String newHouses(Model model) {
-        //objeto vacío para el formulario
-        model.addAttribute(("house"), new House());
+        model.addAttribute("house", new House());
+        model.addAttribute("provinces", FORM_PROVINCES);
+        return "house/house-form";
+    }
 
-    return "house/house-form";
-}
-    // EDITAR UN RESTAURANTE EXISTENTE
     @GetMapping("houses/edit/{id}")
     public String editHouse(@PathVariable Long id, Model model) {
         model.addAttribute("house", houseRepository.findById(id).orElseThrow());
-//        model.addAttribute("foodTypes", FoodType.values());
+        model.addAttribute("provinces", FORM_PROVINCES);
         return "house/house-form";
     }
 

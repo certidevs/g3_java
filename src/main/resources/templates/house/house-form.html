@@ -39,7 +39,10 @@
 
     <div class="col-md-6">
       <label for="province" class="form-label">Provincia</label>
-      <input type="text" id="province" th:field="*{province}" class="form-control" placeholder="Dirección de la casa" required>
+      <select id="province" th:field="*{province}" class="form-select form-control" required>
+        <option value="">Selecciona una provincia</option>
+        <option th:each="p : ${provinces}" th:value="${p}" th:text="${p}"></option>
+      </select>
     </div>
 
     <div class="col-md-4">
