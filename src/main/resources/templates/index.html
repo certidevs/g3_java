@@ -65,11 +65,11 @@
         </button>
     </div>
 
-    <div class="z-3 position-relative search-container-overlay overflow-hidden">
+    <div class="z-3 position-relative search-container-overlay">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-9">
                 <!-- Search Card -->
-                <div class="card search-card p-2 p-md-4 shadow-lg">
+                <div class="card search-card p-2 p-md-4 shadow">
                     <form th:action="@{/houses}" class="card-body" method="get">
                         <div class="row g-3 align-items-end">
 
@@ -120,7 +120,7 @@
             <th:block th:each="i : ${#numbers.sequence(0, 2)}">
                 <div class="col-md-4">
                     <a th:if="${reviews != null and i < reviews.size()}" th:href="@{/reviews/{id}(id=${reviews[i].id})}" class="text-decoration-none text-dark d-block h-100">
-                        <div class="card h-100 shadow-sm border-0 bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between">
+                        <div class="card h-100 shadow-sm bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between">
                             <div>
                                 <div class="text-warning mb-2 fs-5">
                                     <i class="fa-solid fa-star" th:each="star : ${#numbers.sequence(1, reviews[i].rating)}" th:if="${reviews[i].rating > 0}"></i><i class="fa-regular fa-star" th:each="star : ${#numbers.sequence(reviews[i].rating + 1, 5)}" th:if="${reviews[i].rating < 5}"></i>

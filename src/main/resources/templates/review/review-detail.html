@@ -80,20 +80,18 @@
             </div>
         </div>
 
-        <div class="col-lg-4" th:if="${review.house != null}">
+        <a class="text-decoration-none text-dark d-block d-block col-lg-4" th:if="${review.house != null}" th:href="@{/houses/{id}(id=${review.house.id})}">
             <!-- Previsualización de la Casa -->
             <div class="card border-0 shadow-sm rounded-4 property-card d-flex flex-column mb-auto">
-                <a th:href="@{/houses/{id}(id=${review.house.id})}" class="text-decoration-none text-dark d-block">
+                <div>
                     <img th:src="@{'/images/' + ${review.house.imageUrl}}" class="card-img-top rounded-top-4" style="height: 180px; object-fit: cover;" alt="House Image">
-                </a>
+                </div>
                 <div class="card-body p-4 d-flex flex-column">
                     <div class="d-flex align-items-center text-muted small mb-2">
                         <i class="fa-solid fa-location-dot me-1"></i>
                         <span th:text="${review.house.location} + ', ' + ${review.house.province}">Ubicación</span>
                     </div>
-                    <a th:href="@{/houses/{id}(id=${review.house.id})}" class="text-decoration-none text-dark d-block mb-2">
-                        <h5 class="fw-bold mb-0" th:text="${review.house.title}">Nombre de la Casa</h5>
-                    </a>
+                    <h5 class="fw-bold mb-0" th:text="${review.house.title}">Nombre de la Casa</h5>
                     <p class="card-text text-muted small text-truncate-2 mb-3" th:text="${review.house.description}">Descripción de la casa.</p>
                     
                     <div class="mt-auto text-end">
@@ -101,7 +99,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 
     <!-- Volver -->

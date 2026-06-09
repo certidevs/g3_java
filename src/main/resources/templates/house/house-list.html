@@ -21,7 +21,7 @@
         <aside class="col-12 col-lg-3">
             <!-- max-height y overflow-y para que sea scrolleable en pantallas con poca altura -->
             <!-- z-index: 1 para que quede debajo del nav, top: 100px para igualar margen de compra -->
-            <div class="card border-0 shadow-sm rounded-4 p-3 sticky-top custom-scrollbar"
+            <div class="card border shadow-sm rounded-4 p-3 sticky-top custom-scrollbar"
                  style="top: 100px; z-index: 1; max-height: calc(100vh - 120px); overflow-y: auto; background-color: #f8f9fc;">
                 <h5 class="fw-bold mb-3 border-bottom pb-3"><i class="fa-solid fa-filter me-2 text-brand"></i>Filtros
                 </h5>
@@ -116,7 +116,7 @@
         <div class="col-12 col-lg-9">
 
             <!-- Vista vacía -->
-            <div th:if="${houses.isEmpty()}" class="p-4 py-5 bg-light rounded-4 border border-dashed text-center">
+            <div th:if="${houses.isEmpty()}" class="h-100 d-flex flex-column justify-content-center align-items-center p-4 py-5 bg-light rounded-4 border border-dashed">
                 <i class="fa-solid fa-house-circle-xmark fs-1 text-muted mb-3"></i>
                 <h5 class="text-muted fw-semibold">No se encontraron alojamientos</h5>
                 <p class="text-muted mb-0">Intenta ajustar los filtros de búsqueda.</p>
@@ -124,7 +124,7 @@
 
             <div class="row row-cols-1 row-cols-lg-3 g-4">
                 <div class="col" th:each="house : ${houses}" th:id="'house-card-' + ${house.id}">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 property-card position-relative d-flex flex-column">
+                    <div class="card border h-100 shadow-sm rounded-4 property-card position-relative d-flex flex-column">
 
                         <!-- Badge Admin Status -->
                         <div sec:authorize="hasRole('ADMIN')" class="position-absolute top-0 end-0 m-3 z-2">
