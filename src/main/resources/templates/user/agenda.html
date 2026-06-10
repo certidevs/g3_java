@@ -35,7 +35,6 @@
         <thead class="table-dark">
         <tr>
             <th>Nombre</th>
-            <th>Email</th>
             <th>Token</th>
             <th>Copiar</th>
         </tr>
@@ -43,7 +42,6 @@
         <tbody>
         <tr th:each="contacto : ${agenda}">
             <td th:text="|${contacto.firstName} ${contacto.lastName}|">Titulo</td>
-            <td th:text="${contacto.email}">Email</td>
             <td th:text="${contacto.tokenforRecommended}">Token</td>
             <td>
                 <button class="btn btn-sm btn-brand"
