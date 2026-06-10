@@ -68,7 +68,8 @@ public class RecommendedController {
             @RequestParam(required = false) String emailFrom,
             @RequestParam(required = false) String emailTo,
             @RequestParam(required = false) String message,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes)
+            {
 
         // 1) Cargar entidades base (las que estaban en el formulario son referencias, las recargamos por id)
         House house = houseRepository.findById(houseId).orElseThrow();
@@ -109,6 +110,8 @@ public class RecommendedController {
                 .build();
 
         houseRecommendedRepository.save(nueva);
+
+        redirectAttributes.addFlashAttribute("mensajeExito","Recomendación creada satisfactoriamente.");
 
         return "redirect:/panel-control/" + userFromId;
     }
