@@ -4,9 +4,8 @@
 <nav th:fragment="navbar" class=" navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);">
     <div class="container-xxl">
         <!-- Brand -->
-        <a class="navbar-brand fw-bold fs-4 d-flex align-items-center" th:href="@{/}">
-            <img th:src="@{/images/logo.png}" alt="RODS" height="40" class="me-2">
-            RODS
+        <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+            <th:block th:replace="~{layout/logo :: logo(color='white', titlePosition='right')}"></th:block>
         </a>
         
         <!-- Hamburger Button -->
@@ -36,13 +35,15 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link px-3" th:href="@{/reviews}">
-                        <i class="fa-regular fa-comments me-1"></i> Reseñas
+                        <i class="fa-solid fa-comments me-1"></i> Reseñas
                     </a>
                 </li>
-                
+
                 <li sec:authorize="isAuthenticated()" class="nav-item">
                     <a class="nav-link px-3" th:href="@{/panel-control/{id}(id=${#authentication.principal.id})}">
-                        <i class="fa-solid fa-code-fork me-1"></i> Panel control
+                        <i class="fa-solid fa-gauge-high me-1"></i>
+                        <span sec:authorize="hasRole('ADMIN')">Panel de Control</span>
+                        <span sec:authorize="hasRole('USER')">Panel de Huésped</span>
                     </a>
                 </li>
 

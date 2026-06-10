@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+html {
+    scrollbar-gutter: stable;
+}
 
 :root {
     --text-dark: #333;
@@ -72,6 +74,15 @@ body {
 h1, h2, h3, .navbar-brand {
     font-weight: 700;
 }
+
+/* Logo Text styling to match branding */
+.logo-text {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
 
 /* Navbar */
 .navbar-custom {

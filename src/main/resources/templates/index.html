@@ -118,8 +118,8 @@
         <div class="row g-4">
             <th:block th:each="i : ${#numbers.sequence(0, 2)}">
                 <div class="col-md-4">
-                    <a th:if="${reviews != null and i < reviews.size()}" th:href="@{/reviews/{id}(id=${reviews[i].id})}" class="text-decoration-none text-dark d-block h-100 border">
-                        <div class="card h-100 shadow-sm bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between">
+                    <a th:if="${reviews != null and i < reviews.size()}" th:href="@{/reviews/{id}(id=${reviews[i].id})}" class="text-decoration-none text-dark d-block h-100">
+                        <div class="card h-100 shadow-sm bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between border">
                             <div>
                                 <div class="text-warning mb-2 fs-5">
                                     <i class="fa-solid fa-star" th:each="star : ${#numbers.sequence(1, reviews[i].rating)}" th:if="${reviews[i].rating > 0}"></i><i class="fa-regular fa-star" th:each="star : ${#numbers.sequence(reviews[i].rating + 1, 5)}" th:if="${reviews[i].rating < 5}"></i>
