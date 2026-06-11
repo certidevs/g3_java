@@ -4,9 +4,9 @@ html {
 
 :root {
     --text-dark: #333;
-    --bg-main: #ffffff;
-    --brand-color: #f83a3c;
-    --brand-color-hover: #d72c2e;
+    --bg-main: #faf9f6;
+    --brand-color: #f1461d;
+    --brand-color-hover: #c9340f;
 }
 
 /* Clases de color de marca personalizadas */
@@ -261,10 +261,14 @@ h1, h2, h3, .navbar-brand {
 }
 /*---------------LOGIN--------------------
 
-/* --- NUEVOS ESTILOS ALQUILAYA ---
+/* --- NUEVOS ESTILOS ALQUILAYA --- */
 body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: #f8f9fa;
+    background-color: var(--bg-main);
+}
+
+body.bg-light {
+    background-color: var(--bg-main) !important;
 }
 
 main.container {
