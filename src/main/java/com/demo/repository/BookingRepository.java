@@ -81,7 +81,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<House> houseBookingHost(@Param("id") Long id, @Param("price") Double price);
 
     @Query("""
-        SELECT bk FROM Booking bk WHERE bk.userBooking.id=:id AND bk.statusbooking<>'COMPLETED'
+        SELECT bk FROM Booking bk WHERE bk.userBooking.id=:id
             AND (:price IS NULL OR :price>bk.userHouse.pricePerNight)
             AND (
                 (:searchDate IS NULL OR (:searchDate>=bk.estimatedCheckin AND :searchDate<=bk.estimatedCheckout)) OR

@@ -60,15 +60,15 @@
             <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-calendar-check text-dark me-2"></i> Reservas en tus propiedades</h5>
             <div class="btn-group btn-group-sm rounded-pill" role="group">
                 <a th:href="@{/panel-control/{id}(id=${user.id}, guestStatus=${selectedGuestStatus})} + '#host-bookings'"
-                   th:class="${selectedHostStatus == null or selectedHostStatus == ''} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Todas</a>
+                   th:class="${selectedHostStatus == null} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Todas</a>
                 <a th:href="@{/panel-control/{id}(id=${user.id}, hostStatus='PENDING', guestStatus=${selectedGuestStatus})} + '#host-bookings'"
-                   th:class="${selectedHostStatus == 'PENDING'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Pendientes</a>
+                   th:class="${selectedHostStatus?.name() == 'PENDING'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Pendientes</a>
                 <a th:href="@{/panel-control/{id}(id=${user.id}, hostStatus='CONFIRMED', guestStatus=${selectedGuestStatus})} + '#host-bookings'"
-                   th:class="${selectedHostStatus == 'CONFIRMED'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Confirmadas</a>
+                   th:class="${selectedHostStatus?.name() == 'CONFIRMED'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Confirmadas</a>
                 <a th:href="@{/panel-control/{id}(id=${user.id}, hostStatus='CANCELLED', guestStatus=${selectedGuestStatus})} + '#host-bookings'"
-                   th:class="${selectedHostStatus == 'CANCELLED'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Canceladas</a>
+                   th:class="${selectedHostStatus?.name() == 'CANCELLED'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Canceladas</a>
                 <a th:href="@{/panel-control/{id}(id=${user.id}, hostStatus='COMPLETED', guestStatus=${selectedGuestStatus})} + '#host-bookings'"
-                   th:class="${selectedHostStatus == 'COMPLETED'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Completadas</a>
+                   th:class="${selectedHostStatus?.name() == 'COMPLETED'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Completadas</a>
             </div>
         </div>
         <div class="card-body p-0">
@@ -190,15 +190,15 @@
             <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-suitcase text-brand me-2"></i> Mis reservas en propiedades</h5>
             <div class="btn-group btn-group-sm rounded-pill" role="group">
                 <a th:href="@{/panel-control/{id}(id=${user.id}, hostStatus=${selectedHostStatus})} + '#guest-bookings'"
-                   th:class="${selectedGuestStatus == null or selectedGuestStatus == ''} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Todas</a>
+                   th:class="${selectedGuestStatus == null} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Todas</a>
                 <a th:href="@{/panel-control/{id}(id=${user.id}, guestStatus='PENDING', hostStatus=${selectedHostStatus})} + '#guest-bookings'"
-                   th:class="${selectedGuestStatus == 'PENDING'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Pendientes</a>
+                   th:class="${selectedGuestStatus?.name() == 'PENDING'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Pendientes</a>
                 <a th:href="@{/panel-control/{id}(id=${user.id}, guestStatus='CONFIRMED', hostStatus=${selectedHostStatus})} + '#guest-bookings'"
-                   th:class="${selectedGuestStatus == 'CONFIRMED'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Confirmadas</a>
+                   th:class="${selectedGuestStatus?.name() == 'CONFIRMED'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Confirmadas</a>
                 <a th:href="@{/panel-control/{id}(id=${user.id}, guestStatus='CANCELLED', hostStatus=${selectedHostStatus})} + '#guest-bookings'"
-                   th:class="${selectedGuestStatus == 'CANCELLED'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Canceladas</a>
+                   th:class="${selectedGuestStatus?.name() == 'CANCELLED'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Canceladas</a>
                 <a th:href="@{/panel-control/{id}(id=${user.id}, guestStatus='COMPLETED', hostStatus=${selectedHostStatus})} + '#guest-bookings'"
-                   th:class="${selectedGuestStatus == 'COMPLETED'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Completadas</a>
+                   th:class="${selectedGuestStatus?.name() == 'COMPLETED'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Completadas</a>
             </div>
         </div>
         <div class="card-body p-0">

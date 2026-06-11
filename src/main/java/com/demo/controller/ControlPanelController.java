@@ -23,8 +23,8 @@ public class ControlPanelController {
 
     @GetMapping("panel-control/{userId}")
     public String panelControl(Model model, @PathVariable Long userId,
-                               @RequestParam(required = false) String hostStatus,
-                               @RequestParam(required = false) String guestStatus,
+                               @RequestParam(required = false) StatusBooking hostStatus,
+                               @RequestParam(required = false) StatusBooking guestStatus,
                                @AuthenticationPrincipal User currentUser) {
 
         if (currentUser.getRole() != Role.ROLE_ADMIN && !userId.equals(currentUser.getId())) {
