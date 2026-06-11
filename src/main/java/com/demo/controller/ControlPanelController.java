@@ -22,7 +22,10 @@ public class ControlPanelController {
     // private final HouseRecommendedRepository houseRecommendedRepository;
 
     @GetMapping("panel-control/{userId}")
-    public String panelControl(Model model, @PathVariable Long userId, @AuthenticationPrincipal User currentUser) {
+    public String panelControl(Model model, @PathVariable Long userId,
+                               @RequestParam(required = false) String hostStatus,
+                               @RequestParam(required = false) String guestStatus,
+                               @AuthenticationPrincipal User currentUser) {
 
         if (currentUser.getRole() != Role.ROLE_ADMIN && !userId.equals(currentUser.getId())) {
             return "redirect:/panel-control/" + currentUser.getId();
@@ -32,25 +35,19 @@ public class ControlPanelController {
         if (user.isPresent()) {
             User validUser = user.get();
 
-            // Casas que pone en alquiler
             List<House> listHouseHost = bookingService.getHostProperties(userId);
-            // Casas alquiladas
             List<House> listHouseGuest = bookingService.getGuestProperties(userId);
 
-            // Reservas del Host
-            List<Booking> listBookingHost = bookingService.getHostBookings(userId);
-            // Reservas del Guest
-            List<Booking> listBookingGuest = bookingService.getGuestBookings(userId);
+            List<Booking> listBookingHost = bookingService.getHostBookings(userId, hostStatus);
+            List<Booking> listBookingGuest = bookingService.getGuestBookings(userId, guestStatus);
 
-            // Atributos de listas pasados al HTML
             model.addAttribute("user", validUser);
-
             model.addAttribute("listHouseHost", listHouseHost);
             model.addAttribute("listHouseGuest", listHouseGuest);
-
             model.addAttribute("listBookingsHost", listBookingHost);
             model.addAttribute("listBookingGuest", listBookingGuest);
-
+            model.addAttribute("selectedHostStatus", hostStatus);
+            model.addAttribute("selectedGuestStatus", guestStatus);
 
             return "user/panel-control";
         } else {

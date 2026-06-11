@@ -55,20 +55,20 @@
         </div>
     </div>
 
-    <div sec:authorize="hasRole('ADMIN')" class="card shadow-sm rounded-4 overflow-hidden mb-4">
+    <div sec:authorize="hasRole('ADMIN')" id="host-bookings" class="card shadow-sm rounded-4 overflow-hidden mb-4">
         <div class="card-header bg-white border-0 py-3 px-4 d-flex flex-wrap justify-content-between align-items-center gap-2 border-bottom">
-            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-calendar-check text-dark me-2"></i> Reservas en tus
-                propiedades</h5>
+            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-calendar-check text-dark me-2"></i> Reservas en tus propiedades</h5>
             <div class="btn-group btn-group-sm rounded-pill" role="group">
-                <a th:href="@{/panel-control/{id}(id=${user.id})}" class="btn btn-dark fw-semibold">Todas</a>
-                <a th:href="@{/host/pending/{id}(id=${user.id})}"
-                   class="btn btn-outline-dark fw-semibold">Pendientes</a>
-                <a th:href="@{/host/confirmed/{id}(id=${user.id})}"
-                   class="btn btn-outline-dark fw-semibold">Confirmadas</a>
-                <a th:href="@{/host/cancelled/{id}(id=${user.id})}"
-                   class="btn btn-outline-dark fw-semibold">Canceladas</a>
-                <a th:href="@{/host/completed/{id}(id=${user.id})}"
-                   class="btn btn-outline-dark fw-semibold">Completadas</a>
+                <a th:href="@{/panel-control/{id}(id=${user.id}, guestStatus=${selectedGuestStatus})} + '#host-bookings'"
+                   th:class="${selectedHostStatus == null or selectedHostStatus == ''} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Todas</a>
+                <a th:href="@{/panel-control/{id}(id=${user.id}, hostStatus='PENDING', guestStatus=${selectedGuestStatus})} + '#host-bookings'"
+                   th:class="${selectedHostStatus == 'PENDING'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Pendientes</a>
+                <a th:href="@{/panel-control/{id}(id=${user.id}, hostStatus='CONFIRMED', guestStatus=${selectedGuestStatus})} + '#host-bookings'"
+                   th:class="${selectedHostStatus == 'CONFIRMED'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Confirmadas</a>
+                <a th:href="@{/panel-control/{id}(id=${user.id}, hostStatus='CANCELLED', guestStatus=${selectedGuestStatus})} + '#host-bookings'"
+                   th:class="${selectedHostStatus == 'CANCELLED'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Canceladas</a>
+                <a th:href="@{/panel-control/{id}(id=${user.id}, hostStatus='COMPLETED', guestStatus=${selectedGuestStatus})} + '#host-bookings'"
+                   th:class="${selectedHostStatus == 'COMPLETED'} ? 'btn btn-dark fw-semibold' : 'btn btn-outline-dark fw-semibold'">Completadas</a>
             </div>
         </div>
         <div class="card-body p-0">
@@ -80,17 +80,15 @@
                 <table class="table table-hover align-middle mb-0 w-100">
                     <thead class="table-light">
                     <tr>
-                        <th class="px-4 py-3" style="width: 5%;"></th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 20%;">Alojamiento</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 15%;"><i
-                                class="fa-regular fa-user me-1 text-muted"></i>Huésped
-                        </th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 12%;">Entrada Estimada</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 12%;">Salida Estimada</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 10%;">Llegada</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 10%;">Salida</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 8%;">Precio Total</th>
-                        <th class="px-4 py-3 text-muted fw-semibold small text-end" style="width: 8%;">Estado</th>
+                        <th class="px-4 py-3"></th>
+                        <th class="py-3 text-muted fw-semibold small">Alojamiento</th>
+                        <th class="py-3 text-muted fw-semibold small"><i class="fa-regular fa-user me-1 text-muted"></i>Huésped</th>
+                        <th class="py-3 text-muted fw-semibold small">Entrada Estimada</th>
+                        <th class="py-3 text-muted fw-semibold small">Salida Estimada</th>
+                        <th class="py-3 text-muted fw-semibold small">Llegada</th>
+                        <th class="py-3 text-muted fw-semibold small">Salida</th>
+                        <th class="py-3 text-muted fw-semibold small">Precio Total</th>
+                        <th class="px-4 py-3 text-muted fw-semibold small text-end">Estado</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -111,26 +109,22 @@
                                class="fw-bold text-dark text-decoration-none"
                                th:text="${booking.userBooking.username}">Huésped</a>
                         </td>
-                        <td th:text="${#temporals.format(booking.estimatedCheckin,'dd/MM/yyyy HH:mm')}">Checkin Est.
-                        </td>
-                        <td th:text="${#temporals.format(booking.estimatedCheckout,'dd/MM/yyyy HH:mm')}">Checkout Est.
-                        </td>
-                        <td th:text="${booking.checkin != null ? #temporals.format(booking.checkin,'dd/MM/yyyy HH:mm') : '-'}">
-                            -
-                        </td>
-                        <td th:text="${booking.checkout != null ? #temporals.format(booking.checkout,'dd/MM/yyyy HH:mm') : '-'}">
-                            -
-                        </td>
+                        <td th:text="${#temporals.format(booking.estimatedCheckin,'dd/MM/yyyy HH:mm')}">Checkin Est.</td>
+                        <td th:text="${#temporals.format(booking.estimatedCheckout,'dd/MM/yyyy HH:mm')}">Checkout Est.</td>
+                        <td th:text="${booking.checkin != null ? #temporals.format(booking.checkin,'dd/MM/yyyy HH:mm') : '-'}">-</td>
+                        <td th:text="${booking.checkout != null ? #temporals.format(booking.checkout,'dd/MM/yyyy HH:mm') : '-'}">-</td>
                         <td class="fw-bold text-dark" th:text="${booking.totalPrice} + ' €'">0 €</td>
                         <td class="px-4 text-end">
-                            <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).PENDING}"
-                                  class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 rounded">Pendiente</span>
-                            <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CONFIRMED}"
-                                  class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded">Confirmada</span>
-                            <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CANCELLED}"
-                                  class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1 rounded">Cancelada</span>
-                            <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).COMPLETED}"
-                                  class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1 rounded">Completada</span>
+                            <a th:href="@{/booking/{id}(id=${booking.id})}" class="text-decoration-none">
+                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).PENDING}"
+                                      class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 rounded">Pendiente</span>
+                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CONFIRMED}"
+                                      class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded">Confirmada</span>
+                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CANCELLED}"
+                                      class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1 rounded">Cancelada</span>
+                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).COMPLETED}"
+                                      class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1 rounded">Completada</span>
+                            </a>
                         </td>
                     </tr>
                     </tbody>
@@ -155,11 +149,11 @@
                 <table class="table table-hover align-middle mb-0 w-100">
                     <thead class="table-light">
                     <tr>
-                        <th class="px-4 py-3 text-muted fw-semibold small" style="width: 45%;">Título</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 15%;">Precio Noche</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 15%;">Provincia</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 15%;">Capacidad</th>
-                        <th class="px-4 py-3 text-muted fw-semibold small text-end" style="width: 10%;">Estado</th>
+                        <th class="px-4 py-3 text-muted fw-semibold small">Título</th>
+                        <th class="py-3 text-muted fw-semibold small">Precio Noche</th>
+                        <th class="py-3 text-muted fw-semibold small">Provincia</th>
+                        <th class="py-3 text-muted fw-semibold small">Capacidad</th>
+                        <th class="px-4 py-3 text-muted fw-semibold small text-end">Estado</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -191,17 +185,20 @@
         </div>
     </div>
 
-    <div class="card shadow-sm rounded-4 overflow-hidden mb-4">
+    <div id="guest-bookings" class="card shadow-sm rounded-4 overflow-hidden mb-4">
         <div class="card-header bg-white border-0 py-3 px-4 d-flex flex-wrap justify-content-between align-items-center gap-2 border-bottom">
-            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-suitcase text-brand me-2"></i> Mis reservas en
-                propiedades</h5>
+            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-suitcase text-brand me-2"></i> Mis reservas en propiedades</h5>
             <div class="btn-group btn-group-sm rounded-pill" role="group">
-                <a th:href="@{/panel-control/{id}(id=${user.id})}" class="btn btn-brand fw-semibold">Todas</a>
-                <a th:href="@{/guest/pending/{id}(id=${user.id})}"
-                   class="btn btn-outline-brand fw-semibold">Pendientes</a>
-                <a th:href="@{/guest/confirmed/{id}(id=${user.id})}" class="btn btn-outline-brand fw-semibold">Confirmadas</a>
-                <a th:href="@{/guest/cancelled/{id}(id=${user.id})}" class="btn btn-outline-brand fw-semibold">Canceladas</a>
-                <a th:href="@{/guest/completed/{id}(id=${user.id})}" class="btn btn-outline-brand fw-semibold">Completadas</a>
+                <a th:href="@{/panel-control/{id}(id=${user.id}, hostStatus=${selectedHostStatus})} + '#guest-bookings'"
+                   th:class="${selectedGuestStatus == null or selectedGuestStatus == ''} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Todas</a>
+                <a th:href="@{/panel-control/{id}(id=${user.id}, guestStatus='PENDING', hostStatus=${selectedHostStatus})} + '#guest-bookings'"
+                   th:class="${selectedGuestStatus == 'PENDING'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Pendientes</a>
+                <a th:href="@{/panel-control/{id}(id=${user.id}, guestStatus='CONFIRMED', hostStatus=${selectedHostStatus})} + '#guest-bookings'"
+                   th:class="${selectedGuestStatus == 'CONFIRMED'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Confirmadas</a>
+                <a th:href="@{/panel-control/{id}(id=${user.id}, guestStatus='CANCELLED', hostStatus=${selectedHostStatus})} + '#guest-bookings'"
+                   th:class="${selectedGuestStatus == 'CANCELLED'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Canceladas</a>
+                <a th:href="@{/panel-control/{id}(id=${user.id}, guestStatus='COMPLETED', hostStatus=${selectedHostStatus})} + '#guest-bookings'"
+                   th:class="${selectedGuestStatus == 'COMPLETED'} ? 'btn btn-brand fw-semibold' : 'btn btn-outline-brand fw-semibold'">Completadas</a>
             </div>
         </div>
         <div class="card-body p-0">
@@ -213,14 +210,14 @@
                 <table class="table table-hover align-middle mb-0 w-100">
                     <thead class="table-light">
                     <tr>
-                        <th class="px-4 py-3" style="width: 5%;"></th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 25%;">Alojamiento</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 15%;">Entrada Estimada</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 15%;">Salida Estimada</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 12%;">Llegada</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 12%;">Salida</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 8%;">Precio Total</th>
-                        <th class="px-4 py-3 text-muted fw-semibold small text-end" style="width: 8%;">Estado</th>
+                        <th class="px-4 py-3"></th>
+                        <th class="py-3 text-muted fw-semibold small">Alojamiento</th>
+                        <th class="py-3 text-muted fw-semibold small">Entrada Estimada</th>
+                        <th class="py-3 text-muted fw-semibold small">Salida Estimada</th>
+                        <th class="py-3 text-muted fw-semibold small">Llegada</th>
+                        <th class="py-3 text-muted fw-semibold small">Salida</th>
+                        <th class="py-3 text-muted fw-semibold small">Precio Total</th>
+                        <th class="px-4 py-3 text-muted fw-semibold small text-end">Estado</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -236,26 +233,22 @@
                                class="fw-bold link-dark text-decoration-none"
                                th:text="${booking.getUserHouse().title}">Alojamiento</a>
                         </td>
-                        <td th:text="${#temporals.format(booking.estimatedCheckin,'dd/MM/yyyy HH:mm')}">Checkin Est.
-                        </td>
-                        <td th:text="${#temporals.format(booking.estimatedCheckout,'dd/MM/yyyy HH:mm')}">Checkout Est.
-                        </td>
-                        <td th:text="${booking.checkin != null ? #temporals.format(booking.checkin,'dd/MM/yyyy HH:mm') : '-'}">
-                            -
-                        </td>
-                        <td th:text="${booking.checkout != null ? #temporals.format(booking.checkout,'dd/MM/yyyy HH:mm') : '-'}">
-                            -
-                        </td>
+                        <td th:text="${#temporals.format(booking.estimatedCheckin,'dd/MM/yyyy HH:mm')}">Checkin Est.</td>
+                        <td th:text="${#temporals.format(booking.estimatedCheckout,'dd/MM/yyyy HH:mm')}">Checkout Est.</td>
+                        <td th:text="${booking.checkin != null ? #temporals.format(booking.checkin,'dd/MM/yyyy HH:mm') : '-'}">-</td>
+                        <td th:text="${booking.checkout != null ? #temporals.format(booking.checkout,'dd/MM/yyyy HH:mm') : '-'}">-</td>
                         <td class="fw-bold text-dark" th:text="${booking.totalPrice} + ' €'">0 €</td>
                         <td class="px-4 text-end">
-                            <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).PENDING}"
-                                  class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 rounded">Pendiente</span>
-                            <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CONFIRMED}"
-                                  class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded">Confirmada</span>
-                            <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CANCELLED}"
-                                  class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1 rounded">Cancelada</span>
-                            <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).COMPLETED}"
-                                  class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1 rounded">Completada</span>
+                            <a th:href="@{/booking/{id}(id=${booking.id})}" class="text-decoration-none">
+                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).PENDING}"
+                                      class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 rounded">Pendiente</span>
+                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CONFIRMED}"
+                                      class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded">Confirmada</span>
+                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CANCELLED}"
+                                      class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1 rounded">Cancelada</span>
+                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).COMPLETED}"
+                                      class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1 rounded">Completada</span>
+                            </a>
                         </td>
                     </tr>
                     </tbody>
@@ -266,8 +259,7 @@
 
     <div class="card shadow-sm rounded-4 overflow-hidden mb-4">
         <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center border-bottom">
-            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-key text-brand me-2"></i> Alojamientos Alquilados
-            </h5>
+            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-key text-brand me-2"></i> Alojamientos Alquilados</h5>
             <span class="badge bg-brand text-white rounded-pill px-3 py-2 fw-semibold"
                   th:text="${#lists.size(listHouseGuest)} + ' Sitios'">0 Sitios</span>
         </div>
@@ -280,11 +272,11 @@
                 <table class="table table-hover align-middle mb-0 w-100">
                     <thead class="table-light">
                     <tr>
-                        <th class="px-4 py-3 text-muted fw-semibold small" style="width: 45%;">Título</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 15%;">Precio Noche</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 15%;">Provincia</th>
-                        <th class="py-3 text-muted fw-semibold small" style="width: 15%;">Capacidad</th>
-                        <th class="px-4 py-3 text-muted fw-semibold small text-end" style="width: 10%;">Recomendar</th>
+                        <th class="px-4 py-3 text-muted fw-semibold small">Título</th>
+                        <th class="py-3 text-muted fw-semibold small">Precio Noche</th>
+                        <th class="py-3 text-muted fw-semibold small">Provincia</th>
+                        <th class="py-3 text-muted fw-semibold small">Capacidad</th>
+                        <th class="px-4 py-3 text-muted fw-semibold small text-end">Recomendar</th>
                     </tr>
                     </thead>
                     <tbody>

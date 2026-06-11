@@ -2,6 +2,7 @@ package com.demo.service;
 
 import com.demo.model.Booking;
 import com.demo.model.House;
+import com.demo.model.StatusBooking;
 import com.demo.repository.BookingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,6 @@ public class BookingService {
 
     public final BookingRepository bookingRepository;
 
-    // validateDates
     public boolean validateDates(Booking booking){
         var checkin = booking.getEstimatedCheckin();
         var checkout = booking.getEstimatedCheckout();
@@ -46,12 +46,46 @@ public class BookingService {
         return getHostBookings(hostId, null, null);
     }
 
+    public List<Booking> getHostBookings(Long hostId, String statusName) {
+        if (statusName == null || statusName.isBlank()) {
+            return getHostBookings(hostId);
+        }
+        try {
+            StatusBooking status = StatusBooking.valueOf(statusName.toUpperCase());
+            return switch (status) {
+                case PENDING -> bookingRepository.bookingsHostPending(hostId);
+                case CONFIRMED -> bookingRepository.bookingsHostConfirmed(hostId);
+                case CANCELLED -> bookingRepository.bookingsHostCancelled(hostId);
+                case COMPLETED -> bookingRepository.bookingsHostCompleted(hostId);
+            };
+        } catch (IllegalArgumentException e) {
+            return getHostBookings(hostId);
+        }
+    }
+
     public List<Booking> getGuestBookings(Long guestId, LocalDateTime searchDate, Double maxPrice) {
         return bookingRepository.bookingsGuest(guestId, searchDate, maxPrice);
     }
 
     public List<Booking> getGuestBookings(Long guestId) {
         return getGuestBookings(guestId, null, null);
+    }
+
+    public List<Booking> getGuestBookings(Long guestId, String statusName) {
+        if (statusName == null || statusName.isBlank()) {
+            return getGuestBookings(guestId);
+        }
+        try {
+            StatusBooking status = StatusBooking.valueOf(statusName.toUpperCase());
+            return switch (status) {
+                case PENDING -> bookingRepository.bookingsGuestPending(guestId);
+                case CONFIRMED -> bookingRepository.bookingsGuestConfirmed(guestId);
+                case CANCELLED -> bookingRepository.bookingsGuestCancelled(guestId);
+                case COMPLETED -> bookingRepository.bookingsGuestCompleted(guestId);
+            };
+        } catch (IllegalArgumentException e) {
+            return getGuestBookings(guestId);
+        }
     }
 
     public List<House> getHostProperties(Long hostId, Double maxPrice) {
