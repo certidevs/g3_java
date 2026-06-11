@@ -4,7 +4,7 @@ import com.demo.model.Favorite;
 import com.demo.model.House;
 import com.demo.model.User;
 import com.demo.repository.FavoriteRepository;
-import com.demo.repository.HouseRepository;
+import com.demo.service.HouseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class FavoriteService {
     private final FavoriteRepository favoriteRepository;
-    private final HouseRepository houseRepository;
+    private final HouseService houseService;
 
     public Set<Long> getFavoriteHouseIds(User user) {
         return favoriteRepository.getHousesIdsByUserId(user.getId());
@@ -29,7 +29,7 @@ public class FavoriteService {
             return false;
         }
 
-        House house = houseRepository.findById(houseId).orElseThrow();
+        House house = houseService.findById(houseId).orElseThrow();
         favoriteRepository.save(Favorite.builder()
                 .user(user)
                 .house(house)

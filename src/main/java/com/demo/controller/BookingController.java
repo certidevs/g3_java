@@ -3,8 +3,8 @@ package com.demo.controller;
 import com.demo.model.*;
 import com.demo.model.enums.StatusBooking;
 import com.demo.model.enums.StatusReserva;
-import com.demo.repository.HouseRepository;
 import com.demo.service.BookingService;
+import com.demo.service.HouseService;
 import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class BookingController {
 
     private final UserService userService;
-    private final HouseRepository houseRepository;
+    private final HouseService houseService;
     private final BookingService bookingService;
 
     @GetMapping("/booking/{id}")
@@ -308,7 +308,7 @@ public class BookingController {
 
     @GetMapping("booking/new/{houseId}")
     public String newBooking(Model model, @PathVariable Long houseId) {
-        Optional<House> house = houseRepository.findById(houseId);
+        Optional<House> house = houseService.findById(houseId);
         if (house.isPresent()) {
             House houseValid = house.get();
             Booking booking = new Booking();
@@ -326,7 +326,7 @@ public class BookingController {
         if (houseId == null) {
             return "redirect:/houses";
         }
-        Optional<House> houseOpt = houseRepository.findById(houseId);
+        Optional<House> houseOpt = houseService.findById(houseId);
         if (houseOpt.isEmpty()) {
             return "redirect:/houses";
         }
@@ -371,7 +371,7 @@ public class BookingController {
         } else {
             house.setReserve(StatusReserva.RESERVADA);
         }
-        houseRepository.save(house);
+        houseService.save(house);
 
         return "redirect:/booking/" + toSave.getId();
     }

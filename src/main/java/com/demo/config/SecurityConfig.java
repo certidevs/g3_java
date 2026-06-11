@@ -30,7 +30,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                 auth -> auth
                         // rutas publicas tanto GET como POST
-                        .requestMatchers( "/", "/login",
+                        .requestMatchers( "/", "/login", "/error",
                                 "/register", "/css/**", "/images/**", "/js/**", "/webjars/**").permitAll()
 
                         // de golpe:

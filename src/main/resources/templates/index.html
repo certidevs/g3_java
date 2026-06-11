@@ -19,20 +19,32 @@
 
         <div class="carousel-inner">
             <th:block th:each="i : ${#numbers.sequence(0, 2)}">
-                <div th:if="${houses != null and i < houses.size()}" class="carousel-item" th:classappend="${i == 0 ? 'active' : ''}" data-bs-interval="4000">
+                <div th:if="${houses != null and i < houses.size()}" class="carousel-item"
+                     th:classappend="${i == 0 ? 'active' : ''}" data-bs-interval="4000">
                     <img th:src="${'/images/' + houses[i].imageUrl}" class="d-block w-100" th:alt="${houses[i].title}">
-                    
-                    <div class="position-absolute start-0 w-100 pe-none d-flex justify-content-center justify-content-lg-end pe-lg-5" style="bottom: 18%; z-index: 10;">
-                        <a th:href="@{/houses/{id}(id=${houses[i].id})}" class="pe-auto d-inline-flex align-items-center shadow-lg text-decoration-none" style="background: rgba(0, 0, 0, 0.75); border-radius: 50px; padding: 4px 5px 4px 12px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.4); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" title="Ver detalles">
-                            <span th:if="${houseRatings[houses[i].id] >= 4.0}" class="d-flex align-items-center fw-bold me-2 text-warning" style="font-size: 0.75rem;">
+
+                    <div class="position-absolute start-0 w-100 pe-none d-flex justify-content-center justify-content-lg-end pe-lg-5"
+                         style="bottom: 18%; z-index: 10;">
+                        <a th:href="@{/houses/{id}(id=${houses[i].id})}"
+                           class="pe-auto d-inline-flex align-items-center shadow-lg text-decoration-none"
+                           style="background: rgba(0, 0, 0, 0.75); border-radius: 50px; padding: 4px 5px 4px 12px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.4); transition: transform 0.2s;"
+                           onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+                           title="Ver detalles">
+                            <span th:if="${houses[i].averageRating >= 4.0}"
+                                  class="d-flex align-items-center fw-bold me-2 text-warning"
+                                  style="font-size: 0.75rem;">
                                 <i class="fa-solid fa-star me-1"></i> 
-                                <span th:text="${#numbers.formatDecimal(houseRatings[houses[i].id], 1, 1)}">4.9</span>
+                                <span th:text="${#numbers.formatDecimal(houses[i].averageRating, 1, 1)}">4.9</span>
                             </span>
-                            <span th:if="${houseRatings[houses[i].id] < 4.0}" class="d-flex align-items-center fw-bold me-2 text-info" style="font-size: 0.75rem;">
+                            <span th:if="${houses[i].averageRating < 4.0}"
+                                  class="d-flex align-items-center fw-bold me-2 text-info" style="font-size: 0.75rem;">
                                 <i class="fa-solid fa-thumbs-up me-1"></i>
                             </span>
-                            <span class="fw-bold text-white text-truncate me-3" style="max-width: 140px; font-size: 0.75rem; letter-spacing: 0.3px;" th:text="${houses[i].title}"></span>
-                            <span class="bg-brand rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 26px; height: 26px; min-width: 26px; box-shadow: 0 0 10px rgba(255, 75, 75, 0.6);">
+                            <span class="fw-bold text-white text-truncate me-3"
+                                  style="max-width: 140px; font-size: 0.75rem; letter-spacing: 0.3px;"
+                                  th:text="${houses[i].title}"></span>
+                            <span class="bg-brand rounded-circle d-flex align-items-center justify-content-center p-0"
+                                  style="width: 26px; height: 26px; min-width: 26px; box-shadow: 0 0 10px rgba(255, 75, 75, 0.6);">
                                 <i class="fa-solid fa-arrow-right text-white" style="font-size: 0.7rem;"></i>
                             </span>
                         </a>
@@ -44,7 +56,8 @@
                     </div>
                 </div>
 
-                <div th:unless="${houses != null and i < houses.size()}" class="carousel-item" th:classappend="${i == 0 ? 'active' : ''}" data-bs-interval="4000">
+                <div th:unless="${houses != null and i < houses.size()}" class="carousel-item"
+                     th:classappend="${i == 0 ? 'active' : ''}" data-bs-interval="4000">
                     <img th:src="${'/images/carrusel' + (i + 1) + '.jpg'}" class="d-block w-100"
                          th:alt="${houses_titles[i]}">
                     <div class="carousel-caption-overlay w-100 h-100 d-flex flex-column justify-content-center z-1 position-absolute top-50 start-50 translate-middle text-center text-light p-4 pe-none">
@@ -81,7 +94,7 @@
                                             th:value="${selectedProvince}">
                                         <option value="">Todas las provincias</option>
                                         <option th:each="p : ${housesProvinces}"
-                                                th:value="${p}"
+                                                th:value="${p.name()}"
                                                 th:text="${p}"></option>
                                     </select>
                                 </div>
@@ -118,19 +131,30 @@
         <div class="row g-4">
             <th:block th:each="i : ${#numbers.sequence(0, 2)}">
                 <div class="col-md-4">
-                    <a th:if="${reviews != null and i < reviews.size()}" th:href="@{/reviews/{id}(id=${reviews[i].id})}" class="text-decoration-none text-dark d-block h-100">
+                    <a th:if="${reviews != null and i < reviews.size()}" th:href="@{/reviews/{id}(id=${reviews[i].id})}"
+                       class="text-decoration-none text-dark d-block h-100">
                         <div class="card h-100 shadow-sm bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between border">
                             <div>
                                 <div class="text-warning mb-2 fs-5">
-                                    <i class="fa-solid fa-star" th:each="star : ${#numbers.sequence(1, reviews[i].rating)}" th:if="${reviews[i].rating > 0}"></i><i class="fa-regular fa-star" th:each="star : ${#numbers.sequence(reviews[i].rating + 1, 5)}" th:if="${reviews[i].rating < 5}"></i>
+                                    <i class="fa-solid fa-star"
+                                       th:each="star : ${#numbers.sequence(1, reviews[i].rating)}"
+                                       th:if="${reviews[i].rating > 0}"></i><i class="fa-regular fa-star"
+                                                                               th:each="star : ${#numbers.sequence(reviews[i].rating + 1, 5)}"
+                                                                               th:if="${reviews[i].rating < 5}"></i>
                                 </div>
-                                <div class="fw-bold text-warning mb-3 small" th:text="|${reviews[i].rating}.0/5.0|">5.0/5.0</div>
+                                <div class="fw-bold text-warning mb-3 small" th:text="|${reviews[i].rating}.0/5.0|">
+                                    5.0/5.0
+                                </div>
                                 <h5 class="fw-bold mb-2 text-dark" th:text="${reviews[i].title}">Título</h5>
-                                <p class="fst-italic mb-4 text-secondary" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" th:text="'&quot;' + ${reviews[i].comment} + '&quot;'">"Comentario"</p>
+                                <p class="fst-italic mb-4 text-secondary"
+                                   style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"
+                                   th:text="'&quot;' + ${reviews[i].comment} + '&quot;'">"Comentario"</p>
                             </div>
                             <div class="d-flex align-items-center justify-content-center gap-2 mt-auto">
                                 <div th:if="${reviews[i].user != null}">
-                                    <h6 class="fw-bold text-brand mb-0" th:text="'- ' + ${reviews[i].user.firstName != null and reviews[i].user.lastName != null ? reviews[i].user.firstName + ' ' + reviews[i].user.lastName : reviews[i].user.username}">- Usuario</h6>
+                                    <h6 class="fw-bold text-brand mb-0"
+                                        th:text="'- ' + ${reviews[i].user.firstName != null and reviews[i].user.lastName != null ? reviews[i].user.firstName + ' ' + reviews[i].user.lastName : reviews[i].user.username}">
+                                        - Usuario</h6>
                                 </div>
                                 <div th:unless="${reviews[i].user != null}">
                                     <h6 class="fw-bold text-brand mb-0">- Usuario anónimo</h6>
@@ -138,14 +162,17 @@
                             </div>
                         </div>
                     </a>
-                    <div th:unless="${reviews != null and i < reviews.size()}" class="card h-100 shadow-sm border bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between">
+                    <div th:unless="${reviews != null and i < reviews.size()}"
+                         class="card h-100 shadow-sm border bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between">
                         <div>
                             <div class="text-warning mb-2 fs-5">
                                 <i class="fa-solid fa-star" th:each="star : ${#numbers.sequence(1, 5)}"></i>
                             </div>
                             <div class="fw-bold text-warning mb-3 small">5.0/5.0</div>
                             <h5 class="fw-bold mb-2 text-dark" th:text="${reviews_titles[i]}">Título</h5>
-                            <p class="fst-italic mb-4 text-secondary" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;" th:text="'&quot;' + ${reviews_comments[i]} + '&quot;'">"Comentario"</p>
+                            <p class="fst-italic mb-4 text-secondary"
+                               style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"
+                               th:text="'&quot;' + ${reviews_comments[i]} + '&quot;'">"Comentario"</p>
                         </div>
                         <div class="d-flex align-items-center justify-content-center gap-2 mt-auto">
                             <h6 class="fw-bold text-brand mb-0" th:text="'- ' + ${reviews_users[i]}">- Usuario</h6>
@@ -162,7 +189,8 @@
         <div class="row g-4">
             <div class="col-12 col-md-6 col-lg-4" th:each="amenity : ${amenities}">
                 <div class="d-flex align-items-center p-4 border rounded-4 bg-white shadow-sm h-100 property-card">
-                    <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-4" style="width: 60px; height: 60px; min-width: 60px;">
+                    <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-4"
+                         style="width: 60px; height: 60px; min-width: 60px;">
                         <i th:class="'fa-solid fa-' + ${amenity.icon} + ' fs-3 text-brand'"></i>
                     </div>
                     <div>

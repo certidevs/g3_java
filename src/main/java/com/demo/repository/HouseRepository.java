@@ -3,6 +3,7 @@ package com.demo.repository;
 import com.demo.dto.HouseStatsDto;
 import com.demo.model.House;
 import com.demo.model.enums.HouseType;
+import com.demo.model.enums.Province;
 import com.demo.model.enums.StatusReserva;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -36,7 +37,7 @@ public interface HouseRepository extends JpaRepository<House, Long> {
               AND (:reserve IS NULL OR h.reserve = :reserve)
               AND (:price IS NULL OR h.pricePerNight <= :price)
               AND (:title IS NULL OR :title = '' OR LOWER(h.title) LIKE LOWER(CONCAT('%', :title, '%')))
-              AND (:province IS NULL OR :province = '' OR LOWER(h.province) LIKE LOWER(CONCAT('%', :province, '%')))
+              AND (:province IS NULL OR h.province = :province)
               AND (:houseType IS NULL OR h.houseType = :houseType)
               AND (:filterFavorites = false OR h.id IN :favIds)
             GROUP BY h
@@ -48,7 +49,7 @@ public interface HouseRepository extends JpaRepository<House, Long> {
             @Param("reserve") StatusReserva reserve,
             @Param("price") Double price,
             @Param("title") String title,
-            @Param("province") String province,
+            @Param("province") Province province,
             @Param("houseType") HouseType houseType,
             @Param("minRating") Double minRating,
             @Param("active") Boolean active,
@@ -75,7 +76,7 @@ public interface HouseRepository extends JpaRepository<House, Long> {
               AND (:reserve IS NULL OR h.reserve = :reserve)
               AND (:price IS NULL OR h.pricePerNight <= :price)
               AND (:title IS NULL OR :title = '' OR LOWER(h.title) LIKE LOWER(CONCAT('%', :title, '%')))
-              AND (:province IS NULL OR :province = '' OR LOWER(h.province) LIKE LOWER(CONCAT('%', :province, '%')))
+              AND (:province IS NULL OR h.province = :province)
               AND (:houseType IS NULL OR h.houseType = :houseType)
               AND (:filterFavorites = false OR h.id IN :favIds)
             GROUP BY h
@@ -87,7 +88,7 @@ public interface HouseRepository extends JpaRepository<House, Long> {
             @Param("reserve") StatusReserva reserve,
             @Param("price") Double price,
             @Param("title") String title,
-            @Param("province") String province,
+            @Param("province") Province province,
             @Param("houseType") HouseType houseType,
             @Param("minRating") Double minRating,
             @Param("active") Boolean active,
@@ -105,9 +106,23 @@ public interface HouseRepository extends JpaRepository<House, Long> {
             """)
     List<House> findTop3ByOrderByAverageRatingDesc();
 
+    @Query("""
+            SELECT new com.demo.dto.HouseStatsDto(
+                        h.id, h.title, h.pricePerNight, h.province, h.maxGuests, h.houseType, h.imageUrl, h.active,
+                        COALESCE(AVG(CAST(r.rating AS double)), 0.0), COUNT(r)
+            )
+            FROM House h
+            LEFT JOIN Review r ON r.house = h
+            WHERE (h.active = true)
+            GROUP BY h.id, h.title, h.pricePerNight, h.province, h.maxGuests, h.houseType, h.imageUrl, h.active
+            ORDER BY COALESCE(AVG(CAST(r.rating AS double)), 0.0) DESC
+            LIMIT 3
+            """)
+    List<HouseStatsDto> findTop3HousesWithStats();
+
 
     @Query("""
             select distinct h.province from House h where h.province is not null
             """)
-    List<String> getTopProvinces();
+    List<Province> getTopProvinces();
 }

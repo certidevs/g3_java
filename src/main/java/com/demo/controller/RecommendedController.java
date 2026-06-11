@@ -4,7 +4,7 @@ import com.demo.model.House;
 import com.demo.model.HouseRecommended;
 import com.demo.model.User;
 import com.demo.repository.HouseRecommendedRepository;
-import com.demo.repository.HouseRepository;
+import com.demo.service.HouseService;
 import com.demo.service.BookingService;
 import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RecommendedController {
 
-    private final HouseRepository houseRepository;
+    private final HouseService houseService;
     private final UserService userService;
     private final HouseRecommendedRepository houseRecommendedRepository;
 
@@ -30,7 +30,7 @@ public class RecommendedController {
                                     @PathVariable Long idHouse,
                                     @PathVariable Long idUsuario) {
 
-        Optional<House> house = houseRepository.findById(idHouse);
+        Optional<House> house = houseService.findById(idHouse);
         Optional<User> user = userService.findById(idUsuario);
 
         if (house.isPresent() && user.isPresent()) {
@@ -72,7 +72,7 @@ public class RecommendedController {
             {
 
         // 1) Cargar entidades base (las que estaban en el formulario son referencias, las recargamos por id)
-        House house = houseRepository.findById(houseId).orElseThrow();
+        House house = houseService.findById(houseId).orElseThrow();
         User userFrom = userService.findById(userFromId).orElseThrow();
 
         // 2) Resolver destinatario, por token y luego email, abstraído en el UserService

@@ -1,5 +1,6 @@
 package com.demo.model;
 import com.demo.model.enums.HouseType;
+import com.demo.model.enums.Province;
 import com.demo.model.enums.StatusReserva;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,7 +27,9 @@ public class House {
     private  String description;
     private Double pricePerNight;
     private String location;
-    private String province;
+
+    @Enumerated(EnumType.STRING)
+    private Province province;
     private Integer maxGuests;
     // TODO opcional minimumNights
     // TODO opcional maxNights

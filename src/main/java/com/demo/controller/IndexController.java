@@ -1,40 +1,31 @@
 package com.demo.controller;
 
+import com.demo.dto.HouseStatsDto;
 import com.demo.model.Amenity;
-import com.demo.model.House;
 import com.demo.model.Review;
-import com.demo.repository.HouseRepository;
-import com.demo.service.ReviewService;
 import com.demo.repository.AmenityRepository;
+import com.demo.service.HouseService;
+import com.demo.service.ReviewService;
 import lombok.AllArgsConstructor;
-import org.hibernate.mapping.Array;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @AllArgsConstructor
 public class IndexController {
     private final ReviewService reviewService;
-    private final HouseRepository houseRepository;
+    private final HouseService houseService;
     private final AmenityRepository amenityRepository;
 
     @GetMapping("/")
     public String index(Model model) {
-        List<House> topHouses = houseRepository.findTop3ByOrderByAverageRatingDesc();
+        List<HouseStatsDto> topHouses = houseService.findTop3HousesWithStats();
         model.addAttribute("houses", topHouses);
-        model.addAttribute("housesProvinces", houseRepository.getTopProvinces());
-
-        Map<Long, Double> houseRatings = new HashMap<>();
-        for (House h : topHouses) {
-            houseRatings.put(h.getId(), reviewService.getAverageRating(h.getId()));
-        }
-        model.addAttribute("houseRatings", houseRatings);
+        model.addAttribute("housesProvinces", houseService.getTopProvinces());
 
         List<Review> indexReviews = new ArrayList<>(reviewService.findTop3Reviews(4));
         model.addAttribute("reviews", indexReviews);

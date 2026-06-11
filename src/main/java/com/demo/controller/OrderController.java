@@ -3,7 +3,7 @@ package com.demo.controller;
 import com.demo.model.Booking;
 import com.demo.model.House;
 import com.demo.model.User;
-import com.demo.repository.HouseRepository;
+import com.demo.service.HouseService;
 import com.demo.repository.ReviewRepository;
 import com.demo.repository.UserRepository;
 import com.demo.service.UserService;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Controller
 public class OrderController {
-    private final HouseRepository houseRepository;
+    private final HouseService houseService;
     private final UserService userService;
     // private final ReviewRepository reviewRepository;
 
@@ -29,7 +29,7 @@ public class OrderController {
     public String newOrder(Model model, @RequestParam Long houseId,
                            Authentication autorizacion
                            ) {
-        House house = houseRepository.findById(houseId).orElseThrow();
+        House house = houseService.findById(houseId).orElseThrow();
         Booking order = new Booking();
         order.setUserHouse(house);
         model.addAttribute("booking", order);

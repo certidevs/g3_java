@@ -116,13 +116,13 @@
                         <td class="fw-bold text-dark" th:text="${booking.totalPrice} + ' €'">0 €</td>
                         <td class="px-4 text-end">
                             <a th:href="@{/booking/{id}(id=${booking.id})}" class="text-decoration-none">
-                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).PENDING}"
+                                <span th:if="${booking.statusbooking == T(com.demo.model.enums.StatusBooking).PENDING}"
                                       class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 rounded">Pendiente</span>
-                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CONFIRMED}"
+                                <span th:if="${booking.statusbooking == T(com.demo.model.enums.StatusBooking).CONFIRMED}"
                                       class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded">Confirmada</span>
-                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CANCELLED}"
+                                <span th:if="${booking.statusbooking == T(com.demo.model.enums.StatusBooking).CANCELLED}"
                                       class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1 rounded">Cancelada</span>
-                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).COMPLETED}"
+                                <span th:if="${booking.statusbooking == T(com.demo.model.enums.StatusBooking).COMPLETED}"
                                       class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1 rounded">Completada</span>
                             </a>
                         </td>
@@ -171,11 +171,11 @@
                         <td th:text="${casa.province}">Madrid</td>
                         <td th:text="${casa.maxGuests} + ' huéspedes'">1</td>
                         <td class="px-4 text-end">
-                            <span th:if="${casa.reserve == T(com.demo.model.StatusReserva).DISPONIBLE}"
+                            <span th:if="${casa.reserve == T(com.demo.model.enums.StatusReserva).DISPONIBLE}"
                                   class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded">Disponible</span>
-                            <span th:if="${casa.reserve == T(com.demo.model.StatusReserva).NO_DISPONIBLE}"
+                            <span th:if="${casa.reserve == T(com.demo.model.enums.StatusReserva).NO_DISPONIBLE}"
                                   class="badge bg-danger-subtle text-danger border border-danger-subtle px-2.5 py-1.5 rounded">No Disponible</span>
-                            <span th:if="${casa.reserve == T(com.demo.model.StatusReserva).RESERVADA}"
+                            <span th:if="${casa.reserve == T(com.demo.model.enums.StatusReserva).RESERVADA}"
                                   class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded">Reservada</span>
                         </td>
                     </tr>
@@ -240,13 +240,13 @@
                         <td class="fw-bold text-dark" th:text="${booking.totalPrice} + ' €'">0 €</td>
                         <td class="px-4 text-end">
                             <a th:href="@{/booking/{id}(id=${booking.id})}" class="text-decoration-none">
-                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).PENDING}"
+                                <span th:if="${booking.statusbooking == T(com.demo.model.enums.StatusBooking).PENDING}"
                                       class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 rounded">Pendiente</span>
-                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CONFIRMED}"
+                                <span th:if="${booking.statusbooking == T(com.demo.model.enums.StatusBooking).CONFIRMED}"
                                       class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded">Confirmada</span>
-                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).CANCELLED}"
+                                <span th:if="${booking.statusbooking == T(com.demo.model.enums.StatusBooking).CANCELLED}"
                                       class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1 rounded">Cancelada</span>
-                                <span th:if="${booking.statusbooking == T(com.demo.model.StatusBooking).COMPLETED}"
+                                <span th:if="${booking.statusbooking == T(com.demo.model.enums.StatusBooking).COMPLETED}"
                                       class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1 rounded">Completada</span>
                             </a>
                         </td>

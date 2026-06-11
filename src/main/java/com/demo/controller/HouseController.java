@@ -3,8 +3,10 @@ package com.demo.controller;
 import com.demo.dto.HouseStatsDto;
 import com.demo.model.*;
 import com.demo.model.enums.HouseType;
+import com.demo.model.enums.Province;
+import com.demo.model.enums.Role;
 import com.demo.model.enums.StatusReserva;
-import com.demo.repository.HouseRepository;
+import com.demo.service.HouseService;
 import com.demo.service.ReviewService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,12 +26,7 @@ import java.util.*;
 @AllArgsConstructor
 public class HouseController {
 
-    // TODO: Sería mejor en un HouseService
-    private static final List<String> FORM_PROVINCES = Arrays.asList(
-            "Madrid", "Barcelona", "Valencia", "Sevilla", "Málaga", "Bilbao", "Asturias", "Alicante", "Zaragoza"
-    );
-
-    private final HouseRepository houseRepository;
+    private final HouseService houseService;
     private final ReviewService reviewService;
 
     @GetMapping("/houses")
@@ -37,39 +34,22 @@ public class HouseController {
                             @RequestParam(required = false) StatusReserva reserve,
                             @RequestParam(required = false) Double pricePerNight,
                             @RequestParam(required = false) String title,
-                            @RequestParam(required = false) String province,
+                            @RequestParam(required = false) Province province,
                             @RequestParam(required = false) HouseType houseType,
                             @RequestParam(required = false) Double minRating,
                             @RequestParam(required = false) Boolean active,
                             @RequestParam(required = false) Boolean favoritesOnly,
                             @AuthenticationPrincipal User user
     ) {
-        // TODO: Casi todo esto se puede abstraer al HouseService si existiera, o probablemente usando un Dto para los RequestParam
-        boolean isAdmin = user != null && user.getRole() == Role.ROLE_ADMIN;
-        if (!isAdmin) {
-            active = true;
-        }
-
-        model.addAttribute("provinces", houseRepository.getTopProvinces());
-
-        boolean filterFavorites = Boolean.TRUE.equals(favoritesOnly);
-        List<HouseStatsDto> housesStats;
+        model.addAttribute("provinces", houseService.getTopProvinces());
 
         @SuppressWarnings("unchecked")
         Set<Long> favoritesHouses = (Set<Long>) model.getAttribute("favoritesHouses");
 
-        if (filterFavorites && (favoritesHouses == null || favoritesHouses.isEmpty())) {
-            housesStats = new ArrayList<>();
-        } else {
-            List<Long> favIds = (favoritesHouses != null && !favoritesHouses.isEmpty())
-                    ? new ArrayList<>(favoritesHouses)
-                    : List.of(-1L);
-
-            housesStats = houseRepository.findByReserveStats(
-                    reserve, pricePerNight, title, province, houseType, minRating, active,
-                    filterFavorites, favIds
-            );
-        }
+        List<HouseStatsDto> housesStats = houseService.getHousesForCatalog(
+                reserve, pricePerNight, title, province, houseType, minRating, active,
+                favoritesOnly, user, favoritesHouses
+        );
 
         model.addAttribute("houses", housesStats);
         model.addAttribute("selectedProvince", province);
@@ -96,13 +76,13 @@ public class HouseController {
 
     @GetMapping("/houses/deactivate/{id}")
     public String houseDeactivate(@PathVariable Long id, Model model) {
-        Optional<House> houseOptional = houseRepository.findById(id);
+        Optional<House> houseOptional = houseService.findById(id);
 
         if (houseOptional.isPresent()) {
             // casa sí existe
             House house = houseOptional.get();
             house.setActive(false);
-            houseRepository.save(house);
+            houseService.save(house);
 
         }
         return "redirect:/houses";
@@ -110,11 +90,13 @@ public class HouseController {
 
     // nuevo metodo para traer un solo restaurante por su id
     @GetMapping("houses/{id}")
-    public String houseDetail(@PathVariable Long id, Model model) {
+    public String houseDetail(@PathVariable Long id, Model model, @AuthenticationPrincipal User user) {
 
         // buscar restaurante por su id: findById
-//        Optional<House> houseOptional = houseRepository.findById(id);
-        Optional<House> houseOptional = houseRepository.findByIdAndActiveTrue(id);
+        boolean isAdmin = user != null && user.getRole() == Role.ROLE_ADMIN;
+        Optional<House> houseOptional = isAdmin
+                ? houseService.findById(id)
+                : houseService.findByIdAndActiveTrue(id);
 
         if (houseOptional.isPresent()) {
 
@@ -133,21 +115,21 @@ public class HouseController {
 
         }
 
-        return "redirect:/house";
+        return "redirect:/houses";
     }
 
 
     @GetMapping("houses/new")
     public String newHouses(Model model) {
         model.addAttribute("house", new House());
-        model.addAttribute("provinces", FORM_PROVINCES);
+        model.addAttribute("provinces", HouseService.PROVINCES);
         return "house/house-form";
     }
 
     @GetMapping("houses/edit/{id}")
     public String editHouse(@PathVariable Long id, Model model) {
-        model.addAttribute("house", houseRepository.findById(id).orElseThrow());
-        model.addAttribute("provinces", FORM_PROVINCES);
+        model.addAttribute("house", houseService.findById(id).orElseThrow());
+        model.addAttribute("provinces", HouseService.PROVINCES);
         return "house/house-form";
     }
 
@@ -177,7 +159,7 @@ public class HouseController {
             house.setImageUrl(fileName);
         }
 
-        houseRepository.save(house);
+        houseService.save(house);
         return "redirect:/houses/" + house.getId();
     }
 

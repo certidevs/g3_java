@@ -2,7 +2,7 @@ package com.demo.controller;
 
 import com.demo.model.Review;
 import com.demo.model.User;
-import com.demo.repository.HouseRepository;
+import com.demo.service.HouseService;
 import com.demo.service.ReviewService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @AllArgsConstructor
 class ReviewController {
     private final ReviewService reviewService;
-    private final HouseRepository houseRepository;
+    private final HouseService houseService;
 
     @GetMapping // /reviews
     public String reviewList(Model model) {
@@ -52,7 +52,7 @@ class ReviewController {
         Review review = new Review();
 
         if (houseId != null)
-            review.setHouse(houseRepository.findById(houseId).orElseThrow());
+            review.setHouse(houseService.findById(houseId).orElseThrow());
         model.addAttribute("review", review);
         return "review/review-form";
     }
