@@ -1,5 +1,6 @@
 package com.demo.controller;
 
+import com.demo.dto.HouseStatsDto;
 import com.demo.model.*;
 import com.demo.repository.HouseRepository;
 import com.demo.service.ReviewService;
@@ -31,16 +32,15 @@ public class HouseController {
 
     @GetMapping("/houses")
     public String houseList(Model model,
-        @RequestParam(required = false) StatusReserva reserve,
-        @RequestParam(required = false) Double pricePerNight,
-        @RequestParam(required = false) String title,
-        @RequestParam(required = false) String province,
-        @RequestParam(required = false) HouseType houseType,
-        @RequestParam(required = false) Double minRating,
-        @RequestParam(required = false) Boolean active,
-        @RequestParam(required = false) Boolean favoritesOnly,
-        @AuthenticationPrincipal User user,
-        @ModelAttribute("favoritesHouses") Set<Long> favoritesHouses
+                            @RequestParam(required = false) StatusReserva reserve,
+                            @RequestParam(required = false) Double pricePerNight,
+                            @RequestParam(required = false) String title,
+                            @RequestParam(required = false) String province,
+                            @RequestParam(required = false) HouseType houseType,
+                            @RequestParam(required = false) Double minRating,
+                            @RequestParam(required = false) Boolean active,
+                            @RequestParam(required = false) Boolean favoritesOnly,
+                            @AuthenticationPrincipal User user
     ) {
         // TODO: Casi todo esto se puede abstraer al HouseService si existiera, o probablemente usando un Dto para los RequestParam
         boolean isAdmin = user != null && user.getRole() == Role.ROLE_ADMIN;
@@ -51,22 +51,25 @@ public class HouseController {
         model.addAttribute("provinces", houseRepository.getTopProvinces());
 
         boolean filterFavorites = Boolean.TRUE.equals(favoritesOnly);
-        List<House> houseStatus;
+        List<HouseStatsDto> housesStats;
+
+        @SuppressWarnings("unchecked")
+        Set<Long> favoritesHouses = (Set<Long>) model.getAttribute("favoritesHouses");
 
         if (filterFavorites && (favoritesHouses == null || favoritesHouses.isEmpty())) {
-            houseStatus = new ArrayList<>();
+            housesStats = new ArrayList<>();
         } else {
             List<Long> favIds = (favoritesHouses != null && !favoritesHouses.isEmpty())
                     ? new ArrayList<>(favoritesHouses)
                     : List.of(-1L);
-                    
-            houseStatus = houseRepository.findByReserve(
+
+            housesStats = houseRepository.findByReserveStats(
                     reserve, pricePerNight, title, province, houseType, minRating, active,
                     filterFavorites, favIds
             );
         }
 
-        model.addAttribute("houses", houseStatus);
+        model.addAttribute("houses", housesStats);
         model.addAttribute("selectedProvince", province);
         model.addAttribute("selectedHouseType", houseType);
         model.addAttribute("selectedPricePerNight", pricePerNight);
@@ -74,17 +77,23 @@ public class HouseController {
         model.addAttribute("selectedActive", active);
         model.addAttribute("selectedFavoritesOnly", favoritesOnly);
 
+        /*
         Map<Long, Double> houseRatings = new HashMap<>();
         for (House h : houseStatus) {
             houseRatings.put(h.getId(), reviewService.getAverageRating(h.getId()));
         }
         model.addAttribute("houseRatings", houseRatings);
+        // Use housesStats
+        model.addAttribute("houseRatings",
+                housesStats.stream().collect(Collectors.toMap(HouseStats::id, HouseStats::averageRating))
+        );
+         */
 
         return "house/house-list";
     }
 
     @GetMapping("/houses/deactivate/{id}")
-    public String houseDeactivate(@PathVariable Long id,Model model){
+    public String houseDeactivate(@PathVariable Long id, Model model) {
         Optional<House> houseOptional = houseRepository.findById(id);
 
         if (houseOptional.isPresent()) {
@@ -110,7 +119,7 @@ public class HouseController {
             // casa sí existe
             House house = houseOptional.get();
             model.addAttribute("house", house);
-            
+
             Double averageRating = reviewService.getAverageRating(house.getId());
             model.addAttribute("averageRating", averageRating);
 
@@ -139,8 +148,6 @@ public class HouseController {
         model.addAttribute("provinces", FORM_PROVINCES);
         return "house/house-form";
     }
-
-
 
 
     @PostMapping("/houses")

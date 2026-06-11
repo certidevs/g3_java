@@ -150,12 +150,12 @@
 
                             <!-- Rating -->
                             <div class="d-flex align-items-center mb-2">
-                                <span th:if="${houseRatings[house.id] > 0.0}"
+                                <span th:if="${house.reviewCount() > 0}"
                                       class="d-flex align-items-center fw-bold small text-dark">
                                     <i class="fa-solid fa-star text-warning me-1"></i> <span
-                                        th:text="${#numbers.formatDecimal(houseRatings[house.id], 1, 1)}">5.0</span>
+                                        th:text="${#numbers.formatDecimal(house.averageRating(), 1, 1)}">5.0</span>
                                 </span>
-                                <span th:if="${houseRatings[house.id] == 0.0}"
+                                <span th:if="${house.reviewCount() == 0}"
                                       class="text-muted small fw-semibold d-flex align-items-center">
                                     <i class="fa-solid fa-star-half-stroke me-1"></i> Sin reseñas
                                 </span>
