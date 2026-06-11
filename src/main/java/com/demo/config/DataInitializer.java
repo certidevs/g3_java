@@ -1,6 +1,9 @@
 package com.demo.config;
 
 import com.demo.model.*;
+import com.demo.model.enums.HouseType;
+import com.demo.model.enums.Role;
+import com.demo.model.enums.StatusReserva;
 import com.demo.repository.*;
 import com.demo.service.UserService;
 import lombok.AllArgsConstructor;

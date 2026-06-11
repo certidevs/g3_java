@@ -1,6 +1,7 @@
 package com.demo.dto;
 
-import com.demo.model.HouseType;
+
+import com.demo.model.enums.HouseType;
 
 public record HouseStatsDto(
         Long id,

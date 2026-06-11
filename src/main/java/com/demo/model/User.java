@@ -1,5 +1,6 @@
 package com.demo.model;
 
+import com.demo.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.jspecify.annotations.NullMarked;

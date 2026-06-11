@@ -1,8 +1,8 @@
 package com.demo.service;
 
 import com.demo.dto.RegisterForm;
-import com.demo.model.Role;
 import com.demo.model.User;
+import com.demo.model.enums.Role;
 import com.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NullMarked;

@@ -1,5 +1,6 @@
 package com.demo.model;
 
+import com.demo.model.enums.StatusBooking;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;

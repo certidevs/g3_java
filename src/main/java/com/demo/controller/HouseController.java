@@ -2,6 +2,8 @@ package com.demo.controller;
 
 import com.demo.dto.HouseStatsDto;
 import com.demo.model.*;
+import com.demo.model.enums.HouseType;
+import com.demo.model.enums.StatusReserva;
 import com.demo.repository.HouseRepository;
 import com.demo.service.ReviewService;
 import lombok.AllArgsConstructor;

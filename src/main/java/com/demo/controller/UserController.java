@@ -1,7 +1,7 @@
 package com.demo.controller;
 
-import com.demo.model.Role;
 import com.demo.model.User;
+import com.demo.model.enums.Role;
 import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

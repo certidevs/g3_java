@@ -1,4 +1,6 @@
 package com.demo.model;
+import com.demo.model.enums.HouseType;
+import com.demo.model.enums.StatusReserva;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,7 +33,7 @@ public class House {
 
 //    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private HouseType  houseType;
+    private HouseType houseType;
 
     @Column(name = "image_url")
     private String imageUrl;

@@ -1,6 +1,8 @@
 package com.demo.controller;
 
 import com.demo.model.*;
+import com.demo.model.enums.StatusBooking;
+import com.demo.model.enums.StatusReserva;
 import com.demo.repository.HouseRepository;
 import com.demo.service.BookingService;
 import com.demo.service.UserService;

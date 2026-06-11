@@ -2,7 +2,7 @@ package com.demo.service;
 
 import com.demo.model.Booking;
 import com.demo.model.House;
-import com.demo.model.StatusBooking;
+import com.demo.model.enums.StatusBooking;
 import com.demo.repository.BookingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
