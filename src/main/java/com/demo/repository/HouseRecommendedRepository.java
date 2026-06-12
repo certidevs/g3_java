@@ -36,5 +36,4 @@ public interface HouseRecommendedRepository extends JpaRepository<HouseRecommend
     List<HouseRecommended> listHousesToEmail(@Param("email") String email,
                                              @Param("token") String token);
 
-
 }

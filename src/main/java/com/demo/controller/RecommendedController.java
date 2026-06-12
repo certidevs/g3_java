@@ -102,6 +102,7 @@ public class RecommendedController {
                 .tokenTo(userTo.getTokenforRecommended())
                 .emailFrom(userFrom.getEmail())
                 .emailTo(userTo.getEmail())
+                .id_destination(userTo.getId())
                 .firstNameFrom(userFrom.getFirstName())
                 .lastNameFrom(userFrom.getLastName())
                 .firstNameTo(userTo.getFirstName())

@@ -7,6 +7,7 @@ import com.demo.repository.HouseRepository;
 import com.demo.repository.ReviewRepository;
 import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +27,13 @@ public class AgendaController {
     // Obtiene la tabla entera
 
     @GetMapping("agenda")
-    public String showAgenda(Model model) {
+    public String showAgenda(Model model, @AuthenticationPrincipal User user) {
 
         List<User> agenda = userService.getAgendaUsers();
         model.addAttribute("agenda", agenda);
+
+        // TODO Mostrar arriba los ya recomendados
+
 
         return "user/agenda";
     }
@@ -43,6 +47,8 @@ public class AgendaController {
 
         List<User> agenda = userService.getAgendaUsers(textfind);
         model.addAttribute("agenda", agenda);
+
+
 
         return "user/agenda";
 

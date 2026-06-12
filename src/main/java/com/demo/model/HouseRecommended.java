@@ -19,6 +19,8 @@ public class HouseRecommended {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long id_destination;
+
     private String tokenFrom;
     private String tokenTo;
 
