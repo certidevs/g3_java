@@ -325,7 +325,7 @@ main.container {
     object-fit: cover;
 }
 
-/* Form Controls
+/* Form Controls */
 .form-control:focus, .form-select:focus {
     box-shadow: none;
     border-color: #0d6efd;
@@ -340,7 +340,7 @@ main.container {
     border-left: none;
 }
 
-/* Footer Newsletter Styling
+/* Footer Newsletter Styling */
 .newsletter-input-group {
     background-color: white;
     border-radius: 50px;
@@ -383,3 +383,116 @@ main.container {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0,0,0,0.3);
 }
+
+/* --- ESTILOS DE FORMULARIO DE ALQUILAYA --- */
+.form-control, .form-select {
+    border: 1px solid #d3cfc7;
+    border-radius: 0.75rem;
+    padding: 0.675rem 1.25rem;
+    font-size: 0.95rem;
+    color: #2d2c29;
+    background-color: #faf9f6;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #ffffff;
+    border-color: var(--brand-color) !important;
+    box-shadow: 0 0 0 4px rgba(241, 70, 29, 0.15) !important;
+    outline: 0;
+}
+
+.form-label, .form-label-custom {
+    font-weight: 600;
+    color: #4a4842;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.2px;
+}
+
+.custom-form-card {
+    background: #ffffff;
+    border: 1px solid #e9e7e2;
+    border-radius: 1.25rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03), 0 5px 15px rgba(0, 0, 0, 0.01) !important;
+    padding: 2.5rem;
+}
+
+.custom-form-header {
+    border-bottom: 2px solid #faf9f6;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.custom-form-header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #2d2c29;
+    margin-bottom: 0.25rem;
+}
+
+.custom-form-header p {
+    color: #8c8980;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+/* Contenedor de subida de archivos personalizado */
+.file-upload-wrapper {
+    position: relative;
+    border: 2px dashed #d3cfc7;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    text-align: center;
+    background-color: #faf9f6;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.file-upload-wrapper:hover {
+    border-color: var(--brand-color);
+    background-color: rgba(241, 70, 29, 0.02);
+}
+
+.file-upload-wrapper input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-upload-preview {
+    max-width: 240px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Efecto hover interactivo para las tarjetas de información de casas */
+.property-card-hover-effect {
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.property-card-hover-effect:hover {
+    transform: translateY(-2px);
+    background-color: #f6f5f0 !important;
+    border-color: var(--brand-color) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+.property-card-hover-effect:active {
+    transform: translateY(0);
+}
+
+.property-card-hover-effect .house-title-link {
+    transition: color 0.2s ease-in-out;
+}
+.property-card-hover-effect:hover .house-title-link {
+    color: var(--brand-color) !important;
+}
+
+
+

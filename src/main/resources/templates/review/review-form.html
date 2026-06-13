@@ -1,49 +1,110 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
-<head th:replace="~{layout/head :: head('Formulario Review')}"></head>
+<head th:replace="~{layout/head :: head('Escribir Reseña')}"></head>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
-
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-<main class="container flex-grow-1 my-4">
+<main class="container flex-grow-1 mb-5">
+    
+    <!-- Enlace de regreso -->
+    <div class="mt-4 mb-3">
+        <a th:href="@{/reviews}" class="text-decoration-none text-muted d-inline-flex align-items-center hover-brand-transition">
+            <i class="fa-solid fa-arrow-left me-2"></i> Volver a reseñas
+        </a>
+    </div>
 
-    <h1 class="mb-0">
-        <i class="fa-solid fa-utensils text-primary me-2"></i>Formulario review
-    </h1>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="custom-form-card shadow-sm">
+                
+                <!-- Cabecera del formulario -->
+                <div class="custom-form-header">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-brand bg-opacity-10 text-brand rounded-4 p-3 d-inline-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
+                            <i class="fa-solid fa-star-half-stroke fs-4"></i>
+                        </div>
+                        <div>
+                            <h1>Escribir reseña</h1>
+                            <p>Comparta su experiencia para ayudar a otros viajeros en su elección.</p>
+                        </div>
+                    </div>
+                </div>
 
-    <form th:action="@{/reviews}" method="post" th:object="${review}">
-        <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{house}">
-        <input type="hidden" th:field="*{createdAt}">
+                <!-- Formulario -->
+                <form th:action="@{/reviews}" method="post" th:object="${review}" class="row g-4">
+                    <input type="hidden" th:field="*{id}">
+                    <input type="hidden" th:field="*{house}">
+                    <input type="hidden" th:field="*{createdAt}">
 
-        <div class="alert alert-info my-3" th:if="${review.house != null}">
-            <i class="fa-solid fa-store"></i>
-            Reseña sobre la casa:
-            <strong th:text="${review.house.title}"></strong>
+                    <!-- Componente Visual del Alojamiento (Ficha Interactiva) -->
+                    <div class="col-12 mb-2" th:if="${review.house != null}">
+                        <p class="form-label-custom">Estancia valorada</p>
+                        <a th:href="@{/houses/{id}(id=${review.house.id})}" class="text-decoration-none text-reset d-block" title="Ver detalles del alojamiento">
+                            <div class="p-3 bg-light rounded-4 d-flex align-items-center gap-3 border border-light-subtle property-card-hover-effect">
+                                <!-- Foto Rectangular -->
+                                <img th:src="@{'/images/' + ${review.house.imageUrl}}" class="rounded-3 shadow-sm" style="width: 120px; height: 80px; object-fit: cover;" alt="Imagen del alojamiento">
+                                
+                                <!-- Información -->
+                                <div class="flex-grow-1">
+                                    <strong class="text-dark fs-5 d-block house-title-link" th:text="${review.house.title}">Nombre del alojamiento</strong>
+                                    <div class="text-muted small mt-1">
+                                        <i class="fa-solid fa-map-pin me-1"></i>
+                                        <span th:text="${review.house.location} + ', ' + ${review.house.province}">Ubicación</span>
+                                        <span class="mx-2">•</span>
+                                        <i class="fa-solid fa-user-group me-1"></i>
+                                        <span th:text="${review.house.maxGuests} + ' huéspedes máx.'">Capacidad</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Flecha indicativa de enlace -->
+                                <div class="text-muted pe-2 d-none d-sm-block">
+                                    <i class="fa-solid fa-chevron-right text-brand"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Título -->
+                    <div class="col-12">
+                        <label for="title" class="form-label-custom">Título de la reseña</label>
+                        <input id="title" type="text" class="form-control" placeholder="Ej. ¡Estancia increíble, muy recomendado!"
+                               th:field="*{title}" required maxlength="255">
+                    </div>
+
+                    <!-- Comentario/Descripción -->
+                    <div class="col-12">
+                        <label for="comment" class="form-label-custom">Su opinión detallada</label>
+                        <textarea id="comment" class="form-control" rows="5" placeholder="Cuéntenos qué le pareció el alojamiento, la ubicación, la atención del anfitrión y los servicios..."
+                                  th:field="*{comment}" required maxlength="1000" style="resize: none;"></textarea>
+                    </div>
+
+                    <!-- Puntuación -->
+                    <div class="col-12">
+                        <label for="rating" class="form-label-custom">Calificación</label>
+                        <select id="rating" class="form-select" th:field="*{rating}" required>
+                            <option value="">Seleccione una valoración...</option>
+                            <option value="5">⭐⭐⭐⭐⭐ (5 - Excelente)</option>
+                            <option value="4">⭐⭐⭐⭐ (4 - Muy buena)</option>
+                            <option value="3">⭐⭐⭐ (3 - Aceptable)</option>
+                            <option value="2">⭐⭐ (2 - Regular)</option>
+                            <option value="1">⭐ (1 - Deficiente)</option>
+                        </select>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="col-12 d-flex justify-content-end gap-3 mt-4">
+                        <a th:href="@{/reviews}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-medium">
+                            <i class="fa-solid fa-xmark me-2"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-brand rounded-pill px-5 py-2 fw-medium text-white shadow-sm">
+                            <i class="fa-regular fa-paper-plane me-2"></i>Enviar reseña
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-
-
-        <div class="mb-3">
-            <label for="title" class="form-label">Título</label>
-            <input id="title" type="text" class="form-control"
-                   th:field="*{title}" required maxlength="255">
-        </div>
-        <div class="mb-3">
-            <label for="comment" class="form-label">Descripción</label>
-            <textarea id="comment" class="form-control" rows="4"
-                      th:field="*{comment}" required maxlength="1000"></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="rating" class="form-label">Puntuación (de 1 a 5)</label>
-            <input type="number" id="rating" class="form-control"
-                   th:field="*{rating}" min="1" max="5" required>
-        </div>
-        <button type="submit" class="btn btn-success">
-            <i class="fa-solid fa-floppy-disk"></i>Enviar
-        </button>
-    </form>
+    </div>
 </main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
