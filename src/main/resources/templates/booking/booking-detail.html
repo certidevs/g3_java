@@ -1,88 +1,279 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{layout/head :: head('Vista de las reservas')}"></head>
+<head th:replace="~{layout/head :: head('Detalles de la Reserva')}"></head>
 
-<body>
+<body class="d-flex flex-column min-vh-100 bg-light">
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-<div class="ms-3 mt-3">
-<h2><i class="fa-solid fa-restroom text-primary me-2"></i>Reserva</h2>
-</div>
-<br>
-<div th:if="${error}" class="alert alert-danger my-3" th:text="${error}"></div>
-<div th:if="${message}" class="alert alert-success my-3" th:text="${message}"></div>
-<div  class="card w-75 mb-3" style="margin-left: 50px;">
-    <h5 class="card-title" th:text="| ${booking.userHouse.getTitle()} : ${booking.userHouse.getLocation()} |" >Titulo</h5>
-    <p class="card-text" th:text="| ${booking.userHouse.getDescription()} , ${booking.userHouse.getMaxGuests()} personas |">Texto de explicaciones.</p>
-    <p class="card-text" th:text="| Precio por noche : ${booking.userHouse.getPricePerNight()} . Provincia : ${booking.userHouse.province}|">Texto de explicaciones.</p>
-    <h5 class="card-title" th:text="| Usuario : ${booking.userBooking.username} . ${booking.userBooking.email} |" >Titulo</h5>
-    <p class="card-text" th:text="| ${booking.userBooking.firstName} ${booking.userBooking.lastName} |">Texto de explicaciones.</p>
-    <h5 class="card-title">Datos reserva : </h5>
-    <p class="card-text" th:text="| Estimado checkin y checkout : ${booking.estimatedCheckin} / ${booking.estimatedCheckout} |"></p>
-    <p class="card-text" th:text="| Checkin y checkout : ${booking.checkin} / ${booking.checkout}"></p>
-    <p class="card-text" th:text="| Nro. de noches : ${booking.numberNights}|"></p>
-    <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |"></p>
-    <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|"></p>
+<main class="container flex-grow-1 mb-5">
 
-    <div sec:authorize="hasRole('ADMIN')" class="card-footer bg-transparent border-0 pt-0">
-        <a
-             th:href="@{/booking/edit/{id}(id=${booking.id})}"
-             class="btn btn-outline-primary btn-sm w-40">
-            <i class="fa-solid fa-pen-to-square"></i>Editar</a>
+    <!-- Enlace de regreso -->
+    <div class="mt-4 mb-3" sec:authorize="isAuthenticated()">
+        <a th:href="@{/panel-control/{id}(id=${#authentication.principal.id})}" class="text-decoration-none text-muted d-inline-flex align-items-center text-hover-brand">
+            <i class="fa-solid fa-arrow-left me-2"></i> Volver a mi panel
+        </a>
     </div>
-    <hr>
-    <div  th:if="${booking.statusbooking.name()=='PENDING'}" sec:authorize="hasRole('USER')">
+    <div class="mt-4 mb-3" sec:authorize="!isAuthenticated()">
+        <a th:href="@{/}" class="text-decoration-none text-muted d-inline-flex align-items-center text-hover-brand">
+            <i class="fa-solid fa-arrow-left me-2"></i> Volver al inicio
+        </a>
+    </div>
 
-<!--Formulario de pago        -->
-        <div class="card-body">
-            <h5 class="mb-3"><i class="fa-solid fa-credit-card"></i>Sección de pago</h5>
-            <form th:action="@{/booking/{id}/finish(id=${booking.id})}" method="post"
-              class="row g-3">
+    <!-- Alertas de Servidor -->
+    <div th:if="${error}" class="alert alert-danger mb-4 rounded-3 d-flex align-items-center gap-2">
+        <i class="fa-solid fa-circle-exclamation fs-5"></i>
+        <span th:text="${error}">Mensaje de error</span>
+    </div>
+    <div th:if="${message}" class="alert alert-success mb-4 rounded-3 d-flex align-items-center gap-2">
+        <i class="fa-solid fa-circle-check fs-5"></i>
+        <span th:text="${message}">Mensaje de éxito</span>
+    </div>
 
-            <div class="col-md-6">
-                <label class="form-label" for="cardOwner">Titular de la tarjeta</label>
-                <input type="text" id="cardOwner" name="cardOwner"
-                       class="form-control" required>
-                <small class="text-muted">Tu nombre completo</small>
+    <div class="row g-5">
+        
+        <!-- Columna Principal (Detalles y Formulario de Pago) -->
+        <div class="col-lg-8 order-2 order-lg-1">
+            
+            <!-- Título y Estado -->
+            <div class="d-flex justify-content-between align-items-start mb-4 pb-2">
+                <div>
+                    <h1 class="fw-bold text-dark mb-1">Reserva #<span th:text="${booking.id}">123</span></h1>
+                    <div class="text-muted d-flex align-items-center flex-wrap gap-3 mt-1">
+                        <span>
+                            <i class="fa-regular fa-calendar-check me-1"></i>
+                            <span>Reserva de </span>
+                            <a th:href="@{/users/{id}(id=${booking.userBooking.id})}" class="fw-bold text-dark text-decoration-none text-hover-brand" 
+                               th:text="${#strings.isEmpty(booking.userBooking.firstName) ? booking.userBooking.username : booking.userBooking.firstName + ' ' + booking.userBooking.lastName}">Juan Pérez</a>
+                        </span>
+                        <span class="text-muted d-none d-md-inline">•</span>
+                        <span>
+                            <!-- Badges based on status -->
+                            <span th:if="${booking.statusbooking.name() == 'PENDING'}" class="badge bg-warning bg-opacity-10 text-warning border border-warning px-3 py-1.5 rounded-pill fw-semibold">
+                                <i class="fa-solid fa-clock me-1"></i>Pendiente de pago
+                            </span>
+                            <span th:if="${booking.statusbooking.name() == 'CONFIRMED'}" class="badge bg-success bg-opacity-10 text-success border border-success px-3 py-1.5 rounded-pill fw-semibold">
+                                <i class="fa-solid fa-circle-check me-1"></i>Confirmada
+                            </span>
+                            <span th:if="${booking.statusbooking.name() == 'COMPLETED'}" class="badge bg-info bg-opacity-10 text-info border border-info px-3 py-1.5 rounded-pill fw-semibold">
+                                <i class="fa-solid fa-flag-checkered me-1"></i>Completada
+                            </span>
+                            <span th:if="${booking.statusbooking.name() == 'CANCELLED'}" class="badge bg-danger bg-opacity-10 text-danger border border-danger px-3 py-1.5 rounded-pill fw-semibold">
+                                <i class="fa-solid fa-circle-xmark me-1"></i>Cancelada
+                            </span>
+                        </span>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-6">
-                <label class="form-label" for="cardNumber">Número de la tarjeta</label>
-                <input type="text" id="cardNumber" name="cardNumber"
-                       class="form-control" maxlength="16" required>
-                <small class="text-muted">Formato: 1111222233334444</small>
+            <!-- Formulario de Pago (Ubicado arriba para visibilidad inmediata) -->
+            <div th:if="${booking.statusbooking.name() == 'PENDING'}" sec:authorize="hasRole('USER')" class="mb-5">
+                <div class="custom-form-card shadow-sm">
+                    <div class="custom-form-header">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-brand bg-opacity-10 text-brand rounded-4 p-3 d-inline-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
+                                <i class="fa-solid fa-credit-card fs-4"></i>
+                            </div>
+                            <div>
+                                <h1>Sección de pago</h1>
+                                <p class="mb-0">Complete los datos de la tarjeta</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/booking/{id}/finish(id=${booking.id})}" method="post" class="row g-4">
+                        
+                        <!-- Titular de la tarjeta (En la misma fila con Número) -->
+                        <div class="col-md-6 col-12">
+                            <label class="form-label-custom" for="cardOwner">Titular de la tarjeta</label>
+                            <input type="text" id="cardOwner" name="cardOwner"
+                                   class="form-control" placeholder="Nombre completo" 
+                                   th:value="${#strings.isEmpty(booking.userBooking.firstName) ? booking.userBooking.username : booking.userBooking.firstName + ' ' + booking.userBooking.lastName}" required>
+                            <div class="form-text text-muted small mt-1">Nombre tal y como aparece en la tarjeta.</div>
+                        </div>
+
+                        <!-- Número de la tarjeta (En la misma fila con Titular) -->
+                        <div class="col-md-6 col-12">
+                            <label class="form-label-custom" for="cardNumber">Número de la tarjeta</label>
+                            <input type="text" id="cardNumber" name="cardNumber"
+                                   class="form-control" placeholder="1111222233334444" 
+                                   maxlength="16" required>
+                            <div class="form-text text-muted small mt-1">16 dígitos numéricos sin espacios.</div>
+                        </div>
+
+                        <!-- Fecha de expiración y CVV (Más pequeñas) -->
+                        <div class="col-md-4 col-6">
+                            <label class="form-label-custom" for="cardExpirationDate">Fecha expiración</label>
+                            <input type="text" id="cardExpirationDate" name="cardExpirationDate"
+                                   class="form-control" placeholder="MM/YY" maxlength="5" required>
+                            <div class="form-text text-muted small mt-1">MM/YY</div>
+                        </div>
+
+                        <div class="col-md-3 col-6">
+                            <label class="form-label-custom" for="cardSecretCode">CVV Código</label>
+                            <input type="text" id="cardSecretCode" name="cardSecretCode"
+                                   class="form-control" placeholder="111" maxlength="3" required>
+                            <div class="form-text text-muted small mt-1">3 dígitos.</div>
+                        </div>
+
+                        <!-- Mensaje de Confianza de Seguridad (Icono más pequeño) -->
+                        <div class="col-12 mt-2">
+                            <div class="p-3 bg-light rounded-4 d-flex align-items-center gap-3 border border-light-subtle">
+                                <i class="fa-solid fa-shield-halved text-success fs-5"></i>
+                                <div>
+                                    <strong class="text-dark d-block small">Pago Seguro Certificado</strong>
+                                    <span class="text-muted small">Su conexión es segura y sus datos se procesan con encriptación de extremo a extremo.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Envío (Alineado a la derecha y no gigante) -->
+                        <div class="col-12 d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-brand rounded-pill px-5 py-2.5 fw-semibold text-white shadow-sm hover-brand-transition">
+                                <i class="fa-solid fa-credit-card me-2"></i>Pagar y finalizar (<span th:text="${booking.totalPrice} + ' €'"></span>)
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <div class="col-md-4">
-                <label class="form-label" for="cardExpirationDate">Fecha expiración tarjeta</label>
-                <input type="text" id="cardExpirationDate" name="cardExpirationDate"
-                       class="form-control" maxlength="5" required>
-                <small class="text-muted">Formato: MM/YY</small>
-            </div>
+            <!-- Detalles de la estancia (Check-in/Check-out) -->
+            <section class="mb-4">
+                <h3 class="h5 fw-bold text-dark mb-3"><i class="fa-solid fa-circle-info text-muted me-2"></i>Detalles de la estancia</h3>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-white shadow-sm rounded-4 p-4 h-100">
+                            <span class="text-muted small d-block mb-2 text-uppercase fw-bold letter-spacing-sm">
+                                <i class="fa-solid fa-arrow-right-to-bracket me-2 text-success"></i>Entrada (Check-in)
+                            </span>
+                            <h4 class="h5 fw-bold text-dark mb-0" th:text="${booking.statusbooking.name() == 'CONFIRMED' or booking.statusbooking.name() == 'COMPLETED'} ? ${booking.checkin} : ${booking.estimatedCheckin}">12/06/2026</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-white shadow-sm rounded-4 p-4 h-100">
+                            <span class="text-muted small d-block mb-2 text-uppercase fw-bold letter-spacing-sm">
+                                <i class="fa-solid fa-arrow-right-from-bracket me-2 text-danger"></i>Salida (Check-out)
+                            </span>
+                            <h4 class="h5 fw-bold text-dark mb-0" th:text="${booking.statusbooking.name() == 'CONFIRMED' or booking.statusbooking.name() == 'COMPLETED'} ? ${booking.checkout} : ${booking.estimatedCheckout}">15/06/2026</h4>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            <div class="col-md-4">
-                <label class="form-label" for="cardSecretCode">CVV Código tarjeta</label>
-                <input type="text" id="cardSecretCode" name="cardSecretCode"
-                       class="form-control" maxlength="3" required>
-                <small class="text-muted">Formato: 111</small>
-            </div>
+            <!-- Desglose de Facturación -->
+            <section class="mb-4">
+                <h3 class="h5 fw-bold text-dark mb-3"><i class="fa-solid fa-receipt text-muted me-2"></i>Resumen de costes</h3>
+                <div class="card border-0 bg-white shadow-sm rounded-4 p-4">
+                    <div class="row g-3">
+                        <div class="col-6 d-flex justify-content-between align-items-center pb-2 border-bottom border-light-subtle">
+                            <span class="text-muted fw-medium">Noches reservadas</span>
+                            <span class="fw-bold text-dark" th:text="${booking.numberNights} + (${booking.numberNights == 1} ? ' noche' : ' noches')">3 noches</span>
+                        </div>
+                        <div class="col-6 d-flex justify-content-between align-items-center pb-2 border-bottom border-light-subtle">
+                            <span class="text-muted fw-medium">Precio por noche</span>
+                            <span class="fw-bold text-dark" th:text="${booking.userHouse.pricePerNight} + ' €'">80 €</span>
+                        </div>
+                        <div class="col-12 d-flex justify-content-between align-items-center pt-2">
+                            <span class="fs-5 fw-bold text-dark">Precio total facturado</span>
+                            <span class="fs-4 fw-extrabold text-dark" th:text="${booking.totalPrice} + ' €'">240 €</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            <div class="col-12 text-end">
-                <button type="submit" class="btn btn-sm btn-success">
-                    <i class="fa-solid fa-credit-card"></i>
-                    Pagar y finalizar
-                </button>
+            <!-- Información Relacionada de Usuario/Contacto (Frenada según el estado) -->
+            <section class="mb-5">
+                <!-- Estado PENDING: Mostramos la información del Huésped (Client) -->
+                <div th:if="${booking.statusbooking.name() == 'PENDING'}">
+                    <h3 class="h5 fw-bold text-dark mb-3"><i class="fa-solid fa-circle-user text-muted me-2"></i>Información del huésped</h3>
+                    <div class="d-flex align-items-center gap-3 p-4 bg-white rounded-4 border border-light-subtle shadow-sm">
+                        <div class="bg-brand bg-opacity-10 text-brand rounded-circle d-flex align-items-center justify-content-center" style="width: 64px; height: 64px; min-width: 64px;">
+                            <i class="fa-solid fa-user-check fs-3"></i>
+                        </div>
+                        <div>
+                            <span class="text-muted small d-block text-uppercase fw-bold letter-spacing-sm">Huésped principal</span>
+                            <a th:href="@{/users/{id}(id=${booking.userBooking.id})}" class="fw-bold text-dark text-decoration-none text-hover-brand fs-5" 
+                               th:text="${#strings.isEmpty(booking.userBooking.firstName) ? booking.userBooking.username : booking.userBooking.firstName + ' ' + booking.userBooking.lastName}">Juan Pérez</a>
+                            <span class="text-muted small d-block mt-1">
+                                <i class="fa-regular fa-envelope me-1"></i> <span th:text="${booking.userBooking.email}">juan@example.com</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estado CONFIRMED/COMPLETED/etc: Mostramos la información del Anfitrión (Host) para contacto directo -->
+                <div th:unless="${booking.statusbooking.name() == 'PENDING'}" th:if="${booking.userHouse.host != null}">
+                    <h3 class="h5 fw-bold text-dark mb-3"><i class="fa-solid fa-comments text-muted me-2"></i>Contacto con el propietario</h3>
+                    <div class="d-flex align-items-center gap-3 p-4 bg-white rounded-4 border border-light-subtle shadow-sm">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 64px; height: 64px; min-width: 64px;">
+                            <i class="fa-solid fa-house-user fs-3"></i>
+                        </div>
+                        <div>
+                            <span class="text-muted small d-block text-uppercase fw-bold letter-spacing-sm">Anfitrión del alojamiento</span>
+                            <a th:href="@{/users/{id}(id=${booking.userHouse.host.id})}" class="fw-bold text-dark text-decoration-none text-hover-brand fs-5" 
+                               th:text="${#strings.isEmpty(booking.userHouse.host.firstName) ? booking.userHouse.host.username : booking.userHouse.host.firstName + ' ' + booking.userHouse.host.lastName}">Propietario</a>
+                            <span class="text-muted small d-block mt-1">
+                                <i class="fa-regular fa-envelope me-1"></i> <span th:text="${booking.userHouse.host.email}">host@example.com</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Acciones de Administrador -->
+            <div sec:authorize="hasRole('ADMIN')" class="d-flex justify-content-end mt-4 pt-3 border-top">
+                <a th:href="@{/booking/edit/{id}(id=${booking.id})}" class="btn btn-outline-brand rounded-pill px-4 fw-medium shadow-sm">
+                    <i class="fa-solid fa-pen-to-square me-2"></i>Editar Reserva (Admin)
+                </a>
             </div>
-        </form>
+            
         </div>
+
+        <!-- Columna Aside (Detalles del Alojamiento Reservado) -->
+        <aside class="col-lg-4 order-1 order-lg-2">
+            <div class="position-sticky" style="top: 6.5rem;">
+                <h4 class="h5 text-muted mb-3 fw-bold text-uppercase letter-spacing-sm">Alojamiento reservado</h4>
+                
+                <!-- Tarjeta del Alojamiento (estilo house-list) -->
+                <div class="card border shadow-sm rounded-4 property-card position-relative d-flex flex-column bg-white">
+                    <a th:href="@{/houses/{id}(id=${booking.userHouse.id})}" class="text-decoration-none d-block">
+                        <img th:src="@{'/images/' + ${booking.userHouse.imageUrl}}" class="card-img-top rounded-top-4"
+                             alt="Imagen del alojamiento" style="height: 200px; object-fit: cover;">
+                    </a>
+                    <div class="card-body p-4 d-flex flex-column">
+                        <a th:href="@{/houses/{id}(id=${booking.userHouse.id})}" class="text-decoration-none text-dark mb-2 stretched-link">
+                            <h5 class="fw-bold text-dark mb-2" th:text="${booking.userHouse.title}">Nombre de la Casa</h5>
+                        </a>
+
+                        <!-- Specs info -->
+                        <div class="text-muted small mb-2 d-flex align-items-center flex-wrap gap-1">
+                            <span class="text-nowrap"><i class="fa-solid fa-location-dot me-1"></i><span th:text="${booking.userHouse.province}">Provincia</span></span>
+                            <span class="text-muted mx-1">•</span>
+                            <span class="text-nowrap"><span th:text="${booking.userHouse.houseType != null ? booking.userHouse.houseType.label : 'Alojamiento'}">Tipo</span></span>
+                        </div>
+                        
+                        <!-- Guest capacity -->
+                        <div th:if="${booking.userHouse.maxGuests != null}" class="text-muted small mb-3 d-flex align-items-center">
+                            <i class="fa-solid fa-user-group me-2 text-secondary"></i>
+                            <span>Hasta <span class="fw-semibold text-dark" th:text="${booking.userHouse.maxGuests}">2</span> <span th:text="${booking.userHouse.maxGuests == 1} ? 'huésped' : 'huéspedes'">huéspedes</span></span>
+                        </div>
+
+                        <!-- Price summary line -->
+                        <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold text-dark fs-5 mb-0" th:text="${booking.userHouse.pricePerNight} + ' €'">0 €</span>
+                                <span class="text-muted small ms-1 mb-0">/ noche</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
     </div>
-</div>
+</main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>
 </body>
 </html>
-
-
-

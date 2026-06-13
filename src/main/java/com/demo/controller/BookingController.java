@@ -321,7 +321,9 @@ public class BookingController {
     }
 
     @PostMapping("booking")
-    public String createBooking(@ModelAttribute Booking booking, @AuthenticationPrincipal User user) {
+    public String createBooking(@ModelAttribute Booking booking, 
+                                @AuthenticationPrincipal User user,
+                                RedirectAttributes redirectAttributes) {
         Long houseId = (booking.getUserHouse() != null) ? booking.getUserHouse().getId() : null;
         if (houseId == null) {
             return "redirect:/houses";
@@ -349,7 +351,12 @@ public class BookingController {
         toSave.setUserHouse(house);
 
         if (!bookingService.validateDates(toSave)) {
-            return "redirect:/houses";
+            redirectAttributes.addFlashAttribute("error", "Las fechas seleccionadas no son válidas. La fecha de salida (check-out) debe ser posterior a la fecha de entrada (check-in).");
+            if (booking.getId() == null) {
+                return "redirect:/orders/new?houseId=" + houseId;
+            } else {
+                return "redirect:/booking/edit/" + booking.getId();
+            }
         }
 
         if ((toSave.getStatusbooking() == StatusBooking.PENDING)

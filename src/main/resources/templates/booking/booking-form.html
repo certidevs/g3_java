@@ -2,117 +2,171 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout/head :: head(${booking.id == null ? 'Nueva Reserva' : 'Editar Reserva'})}"></head>
 
-<body>
+<body class="d-flex flex-column min-vh-100 bg-light">
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-<main class="container flex-grow-1 my-4 shadow">
+<main class="container flex-grow-1 mb-5">
+    
+    <!-- Enlace de regreso -->
+    <div class="mt-4 mb-3">
+        <a th:href="@{/houses}" class="text-decoration-none text-muted d-inline-flex align-items-center hover-brand-transition">
+            <i class="fa-solid fa-arrow-left me-2"></i> Volver a la lista de casas
+        </a>
+    </div>
 
-    <h1>
-        <i class="fa-solid fa-pen-to-square text-primary me-2"></i>
-        <span th:text="${booking.id == null ? 'Formulario para hacer una reserva' : 'Edición de Reserva'}"></span>
-    </h1>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="custom-form-card shadow-sm">
+                
+                <!-- Cabecera del Formulario -->
+                <div class="custom-form-header">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-brand bg-opacity-10 text-brand rounded-4 p-3 d-inline-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
+                            <i class="fa-regular fa-calendar-check fs-4"></i>
+                        </div>
+                        <div>
+                            <h1 th:text="${booking.id == null ? 'Formulario de Reserva' : 'Edición de Reserva'}">Formulario de Reserva</h1>
+                            <p>Confirme las fechas de su estancia y revise los detalles del alojamiento.</p>
+                        </div>
+                    </div>
+                </div>
 
-    <form th:action="@{/booking}" method="post" th:object="${booking}">
-        <input type="hidden" th:field="*{id}"/>
-        <input type="hidden" th:field="*{userHouse.id}">
+                <!-- Alerta de Errores de Servidor -->
+                <div th:if="${error}" class="alert alert-danger mb-4 rounded-3 d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-circle-exclamation fs-5"></i>
+                    <span th:text="${error}">Mensaje de error</span>
+                </div>
 
-        <div class="mb-3">
-            <label for="title" class="form-label">Casa</label>
-            <input type="text" class="form-control" id="title" th:field="*{userHouse.title}" readonly/>
-        </div>
+                <!-- Formulario -->
+                <form th:action="@{/booking}" method="post" th:object="${booking}" class="row g-4">
+                    <input type="hidden" th:field="*{id}"/>
+                    <input type="hidden" th:field="*{userHouse.id}">
 
-        <!-- Campos para NUEVA reserva -->
-        <div th:if="${booking.id == null}">
-            <div class="mb-3">
-                <label for="estimatedCheckin" class="form-label">Checkin estimado</label>
-                <input type="datetime-local" class="form-control" id="estimatedCheckin"
-                       name="estimatedCheckin" th:field="*{estimatedCheckin}"
-                       onchange="calcularDiferencia('estimatedCheckin', 'estimatedCheckout')" required/>
+                    <!-- Campos de Fecha para NUEVA reserva -->
+                    <div class="col-12" th:if="${booking.id == null}">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="estimatedCheckin" class="form-label-custom">Check-in estimado</label>
+                                <input type="datetime-local" class="form-control" id="estimatedCheckin"
+                                       name="estimatedCheckin" th:field="*{estimatedCheckin}"
+                                       onchange="calcularDiferencia('estimatedCheckin', 'estimatedCheckout')" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="estimatedCheckout" class="form-label-custom">Check-out estimado</label>
+                                <input type="datetime-local" class="form-control" id="estimatedCheckout"
+                                       name="estimatedCheckout" th:field="*{estimatedCheckout}"
+                                       onchange="calcularDiferencia('estimatedCheckin', 'estimatedCheckout')" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campos de Fecha para EDITAR reserva (Admin) -->
+                    <div class="col-12" th:if="${booking.id != null}">
+                        <input type="hidden" id="estimatedCheckinEdit" th:field="*{estimatedCheckin}"/>
+                        <input type="hidden" id="estimatedCheckoutEdit" th:field="*{estimatedCheckout}"/>
+                        
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="checkin" class="form-label-custom">Check-in definitivo</label>
+                                <input type="datetime-local" class="form-control" id="checkin"
+                                       name="checkin" th:field="*{checkin}"
+                                       onchange="calcularDiferencia('checkin', 'checkout')"/>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="checkout" class="form-label-custom">Check-out definitivo</label>
+                                <input type="datetime-local" class="form-control" id="checkout"
+                                       name="checkout" th:field="*{checkout}"
+                                       onchange="calcularDiferencia('checkin', 'checkout')"/>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="statusbooking" class="form-label-custom">Estado del Alquiler</label>
+                            <select class="form-select" id="statusbooking" th:field="*{statusbooking}">
+                                <option value="">Seleccione un estado</option>
+                                <option th:each="estado : ${estados}"
+                                        th:value="${estado}"
+                                        th:text="${estado}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Resumen del costo -->
+                    <div class="col-12">
+                        <div class="p-4 rounded-4 my-2" style="background-color: #faf9f6; border-left: 4px solid var(--brand-color);">
+                            <h5 class="fw-bold mb-3 text-dark d-flex align-items-center gap-2" style="font-size: 1rem;">
+                                <i class="fa-solid fa-calculator text-brand"></i> Desglose del Alquiler
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="priceNight" class="form-label-custom text-muted small">Precio por Noche</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control bg-white border-end-0" id="priceNight" th:field="*{userHouse.pricePerNight}" readonly style="border-top-right-radius: 0; border-bottom-right-radius: 0;"/>
+                                        <span class="input-group-text bg-white border-start-0 text-muted" style="border: 1px solid #d3cfc7; border-radius: 0 0.75rem 0.75rem 0; font-weight: 500;">€</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="diasDiferencia" class="form-label-custom text-muted small">Nro. de noches</label>
+                                    <input type="number" class="form-control bg-white" id="diasDiferencia" readonly/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="totalPrice" class="form-label-custom text-muted small">Importe total</label>
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control bg-white fw-bold text-brand border-end-0" id="totalPrice" readonly style="border-top-right-radius: 0; border-bottom-right-radius: 0;"/>
+                                        <span class="input-group-text bg-white border-start-0 fw-bold text-brand" style="border: 1px solid #d3cfc7; border-radius: 0 0.75rem 0.75rem 0;">€</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detalles del Alojamiento (solo al crear nueva reserva) -->
+                    <div class="col-12" th:if="${booking.id == null}">
+                        <div class="card border-0 bg-light rounded-4 p-4 my-2">
+                            <h5 class="fw-bold mb-3 text-dark d-flex align-items-center gap-2" style="font-size: 1rem;">
+                                <i class="fa-solid fa-house-chimney text-brand"></i> Detalles del Alojamiento
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="title" class="form-label-custom text-muted small">Nombre</label>
+                                    <input type="text" class="form-control bg-white" id="title" th:field="*{userHouse.title}" readonly/>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="location" class="form-label-custom text-muted small">Localización</label>
+                                    <input type="text" class="form-control bg-white" id="location" th:field="*{userHouse.location}" readonly/>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="province" class="form-label-custom text-muted small">Provincia</label>
+                                    <input type="text" class="form-control bg-white" id="province" th:field="*{userHouse.province}" readonly/>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="maxGuests" class="form-label-custom text-muted small">Máx. Huéspedes</label>
+                                    <input type="number" class="form-control bg-white" id="maxGuests" th:field="*{userHouse.maxGuests}" readonly/>
+                                </div>
+                                <div class="col-12">
+                                    <label for="description" class="form-label-custom text-muted small">Descripción</label>
+                                    <textarea class="form-control bg-white" id="description" th:field="*{userHouse.description}" rows="3" readonly style="resize: none;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="col-12 d-flex justify-content-end gap-3 mt-4">
+                        <a th:href="@{/houses}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-medium">
+                            <i class="fa-solid fa-xmark me-2"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-brand rounded-pill px-5 py-2 fw-medium text-white shadow-sm">
+                            <i class="fa-solid fa-floppy-disk me-2"></i>
+                            <span th:text="${booking.id == null ? 'Confirmar reserva' : 'Actualizar reserva'}">Guardar</span>
+                        </button>
+                    </div>
+
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="estimatedCheckout" class="form-label">Checkout estimado</label>
-                <input type="datetime-local" class="form-control" id="estimatedCheckout"
-                       name="estimatedCheckout" th:field="*{estimatedCheckout}"
-                       onchange="calcularDiferencia('estimatedCheckin', 'estimatedCheckout')" required/>
-            </div>
         </div>
-
-        <!-- Campos para EDITAR reserva -->
-        <div th:if="${booking.id != null}">
-            <input type="hidden" id="estimatedCheckinEdit" th:field="*{estimatedCheckin}"/>
-            <input type="hidden" id="estimatedCheckoutEdit" th:field="*{estimatedCheckout}"/>
-            
-            <div class="mb-3">
-                <label for="checkin" class="form-label">Checkin definitivo</label>
-                <input type="datetime-local" class="form-control" id="checkin"
-                       name="checkin" th:field="*{checkin}"
-                       onchange="calcularDiferencia('checkin', 'checkout')"/>
-            </div>
-            <div class="mb-3">
-                <label for="checkout" class="form-label">Checkout definitivo</label>
-                <input type="datetime-local" class="form-control" id="checkout"
-                       name="checkout" th:field="*{checkout}"
-                       onchange="calcularDiferencia('checkin', 'checkout')"/>
-            </div>
-
-            <div class="mb-3">
-                <label for="statusbooking" class="form-label">Estado alquiler</label>
-                <select class="form-select" id="statusbooking" th:field="*{statusbooking}">
-                    <option value="">Seleccione un estado</option>
-                    <option th:each="estado : ${estados}"
-                            th:value="${estado}"
-                            th:text="${estado}">
-                    </option>
-                </select>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="diasDiferencia" class="form-label">Nro. de noches :</label>
-            <input type="number" class="form-control" id="diasDiferencia" readonly/>
-        </div>
-
-        <div class="mb-3">
-            <label for="priceNight" class="form-label">Precio por Noche (€)</label>
-            <input type="number" class="form-control" id="priceNight" th:field="*{userHouse.pricePerNight}" readonly/>
-        </div>
-
-        <div class="mb-3">
-            <label for="totalPrice" class="form-label">Precio total (€)</label>
-            <input type="number" step="0.01" class="form-control" id="totalPrice" readonly/>
-        </div>
-
-        <!-- Detalles de la casa -->
-
-        <div class="mb-3" th:if="${booking.id == null}">
-            <label for="description" class="form-label">Descripción</label>
-            <textarea class="form-control" id="description"
-                      th:field="*{userHouse.description}"
-                      rows="4"
-                      readonly></textarea>
-        </div>
-
-        <div class="mb-3" th:if="${booking.id == null}">
-            <label for="location" class="form-label">Localización</label>
-            <input type="text" class="form-control" id="location" th:field="*{userHouse.location}" readonly/>
-        </div>
-
-        <div class="mb-3" th:if="${booking.id == null}">
-            <label for="province" class="form-label">Provincia</label>
-            <input type="text" class="form-control" id="province" th:field="*{userHouse.province}" readonly/>
-        </div>
-
-        <div class="mb-3" th:if="${booking.id == null}">
-            <label for="maxGuests" class="form-label">Max.Huéspedes</label>
-            <input type="number" class="form-control" id="maxGuests" th:field="*{userHouse.maxGuests}" readonly/>
-        </div>
-
-        <button type="submit" class="btn btn-success">
-            <i class="fa-solid fa-floppy-disk"></i><span th:text="${booking.id == null ? ' Guardar' : ' Actualizar'}"></span>
-        </button>
-        <a th:href="@{/houses}" class="btn btn-secondary"><i class="fa-solid fa-xmark"></i> Cancelar</a>
-
-    </form>
+    </div>
 </main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>

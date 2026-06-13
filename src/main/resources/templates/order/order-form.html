@@ -1,40 +1,188 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/head :: head('Formulario Reserva')}"></head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout/head :: head('Reservar Alojamiento')}"></head>
+
 <body class="d-flex flex-column min-vh-100 bg-light">
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-<main class="container flex-grow-1 my-4">
-    <h1 class="mb-0">
-        <i class="fa-solid fa-utensils text-primary me-2"></i>Formulario de reserva
-    </h1>
-    <form th:action="@{/orders}" method="post" th:object="${order}">
-        <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{house}">
-        <div class="mb-3">
-            <label class="form-label">Nombre</label>
+<main class="container flex-grow-1 mb-5">
+    
+    <!-- Enlace de regreso -->
+    <div class="mt-4 mb-3">
+        <a th:href="@{/houses}" class="text-decoration-none text-muted d-inline-flex align-items-center hover-brand-transition">
+            <i class="fa-solid fa-arrow-left me-2"></i> Volver a la lista de casas
+        </a>
+    </div>
 
-<!--            <label class="form-label" for="tableNumber">Nombre de quien reserva</label>-->
-<!--            <input type="number" id="tableNumber" th:field="*{tableNumber}" class="form-control"-->
-<!--                   min="1" max="20" required>-->
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="custom-form-card shadow-sm">
+                
+                <!-- Cabecera del Formulario -->
+                <div class="custom-form-header">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-brand bg-opacity-10 text-brand rounded-4 p-3 d-inline-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
+                            <i class="fa-regular fa-calendar-check fs-4"></i>
+                        </div>
+                        <div>
+                            <h1>Nueva solicitud de reserva</h1>
+                            <p>Complete las fechas para calcular el desglose final y solicitar su reserva.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerta de Errores de Servidor -->
+                <div th:if="${error}" class="alert alert-danger mb-4 rounded-3 d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-circle-exclamation fs-5"></i>
+                    <span th:text="${error}">Mensaje de error</span>
+                </div>
+
+                <!-- Formulario de reserva -->
+                <form th:action="@{/booking}" method="post" th:object="${booking}" class="row g-4">
+                    <input type="hidden" th:field="*{id}"/>
+                    <input type="hidden" th:field="*{userHouse.id}">
+
+                    <!-- 1. Componente Visual del Alojamiento (Ficha Interactiva) -->
+                    <div class="col-12 mb-2" th:if="${booking.userHouse != null}">
+                        <p class="form-label-custom">Alojamiento seleccionado</p>
+                        <a th:href="@{/houses/{id}(id=${booking.userHouse.id})}" class="text-decoration-none text-reset d-block" title="Ver detalles del alojamiento">
+                            <div class="p-3 bg-light rounded-4 d-flex align-items-center gap-3 border border-light-subtle property-card-hover-effect">
+                                <!-- Foto Rectangular -->
+                                <img th:src="@{'/images/' + ${booking.userHouse.imageUrl}}" class="rounded-3 shadow-sm" style="width: 120px; height: 80px; object-fit: cover;" alt="Imagen del alojamiento">
+                                
+                                <!-- Información -->
+                                <div class="flex-grow-1">
+                                    <strong class="text-dark fs-5 d-block house-title-link" th:text="${booking.userHouse.title}">Nombre del alojamiento</strong>
+                                    <div class="text-muted small mt-1">
+                                        <i class="fa-solid fa-map-pin me-1"></i>
+                                        <span th:text="${booking.userHouse.location} + ', ' + ${booking.userHouse.province}">Ubicación</span>
+                                        <span class="mx-2">•</span>
+                                        <i class="fa-solid fa-user-group me-1"></i>
+                                        <span th:text="${booking.userHouse.maxGuests} + ' huéspedes máx.'">Capacidad</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Flecha indicativa de enlace -->
+                                <div class="text-muted pe-2 d-none d-sm-block">
+                                    <i class="fa-solid fa-chevron-right text-brand"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- 2. Selección de Fechas -->
+                    <div class="col-12">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="estimatedCheckin" class="form-label-custom">Check-in estimado</label>
+                                <input type="datetime-local" class="form-control" id="estimatedCheckin"
+                                       name="estimatedCheckin" th:field="*{estimatedCheckin}"
+                                       onchange="calcularDiferencia('estimatedCheckin', 'estimatedCheckout')" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="estimatedCheckout" class="form-label-custom">Check-out estimado</label>
+                                <input type="datetime-local" class="form-control" id="estimatedCheckout"
+                                       name="estimatedCheckout" th:field="*{estimatedCheckout}"
+                                       onchange="calcularDiferencia('estimatedCheckin', 'estimatedCheckout')" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Desglose del costo de la estancia (No modificable) -->
+                    <div class="col-12">
+                        <div class="p-4 rounded-4 my-2" style="background-color: #faf9f6; border-left: 4px solid var(--brand-color); cursor: help;">
+                            <h5 class="fw-bold mb-3 text-dark d-flex align-items-center gap-2" style="font-size: 1rem;">
+                                <i class="fa-solid fa-calculator text-brand"></i> Desglose del Alquiler
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="priceNight" class="form-label-custom text-muted small">Precio por Noche</label>
+                                    <div class="input-group" style="cursor: help;">
+                                        <input type="number" class="form-control bg-white border-end-0" id="priceNight" th:field="*{userHouse.pricePerNight}" readonly style="cursor: help; pointer-events: auto;"/>
+                                        <span class="input-group-text bg-white border-start-0 text-muted" style="border: 1px solid #d3cfc7; border-radius: 0 0.75rem 0.75rem 0; font-weight: 500;">€</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="diasDiferencia" class="form-label-custom text-muted small">Nro. de noches</label>
+                                    <input type="number" class="form-control bg-white" id="diasDiferencia" readonly style="cursor: help; pointer-events: auto;"/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="totalPrice" class="form-label-custom text-muted small">Importe total estimado</label>
+                                    <div class="input-group" style="cursor: help;">
+                                        <input type="number" step="0.01" class="form-control bg-white fw-bold text-brand border-end-0" id="totalPrice" readonly style="cursor: help; pointer-events: auto;"/>
+                                        <span class="input-group-text bg-white border-start-0 fw-bold text-brand" style="border: 1px solid #d3cfc7; border-radius: 0 0.75rem 0.75rem 0;">€</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="col-12 d-flex justify-content-end gap-3 mt-4">
+                        <a th:href="@{/houses}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-medium">
+                            <i class="fa-solid fa-xmark me-2"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-brand rounded-pill px-5 py-2 fw-medium text-white shadow-sm">
+                            <i class="fa-solid fa-floppy-disk me-2"></i>Confirmar reserva
+                        </button>
+                    </div>
+
+                </form>
+            </div>
         </div>
-<!--        <div class="mb-3">-->
-<!--            <label class="form-label" for="numPeople">Número comensales</label>-->
-<!--            <input type="number" id="numPeople" th:field="*{numPeople}" class="form-control"-->
-<!--                   min="1" max="30" required>-->
-<!--        </div>-->
-<!--        <div class="mb-3">-->
-<!--            <label class="form-label" for="userSuggestions">Observaciones/Alergias/Comentarios</label>-->
-<!--            <textarea id="userSuggestions" class="form-control" th:field="*{userSuggestions}"-->
-<!--                      rows="3" maxlength="500"></textarea>-->
-<!--        </div>-->
-        <button type="submit" class="btn btn-success">
-            <i class="fa-solid fa-floppy-disk"></i> Guardar
-        </button>
-        <a th:href="@{/restaurants}" class="btn btn-secondary">Cancelar</a>
-    </form>
+    </div>
 </main>
+
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>
+<script>
+    // Calcula noches y precio total a partir de las fechas y del precio por noche.
+    function calcularDiferencia(idInicio, idFin) {
+        try {
+            const elInicio = document.getElementById(idInicio);
+            const elFin = document.getElementById(idFin);
+            if (!elInicio || !elFin) return;
+
+            const fechaInicio = elInicio.value;
+            const fechaFin = elFin.value;
+            const diasInput = document.getElementById("diasDiferencia");
+            const totalInput = document.getElementById("totalPrice");
+            const precioNoche = parseFloat(document.getElementById("priceNight").value);
+
+            if (!fechaInicio || !fechaFin) {
+                diasInput.value = "";
+                totalInput.value = "";
+                return;
+            }
+
+            const inicio = new Date(fechaInicio);
+            const fin = new Date(fechaFin);
+
+            if (isNaN(inicio) || isNaN(fin)) {
+                return;
+            }
+
+            const diffMs = fin - inicio;
+
+            if (diffMs < 0) {
+                diasInput.value = "";
+                totalInput.value = "";
+                return;
+            }
+
+            const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            diasInput.value = diffDias;
+
+            if (!isNaN(precioNoche)) {
+                totalInput.value = (diffDias * precioNoche).toFixed(2);
+            }
+        } catch (error) {
+            console.error("Error calculando reserva:", error);
+        }
+    }
+    
+    // Ejecutar cálculo al cargar
+    calcularDiferencia('estimatedCheckin', 'estimatedCheckout');
+</script>
 </body>
 </html>

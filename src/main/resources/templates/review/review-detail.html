@@ -42,8 +42,8 @@
                             </div>
                             <div>
                                 <div th:if="${review.user != null}">
-                                    <a th:href="@{/users/{id}(id=${review.user.id})}" class="fw-bold text-dark text-decoration-none fs-5 d-block" 
-                                       th:text="${review.user.firstName != null and review.user.lastName != null ? review.user.firstName + ' ' + review.user.lastName : review.user.username}">Usuario</a>
+                                    <a th:href="@{/users/{id}(id=${review.user.id})}" class="fw-bold text-dark text-decoration-none fs-5 d-block text-hover-brand" 
+                                       th:text="${#strings.isEmpty(review.user.firstName) ? review.user.username : review.user.firstName + ' ' + review.user.lastName}">Usuario</a>
                                 </div>
                                 <div th:unless="${review.user != null}">
                                     <span class="fw-bold text-dark fs-5 mb-0 d-block">Usuario anónimo</span>
@@ -80,26 +80,46 @@
             </div>
         </div>
 
-        <a class="text-decoration-none text-dark d-block d-block col-lg-4" th:if="${review.house != null}" th:href="@{/houses/{id}(id=${review.house.id})}">
-            <!-- Previsualización de la Casa -->
-            <div class="card border-0 shadow-sm rounded-4 property-card d-flex flex-column mb-auto">
-                <div>
-                    <img th:src="@{'/images/' + ${review.house.imageUrl}}" class="card-img-top rounded-top-4" style="height: 180px; object-fit: cover;" alt="House Image">
-                </div>
-                <div class="card-body p-4 d-flex flex-column">
-                    <div class="d-flex align-items-center text-muted small mb-2">
-                        <i class="fa-solid fa-location-dot me-1"></i>
-                        <span th:text="${review.house.location} + ', ' + ${review.house.province}">Ubicación</span>
-                    </div>
-                    <h5 class="fw-bold mb-0" th:text="${review.house.title}">Nombre de la Casa</h5>
-                    <p class="card-text text-muted small text-truncate-2 mb-3" th:text="${review.house.description}">Descripción de la casa.</p>
-                    
-                    <div class="mt-auto text-end">
-                        <span class="fw-bold text-dark fs-5" th:text="${review.house.pricePerNight} + ' €'"></span> <span class="text-muted small">/ noche</span>
+        <!-- Columna Aside (Detalles del Alojamiento Reservado) -->
+        <aside class="col-lg-4" th:if="${review.house != null}">
+            <div class="position-sticky" style="top: 2rem;">
+                <h4 class="h5 text-muted mb-3 fw-bold text-uppercase letter-spacing-sm">Alojamiento valorado</h4>
+                
+                <!-- Tarjeta del Alojamiento (estilo house-list) -->
+                <div class="card border shadow-sm rounded-4 property-card position-relative d-flex flex-column bg-white">
+                    <a th:href="@{/houses/{id}(id=${review.house.id})}" class="text-decoration-none d-block">
+                        <img th:src="@{'/images/' + ${review.house.imageUrl}}" class="card-img-top rounded-top-4"
+                             alt="Imagen del alojamiento" style="height: 200px; object-fit: cover;">
+                    </a>
+                    <div class="card-body p-4 d-flex flex-column">
+                        <a th:href="@{/houses/{id}(id=${review.house.id})}" class="text-decoration-none text-dark mb-2 stretched-link">
+                            <h5 class="fw-bold text-dark mb-2" th:text="${review.house.title}">Nombre de la Casa</h5>
+                        </a>
+
+                        <!-- Specs info -->
+                        <div class="text-muted small mb-2 d-flex align-items-center flex-wrap gap-1">
+                            <span class="text-nowrap"><i class="fa-solid fa-location-dot me-1"></i><span th:text="${review.house.province}">Provincia</span></span>
+                            <span class="text-muted mx-1">•</span>
+                            <span class="text-nowrap"><span th:text="${review.house.houseType != null ? review.house.houseType.label : 'Alojamiento'}">Tipo</span></span>
+                        </div>
+                        
+                        <!-- Guest capacity -->
+                        <div th:if="${review.house.maxGuests != null}" class="text-muted small mb-3 d-flex align-items-center">
+                            <i class="fa-solid fa-user-group me-2 text-secondary"></i>
+                            <span>Hasta <span class="fw-semibold text-dark" th:text="${review.house.maxGuests}">2</span> <span th:text="${review.house.maxGuests == 1} ? 'huésped' : 'huéspedes'">huéspedes</span></span>
+                        </div>
+
+                        <!-- Price summary line -->
+                        <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold text-dark fs-5 mb-0" th:text="${review.house.pricePerNight} + ' €'">0 €</span>
+                                <span class="text-muted small ms-1 mb-0">/ noche</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </a>
+        </aside>
     </div>
 
     <!-- Volver -->
