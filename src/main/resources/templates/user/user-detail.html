@@ -1,54 +1,152 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<header th:replace="~{layout/head :: head('Detalle Usuario')}"></header>
+<head th:replace="~{layout/head :: head('Detalle de Usuario')}"></head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
 
-<main class="container flex-grow-1 my-4">
+<main class="container flex-grow-1 mb-5">
 
-    <h1 class="mb-3">
-        <i class="fa-solid fa-user text-primary me-2"></i>
-        <span th:text="${'Usuario: ' + user.username}"></span>
-    </h1>
+  <!-- Enlace de regreso -->
+  <div class="mt-4 mb-3">
+    <a th:href="@{/panel-control/{id}(id=${#authentication.principal.id})}" class="text-decoration-none text-muted d-inline-flex align-items-center hover-brand-transition">
+      <i class="fa-solid fa-arrow-left me-2"></i> Volver al panel de control
+    </a>
+  </div>
 
-    <div class="card shadow-sm mb-4">
-
-        <div class="card-body">
-            <!--
-            <div class="text-center mb-3">
-                <img th:if="${user.imageUrl != null}" th:src="${user.imageUrl}"
-                     class="rounded-circle object-fit-cover"
-                     width="150" height="150" alt="Foto perfil">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="custom-form-card shadow-sm">
+        
+        <!-- Cabecera de la información -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 border-bottom pb-3">
+          <div>
+            <h4 class="fw-bold text-dark mb-1">
+              <i class="fa-solid fa-address-card text-brand me-2"></i>Información de Perfil
+              <!-- Badge de ADMINISTRADOR (solo si es ADMIN) -->
+              <span th:if="${user.role.name() == 'ROLE_ADMIN'}" 
+                    class="badge bg-danger text-white rounded-pill ms-2 font-monospace fs-6 px-3 text-uppercase align-middle">
+                ADMINISTRADOR
+              </span>
+            </h4>
+            
+            <!-- Estado de cuenta colocado justo debajo del título -->
+            <div class="mt-2">
+              <span class="badge rounded-pill px-3 py-1.5 fw-semibold"
+                    th:classappend="${user.active ? 'bg-success bg-opacity-10 text-success' : 'bg-danger bg-opacity-10 text-danger'}"
+                    th:text="${user.active ? 'Cuenta Activa' : 'Cuenta Inactiva'}">
+                Estado
+              </span>
             </div>
-            -->
-            <dl class="row mb-0">
-                <dt class="col-sm-3">ID</dt>
-                <dd class="col-sm-9" th:text="${user.id}"></dd>
-                <dt class="col-sm-3">Username</dt>
-                <dd class="col-sm-9" th:text="${user.username}"></dd>
-                <dt class="col-sm-3">Email</dt>
-                <dd class="col-sm-9" th:text="${user.email}"></dd>
-                <dt class="col-sm-3">Rol</dt>
-                <dd class="col-sm-9" th:text="${user.role}"></dd>
-            </dl>
-        </div>
-        <div class="card-footer text-end">
-            <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-sm btn-outline-success">
-                <i class="fa-solid fa-user-pen me-1"></i> Editar
-            </a>
-            <!-- si el user.id es igual a authorize no lo muestra -->
-
-            <a sec:authorize="hasRole('ADMIN')" th:if="${user.id != #authentication.principal.id}" th:href="@{/users/toggle/{id}(id=${user.id})}" class="btn btn-sm" th:classappend="${user.active} ? 'btn-outline-danger' : 'btn-outline-secondary'">
-                <i class="fa-solid fa-trash me-1"></i> <span th:text="${user.active} ? 'Desactivar' : 'Activar'"></span>
-            </a>
+          </div>
         </div>
 
+        <div class="row g-3 mb-4">
+          <!-- ID (Solo ADMIN) -->
+          <div class="col-sm-6" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+            <label class="text-muted small fw-semibold text-uppercase d-block mb-1">ID de Usuario</label>
+            <div class="fw-semibold text-dark font-monospace" th:text="${user.id}">123</div>
+          </div>
+
+          <!-- Username -->
+          <div class="col-sm-6">
+            <label class="text-muted small fw-semibold text-uppercase d-block mb-1">Nombre de Usuario</label>
+            <div class="fw-semibold text-dark" th:text="${user.username}">username</div>
+          </div>
+
+          <!-- Nombre -->
+          <div class="col-sm-6">
+            <label class="text-muted small fw-semibold text-uppercase d-block mb-1">Nombre</label>
+            <div class="fw-semibold text-dark" th:text="${user.firstName != null and !user.firstName.isEmpty() ? user.firstName : '—'}">Juan</div>
+          </div>
+
+          <!-- Apellidos -->
+          <div class="col-sm-6">
+            <label class="text-muted small fw-semibold text-uppercase d-block mb-1">Apellidos</label>
+            <div class="fw-semibold text-dark" th:text="${user.lastName != null and !user.lastName.isEmpty() ? user.lastName : '—'}">García</div>
+          </div>
+
+          <!-- Correo Electrónico (Sensible - Solo ADMIN o propio) -->
+          <div class="col-12" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.principal.id == user.id}">
+            <label class="text-muted small fw-semibold text-uppercase d-block mb-1">Correo Electrónico</label>
+            <div class="fw-semibold text-dark">
+              <i class="fa-regular fa-envelope me-1 text-muted"></i>
+              <span th:text="${user.email}">juan@correo.com</span>
+            </div>
+          </div>
+
+          <!-- Token de Recomendación (Siempre visible) -->
+          <div class="col-12">
+            <label class="text-muted small fw-semibold text-uppercase d-block mb-1">Token de Recomendación</label>
+            <div class="input-group input-group-sm mt-1" style="max-width: 380px;">
+              <span class="input-group-text bg-light border-end-0" style="border: 1px solid #d3cfc7;"><i class="fa-solid fa-key text-muted"></i></span>
+              <input type="text" class="form-control bg-light border-start-0 font-monospace small"
+                     th:value="${user.tokenforRecommended}" id="tokenInput" readonly style="border: 1px solid #d3cfc7; border-left: none;">
+              <button class="btn btn-outline-brand fw-semibold" type="button" onclick="copyToken()" id="copyBtn"
+                      title="Copiar Token">
+                  <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="d-flex justify-content-end gap-3 pt-3 border-top w-100">
+          <!-- Botón Panel de Control (Solo visible para ADMIN) -->
+          <a sec:authorize="hasRole('ADMIN')"
+             th:href="@{/panel-control/{id}(id=${user.id})}" 
+             class="btn btn-outline-dark rounded-pill px-4 fw-medium">
+              <i class="fa-solid fa-gauge-high me-2"></i>Ver panel de control
+          </a>
+
+          <!-- Botón Editar (Solo ADMIN o propio) -->
+          <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') or #authentication.principal.id == user.id}"
+             th:href="@{/users/edit/{id}(id=${user.id})}" 
+             class="btn btn-outline-brand rounded-pill px-4 fw-medium">
+              <i class="fa-solid fa-user-pen me-2"></i>Editar perfil
+          </a>
+          
+          <!-- Activar/Desactivar cuenta (Solo ADMIN y que no sea él mismo) -->
+          <th:block sec:authorize="hasRole('ADMIN')" th:if="${user.id != #authentication.principal.id}">
+            <a th:if="${user.active}" 
+               th:href="@{/users/toggle/{id}(id=${user.id})}" 
+               class="btn btn-outline-danger rounded-pill px-4 fw-medium"
+               onclick="return confirm('¿Seguro que deseas desactivar esta cuenta de usuario?');">
+                <i class="fa-solid fa-ban me-2"></i>Desactivar cuenta
+            </a>
+            <a th:unless="${user.active}" 
+               th:href="@{/users/toggle/{id}(id=${user.id})}" 
+               class="btn btn-outline-success rounded-pill px-4 fw-medium"
+               onclick="return confirm('¿Seguro que deseas activar esta cuenta de usuario?');">
+                <i class="fa-solid fa-check me-2"></i>Activar cuenta
+            </a>
+          </th:block>
+        </div>
+
+      </div>
     </div>
+  </div>
+
 </main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>
+
+<script>
+  function copyToken() {
+      var copyText = document.getElementById("tokenInput");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(copyText.value).then(function () {
+          var btn = document.getElementById("copyBtn");
+          var originalHTML = btn.innerHTML;
+          btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+          setTimeout(function () {
+              btn.innerHTML = originalHTML;
+          }, 2000);
+      });
+  }
+</script>
 
 </body>
 </html>

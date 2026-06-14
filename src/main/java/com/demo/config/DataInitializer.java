@@ -89,7 +89,7 @@ public class DataInitializer implements CommandLineRunner {
 
         // Guests
         User guest_test_booking = new User();
-        guest_test_booking.setUsername("Guest prueba");
+        guest_test_booking.setUsername("guest_prueba");
         guest_test_booking.setFirstName("Guest 1");
         guest_test_booking.setLastName("Guest 1");
         guest_test_booking.setEmail("guest1@test1.com");
@@ -98,7 +98,7 @@ public class DataInitializer implements CommandLineRunner {
         userRepository.save(guest_test_booking);
 
         User guest_test_booking_1 = new User();
-        guest_test_booking_1.setUsername("Guest prueba 2");
+        guest_test_booking_1.setUsername("guest_prueba_2");
         guest_test_booking_1.setFirstName("Guest 2");
         guest_test_booking_1.setLastName("Guest 2");
         guest_test_booking_1.setEmail("guest2@test1.com");
@@ -108,7 +108,7 @@ public class DataInitializer implements CommandLineRunner {
 
         // Host
         User host_test_booking = new User();
-        host_test_booking.setUsername("Host prueba");
+        host_test_booking.setUsername("host_prueba");
         host_test_booking.setFirstName("Host 1");
         host_test_booking.setLastName("Host 1");
         host_test_booking.setEmail("host1@test1.com");
@@ -280,19 +280,19 @@ public class DataInitializer implements CommandLineRunner {
         guest5_booking.setRole(Role.ROLE_USER);
         userRepository.save(guest5_booking);
 
-        // Crear usuarios (guest)
+        // Crear usuarios (anfitriones)
         User host1_booking = new User();
         host1_booking.setUsername("luis6");
         host1_booking.setEmail("luis@test6.com");
         host1_booking.setPassword(passwordEncoder.encode("luis6"));
-        host1_booking.setRole(Role.ROLE_USER);
+        host1_booking.setRole(Role.ROLE_ADMIN);
         userRepository.save(host1_booking);
 
         User host2_booking = new User();
         host2_booking.setUsername("alba7");
         host2_booking.setEmail("alba@test7.com");
         host2_booking.setPassword(passwordEncoder.encode("alba7"));
-        host2_booking.setRole(Role.ROLE_USER);
+        host2_booking.setRole(Role.ROLE_ADMIN);
         host2_booking.setTokenforRecommended(userService.generateRecommendedToken());
         userRepository.save(host2_booking);
 
@@ -300,21 +300,21 @@ public class DataInitializer implements CommandLineRunner {
         host3_booking.setUsername("jose8");
         host3_booking.setEmail("jose@test.8com");
         host3_booking.setPassword(passwordEncoder.encode("jose8"));
-        host3_booking.setRole(Role.ROLE_USER);
+        host3_booking.setRole(Role.ROLE_ADMIN);
         userRepository.save(host3_booking);
 
         User host4_booking = new User();
         host4_booking.setUsername("carlos9");
         host4_booking.setEmail("carlos@test9.com");
         host4_booking.setPassword(passwordEncoder.encode("carlos9"));
-        host4_booking.setRole(Role.ROLE_USER);
+        host4_booking.setRole(Role.ROLE_ADMIN);
         userRepository.save(host4_booking);
 
         User host5_booking = new User();
         host5_booking.setUsername("pedro10");
         host5_booking.setEmail("pedro@test10.com");
         host5_booking.setPassword(passwordEncoder.encode("pedro10"));
-        host5_booking.setRole(Role.ROLE_USER);
+        host5_booking.setRole(Role.ROLE_ADMIN);
         userRepository.save(host5_booking);
 
         // Crear casas con host asignados

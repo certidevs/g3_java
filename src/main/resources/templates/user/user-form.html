@@ -1,71 +1,117 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<header th:replace="~{layout/head :: head('Formulario usuario')}"></header>
+<head th:replace="~{layout/head :: head('Formulario de Usuario')}"></head>
+
 <body class="d-flex flex-column min-vh-100 bg-light">
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
-<main class="container flex-grow-1 my-4">
 
-  <h1 class="mb-0">
-    <i class="fa-solid fa-user text-primary me-2"></i>
-    <span th:text="${edit} ? 'Editar usuario' : 'Crear usuario'"></span>
-  </h1>
+<main class="container flex-grow-1 mb-5">
+  
+  <!-- Enlace de regreso -->
+  <div class="mt-4 mb-3">
+    <a th:href="@{/profile}" class="text-decoration-none text-muted d-inline-flex align-items-center hover-brand-transition">
+      <i class="fa-solid fa-arrow-left me-2"></i> Volver al perfil
+    </a>
+  </div>
 
-  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <div class="custom-form-card shadow-sm">
+        
+        <!-- Cabecera del formulario -->
+        <div class="custom-form-header">
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-brand bg-opacity-10 text-brand rounded-4 p-3 d-inline-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
+              <i class="fa-solid fa-user-gear fs-4"></i>
+            </div>
+            <div>
+              <h1 th:text="${edit} ? 'Editar Perfil de Usuario' : 'Crear Nuevo Usuario'">Formulario de usuario</h1>
+              <p>Actualice los datos personales y de acceso del usuario.</p>
+            </div>
+          </div>
+        </div>
 
-  <form th:action="@{/users}" th:object="${user}" method="post" enctype="multipart/form-data">
-    <input type="hidden" th:field="*{id}">
-    <div class="mb-3">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="username"
-             placeholder="pepe666" required th:field="*{username}" min="3" maxlength="100" autofocus>
+        <div th:if="${error}" class="alert alert-danger mb-4 rounded-3" th:text="${error}"></div>
+
+        <!-- Formulario -->
+        <form th:action="@{/users}" th:object="${user}" method="post" class="row g-4" enctype="multipart/form-data">
+          <input type="hidden" th:field="*{id}">
+
+          <!-- Nombre personal -->
+          <div class="col-md-6">
+            <label for="firstName" class="form-label-custom">Nombre</label>
+            <input type="text" class="form-control" id="firstName"
+                   placeholder="Ej. Juan" th:field="*{firstName}" maxlength="100">
+          </div>
+
+          <!-- Apellidos -->
+          <div class="col-md-6">
+            <label for="lastName" class="form-label-custom">Apellidos</label>
+            <input type="text" class="form-control" id="lastName"
+                   placeholder="Ej. García Pérez" th:field="*{lastName}" maxlength="100">
+          </div>
+
+          <!-- Nombre de usuario -->
+          <div class="col-md-6">
+            <label for="username" class="form-label-custom">Nombre de usuario (Username)</label>
+            <input type="text" class="form-control" id="username"
+                   placeholder="Ej. JuanGarcia" required th:field="*{username}" min="3" maxlength="100" autofocus>
+          </div>
+
+          <!-- Email -->
+          <div class="col-md-6">
+            <label for="email" class="form-label-custom">Dirección de correo</label>
+            <input type="email" class="form-control" id="email"
+                   placeholder="Ej. juan@correo.com" required th:field="*{email}">
+          </div>
+
+          <!-- Contraseña -->
+          <div class="col-12">
+            <label for="password" class="form-label-custom">Contraseña</label>
+            <input type="password" th:field="*{password}"
+                   class="form-control" id="password"
+                   minlength="4" th:required="${!edit}">
+            <div class="form-text text-muted mt-2" th:if="${edit}">
+              <i class="fa-solid fa-circle-info me-1"></i> Deje este campo vacío para conservar la contraseña actual.
+            </div>
+          </div>
+
+          <!-- Rol (Solo Admin, e impidiendo editarse a sí mismo) -->
+          <div class="col-12" sec:authorize="hasRole('ADMIN')" th:if="${#authentication.name != user.username}">
+            <label for="role" class="form-label-custom">Rol de usuario (Permisos)</label>
+            <select class="form-select" id="role" th:field="*{role}">
+              <option th:each="role : ${roles}"
+                      th:value="${role}"
+                      th:text="${role.name()}">
+              </option>
+            </select>
+          </div>
+
+          <!-- Activo (Solo modo edición, e impidiendo desactivarse a sí mismo) -->
+          <div class="col-12" th:if="${edit and #authentication.name != user.username}">
+            <div class="form-check form-switch p-0 ps-5 mt-2">
+              <input type="checkbox" class="form-check-input" id="active" th:field="*{active}" style="width: 2.5em; height: 1.25em; margin-left: -2.5em; cursor: pointer;">
+              <label class="form-check-label fw-semibold text-secondary ms-2" for="active" style="cursor: pointer;">Cuenta de usuario activa</label>
+            </div>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="col-12 d-flex justify-content-end gap-3 mt-4">
+            <a th:href="@{/profile}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-medium">
+              <i class="fa-solid fa-xmark me-2"></i>Cancelar
+            </a>
+            <button type="submit" class="btn btn-brand rounded-pill px-5 py-2 fw-medium text-white shadow-sm">
+              <i class="fa-regular fa-floppy-disk me-2"></i>Guardar cambios
+            </button>
+          </div>
+
+        </form>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="email">Email</label>
-      <input type="email" class="form-control" id="email"
-             placeholder="pepe@gmail.com" required th:field="*{email}">
-    </div>
-    <div class="mb-3">
-      <label for="password">Contraseña</label>
-      <input type="password" th:field="*{password}"
-             class="form-control" id="password"
-             minlength="4" th:required="${!edit}">
-      <small th:if="${edit}" class="text-muted">Deja este campo vacío para conservar la misma contraseña.</small>
-    </div>
-    <div class="mb-3" sec:authorize="hasRole('ADMIN')">
-      <label for="role" class="form-label">Rol (Permisos)</label>
-      <select class="form-select" id="role" th:field="*{role}">
-        <option
-                th:each="role : ${roles}"
-                th:value="${role}"
-                th:text="${role.name()}">
-        </option>
-      </select>
-    </div>
-    <div class="mb-3 form-check" th:if="${edit}">
-      <input type="checkbox" class="form-check-input" id="active" th:field="*{active}">
-      <label class="form-check-label" for="active">Activo</label>
-    </div>
-
-    <!--
-    <div class="mb-3">
-      <label for="imageFile" class="form-label">Imagen</label>
-      <input type="hidden" th:field="*{imageUrl}">
-
-      <input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*">
-
-      <img id="preview" alt="Previsualización" class="mt-2 rounded"
-           style="max-height:150px; display:none"
-           th:src="${user != null and user.imageUrl != null ? user.imageUrl : null}">
-    </div>
-    -->
-
-    <button type="submit" class="btn btn-success">
-      <i class="fa-solid fa-floppy-disk"></i> Guardar
-    </button>
-    <a th:href="@{/profile}" class="btn btn-secondary">Cancelar</a>
-  </form>
+  </div>
 
 </main>
+
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>
 </body>

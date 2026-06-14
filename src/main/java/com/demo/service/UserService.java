@@ -106,7 +106,13 @@ public class UserService implements UserDetailsService {
         userDB.setFirstName(userForm.getFirstName());
         userDB.setLastName(userForm.getLastName());
         if (actor.getRole() == Role.ROLE_ADMIN) {
-            userDB.setRole(userForm.getRole());
+            // Un administrador no puede cambiarse el rol ni desactivarse a sí mismo
+            if (!actor.getUsername().equals(userDB.getUsername())) {
+                userDB.setRole(userForm.getRole());
+                if (userForm.getActive() != null) {
+                    userDB.setActive(userForm.getActive());
+                }
+            }
         } else {
             userDB.setRole(Role.ROLE_USER);
         }
