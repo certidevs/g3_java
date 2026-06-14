@@ -44,6 +44,38 @@ public class HouseService {
         return houseRepository.save(house);
     }
 
+    public House saveOrUpdate(House house, User host) {
+        boolean isNew = (house.getId() == null);
+        if (isNew) {
+            if (host != null) {
+                house.setHost(host);
+            }
+            if (house.getHouseType() == null) {
+                house.setHouseType(HouseType.CASA);
+            }
+            house.setActive(true);
+            house.setReserve(StatusReserva.DISPONIBLE);
+            house.setTimeRecommended(java.time.LocalDateTime.now());
+            return houseRepository.save(house);
+        } else {
+            House existingHouse = houseRepository.findById(house.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Alojamiento no encontrado con id: " + house.getId()));
+
+            existingHouse.setTitle(house.getTitle());
+            existingHouse.setDescription(house.getDescription());
+            existingHouse.setPricePerNight(house.getPricePerNight());
+            existingHouse.setLocation(house.getLocation());
+            existingHouse.setProvince(house.getProvince());
+            existingHouse.setMaxGuests(house.getMaxGuests());
+            existingHouse.setHouseType(house.getHouseType());
+            if (house.getImageUrl() != null && !house.getImageUrl().isEmpty()) {
+                existingHouse.setImageUrl(house.getImageUrl());
+            }
+
+            return houseRepository.save(existingHouse);
+        }
+    }
+
     public List<HouseStatsDto> getHousesForCatalog(
             StatusReserva reserve,
             Double pricePerNight,

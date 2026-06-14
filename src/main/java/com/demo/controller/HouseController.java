@@ -6,6 +6,7 @@ import com.demo.model.enums.HouseType;
 import com.demo.model.enums.Province;
 import com.demo.model.enums.Role;
 import com.demo.model.enums.StatusReserva;
+import com.demo.service.FileService;
 import com.demo.service.HouseService;
 import com.demo.service.ReviewService;
 import lombok.AllArgsConstructor;
@@ -16,10 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Controller
@@ -28,6 +25,7 @@ public class HouseController {
 
     private final HouseService houseService;
     private final ReviewService reviewService;
+    private final FileService fileService;
 
     @GetMapping("/houses")
     public String houseList(Model model,
@@ -59,23 +57,11 @@ public class HouseController {
         model.addAttribute("selectedActive", active);
         model.addAttribute("selectedFavoritesOnly", favoritesOnly);
 
-        /*
-        Map<Long, Double> houseRatings = new HashMap<>();
-        for (House h : houseStatus) {
-            houseRatings.put(h.getId(), reviewService.getAverageRating(h.getId()));
-        }
-        model.addAttribute("houseRatings", houseRatings);
-        // Use housesStats
-        model.addAttribute("houseRatings",
-                housesStats.stream().collect(Collectors.toMap(HouseStats::id, HouseStats::averageRating))
-        );
-         */
-
         return "house/house-list";
     }
 
     @GetMapping("/houses/deactivate/{id}")
-    public String houseDeactivate(@PathVariable Long id, Model model) {
+    public String houseDeactivate(@PathVariable Long id) {
         Optional<House> houseOptional = houseService.findById(id);
 
         if (houseOptional.isPresent()) {
@@ -121,46 +107,54 @@ public class HouseController {
 
     @GetMapping("houses/new")
     public String newHouses(Model model) {
-        model.addAttribute("house", new House());
+        if (!model.containsAttribute("house")) {
+            model.addAttribute("house", new House());
+        }
         model.addAttribute("provinces", HouseService.PROVINCES);
+        model.addAttribute("houseTypes", HouseType.values());
         return "house/house-form";
     }
 
     @GetMapping("houses/edit/{id}")
     public String editHouse(@PathVariable Long id, Model model) {
-        model.addAttribute("house", houseService.findById(id).orElseThrow());
+        if (!model.containsAttribute("house")) {
+            model.addAttribute("house", houseService.findById(id).orElseThrow());
+        }
         model.addAttribute("provinces", HouseService.PROVINCES);
+        model.addAttribute("houseTypes", HouseType.values());
         return "house/house-form";
     }
-
 
     @PostMapping("/houses")
     public String createHouse(@ModelAttribute House house,
                               @RequestParam("imageFile") MultipartFile imageFile,
-                              RedirectAttributes redirectAttributes) throws IOException {
+                              @AuthenticationPrincipal User user,
+                              RedirectAttributes redirectAttributes) {
+        boolean isNew = (house.getId() == null);
+        String currentImageUrl = house.getImageUrl();
 
-        long maxSize = 5 * 1024 * 1024L; // 5 MB
-
-        if (!imageFile.isEmpty()) {
-            if (imageFile.getSize() > maxSize) {
-                redirectAttributes.addFlashAttribute("error", "El archivo es demasiado grande. Máximo 5 MB.");
-                return "redirect:/houses/new";
-            }
-
-            String fileName = imageFile.getOriginalFilename();
-            if (fileName == null || !fileName.toLowerCase().endsWith(".png")) {
-                redirectAttributes.addFlashAttribute("error", "Solo se permiten archivos PNG.");
-                return "redirect:/houses/new";
-            }
-
-            Path path = Paths.get(System.getProperty("user.dir"), "uploads", fileName);
-            Files.createDirectories(path.getParent());
-            Files.write(path, imageFile.getBytes());
-            house.setImageUrl(fileName);
+        if (isNew && imageFile.isEmpty() && (currentImageUrl == null || currentImageUrl.isEmpty())) {
+            redirectAttributes.addFlashAttribute("error", "Debe seleccionar una imagen de portada para el alojamiento.");
+            redirectAttributes.addFlashAttribute("house", house);
+            return isNew ? "redirect:/houses/new" : "redirect:/houses/edit/" + house.getId();
         }
 
-        houseService.save(house);
-        return "redirect:/houses/" + house.getId();
+        try {
+            if (!imageFile.isEmpty()) {
+                String filename = fileService.store(imageFile);
+                if (filename != null) {
+                    house.setImageUrl(filename);
+                }
+            }
+
+            House savedHouse = houseService.saveOrUpdate(house, user);
+            return "redirect:/houses/" + savedHouse.getId();
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            redirectAttributes.addFlashAttribute("house", house);
+            return isNew ? "redirect:/houses/new" : "redirect:/houses/edit/" + house.getId();
+        }
     }
 
 }
