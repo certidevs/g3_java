@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @AllArgsConstructor
 class UserController {
@@ -93,5 +95,12 @@ class UserController {
             }
             return "redirect:/users/edit/" + userForm.getId();
         }
+    }
+
+    @GetMapping("/agenda")
+    public String showAgenda(Model model, @RequestParam(required = false) String textfind) {
+        List<User> agenda = userService.getAgendaUsers(textfind);
+        model.addAttribute("agenda", agenda);
+        return "user/user-list";
     }
 }

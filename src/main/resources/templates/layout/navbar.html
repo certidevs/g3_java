@@ -2,9 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="es">
 <body>
 <nav th:fragment="navbar" class=" navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);">
+    <style>
+        .navbar-brand-hover {
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s ease;
+        }
+        .navbar-brand-hover:hover {
+            transform: scale(1.04);
+            filter: drop-shadow(0 0 6px rgba(241, 70, 29, 0.6));
+        }
+        .navbar-brand-hover span {
+            transition: color 0.2s ease;
+        }
+        .navbar-brand-hover:hover span {
+            color: var(--brand-color, #f1461d) !important;
+        }
+    </style>
     <div class="container-xxl">
         <!-- Brand -->
-        <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+        <a class="navbar-brand d-flex align-items-center navbar-brand-hover" th:href="@{/}">
             <th:block th:replace="~{layout/logo :: logo(color='white', titlePosition='right')}"></th:block>
         </a>
         
@@ -16,11 +31,6 @@
         <!-- Navbar Links -->
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-medium align-items-lg-center">
-                <li class="nav-item">
-                    <a class="nav-link px-3" th:href="@{/}">
-                        <i class="fa-solid fa-house me-1"></i> Inicio
-                    </a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link px-3 d-flex align-items-center" th:href="@{/houses}">
                         <span><i class="fa-solid fa-house-chimney me-1"></i> Casas</span>
@@ -44,6 +54,13 @@
                         <i class="fa-solid fa-gauge-high me-1"></i>
                         <span sec:authorize="hasRole('ADMIN')">Panel de Control</span>
                         <span sec:authorize="hasRole('USER')">Panel de Huésped</span>
+                    </a>
+                </li>
+
+                <!-- Acceso directo a Usuarios para el Admin -->
+                <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                    <a class="nav-link px-3" th:href="@{/agenda}">
+                        <i class="fa-solid fa-users me-1"></i> Usuarios
                     </a>
                 </li>
 

@@ -158,13 +158,29 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> getAgendaUsers(String textFind) {
+        List<User> allUsers = userRepository.userallOrderFirstName();
         if (textFind == null || textFind.isBlank()) {
-            return userRepository.userallOrderFirstName();
+            return allUsers;
         }
-        return userRepository.userallOrderFirstNameFilterText(textFind);
+        String query = normalize(textFind);
+        return allUsers.stream()
+                .filter(u -> normalize(u.getUsername()).contains(query)
+                        || normalize(u.getFirstName()).contains(query)
+                        || normalize(u.getLastName()).contains(query))
+                .toList();
     }
+
     public List<User> getAgendaUsers() {
         return getAgendaUsers(null);
+    }
+
+    private String normalize(String str) {
+        if (str == null) {
+            return "";
+        }
+        return java.text.Normalizer.normalize(str, java.text.Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase();
     }
 
     public Optional<User> resolveUserByTokenOrEmail(String token, String email) {

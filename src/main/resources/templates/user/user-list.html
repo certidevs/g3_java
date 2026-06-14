@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout/head :: head('Lista de Usuarios')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<main class="container flex-grow-1 mb-5">
+
+  <style>
+    .search-wrapper input:focus {
+        background-color: #ffffff !important;
+        border-color: var(--brand-color, #f1461d) !important;
+        box-shadow: 0 0 0 4px rgba(241, 70, 29, 0.12) !important;
+    }
+  </style>
+
+  <!-- Enlace de regreso -->
+  <div class="mt-4 mb-3">
+    <a href="#" onclick="volverAtras(); return false;" class="text-decoration-none text-muted d-inline-flex align-items-center hover-brand-transition">
+      <i class="fa-solid fa-arrow-left me-2"></i> Volver
+    </a>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-11">
+      <div class="custom-form-card shadow-sm">
+        
+        <!-- Cabecera de la vista -->
+        <div class="custom-form-header">
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-brand bg-opacity-10 text-brand rounded-4 p-3 d-inline-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
+              <i th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="fa-solid fa-users fs-4"></i>
+              <i th:unless="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="fa-solid fa-address-book fs-4"></i>
+            </div>
+            <div>
+              <h1 th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Gestión de Usuarios</h1>
+              <h1 th:unless="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Agenda de Contactos</h1>
+              <p th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Administre los accesos, roles y perfiles del sistema.</p>
+              <p th:unless="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Busque y copie tokens de recomendación de otros huéspedes.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Búsqueda avanzada de usuarios (Pill de ancho completo y más bajo) -->
+        <div class="mb-5">
+          <form th:action="@{/agenda}" method="get" class="w-100">
+            <div class="position-relative search-wrapper" style="height: 44px;">
+              <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+              <input type="text" autofocus name="textfind" class="form-control rounded-pill"
+                     placeholder="Buscar por nombre, apellido o usuario..." th:value="${param.textfind}" 
+                     style="height: 44px; border: 1.5px solid #d3cfc7; background-color: #faf9f6; box-shadow: 0 2px 8px rgba(0,0,0,0.02); padding-left: 2.75rem !important; padding-right: 8.5rem !important;">
+              <div class="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-2">
+                <button type="submit" class="btn btn-brand btn-sm rounded-pill px-4 fw-semibold" style="height: 30px; line-height: 1;">Buscar</button>
+                <a th:href="@{/agenda}" class="btn btn-outline-secondary btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 30px; height: 30px;" title="Limpiar Búsqueda">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </a>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- TABLA PARA ADMINISTRADORES -->
+        <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="table-responsive">
+          <table class="table table-hover align-middle mb-0 w-100">
+            <thead class="table-light">
+              <tr>
+                <th class="px-4 py-3 text-muted fw-semibold small">Usuario</th>
+                <th class="py-3 text-muted fw-semibold small">Nombre Completo</th>
+                <th class="py-3 text-muted fw-semibold small">Correo Electrónico</th>
+                <th class="py-3 text-muted fw-semibold small">Estado</th>
+                <th class="py-3 text-muted fw-semibold small">Rol</th>
+                <th class="px-4 py-3 text-muted fw-semibold small text-end">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="u : ${agenda}" class="position-relative">
+                <td class="px-4 font-monospace fw-bold">
+                  <a th:href="@{/users/{id}(id=${u.id})}" class="stretched-link text-decoration-none text-dark" th:text="${u.username}">username</a>
+                </td>
+                <td th:text="${(u.firstName != null and !u.firstName.isEmpty()) or (u.lastName != null and !u.lastName.isEmpty()) ? (u.firstName ?: '') + ' ' + (u.lastName ?: '') : '—'}">Juan Pérez</td>
+                <td th:text="${u.email}">correo@correo.com</td>
+                <td>
+                  <span class="badge rounded-pill px-2.5 py-1 fw-semibold"
+                        th:classappend="${u.active ? 'bg-success bg-opacity-10 text-success' : 'bg-danger bg-opacity-10 text-danger'}"
+                        th:text="${u.active ? 'Activo' : 'Inactivo'}">
+                    Estado
+                  </span>
+                </td>
+                <td>
+                  <span class="badge rounded-pill px-2.5 py-1 text-uppercase font-monospace"
+                        th:classappend="${u.role.name() == 'ROLE_ADMIN' ? 'bg-danger text-white' : 'bg-secondary text-white'}"
+                        th:text="${u.role.name() == 'ROLE_ADMIN' ? 'Admin' : 'Huésped'}">
+                    ROL
+                  </span>
+                </td>
+                <td class="px-4 text-end position-relative" style="z-index: 2;">
+                  <div class="d-flex justify-content-end gap-2">
+                    <!-- Activar / Desactivar -->
+                    <th:block th:if="${u.id != #authentication.principal.id}">
+                      <a th:if="${u.active}" th:href="@{/users/toggle/{id}(id=${u.id})}" class="btn btn-sm btn-outline-danger rounded-circle d-inline-flex align-items-center justify-content-center" title="Desactivar" style="width: 32px; height: 32px;" onclick="return confirm('¿Seguro que deseas desactivar a este usuario?');">
+                        <i class="fa-solid fa-ban fs-7"></i>
+                      </a>
+                      <a th:unless="${u.active}" th:href="@{/users/toggle/{id}(id=${u.id})}" class="btn btn-sm btn-outline-secondary rounded-circle d-inline-flex align-items-center justify-content-center" title="Activar" style="width: 32px; height: 32px;" onclick="return confirm('¿Seguro que deseas activar a este usuario?');">
+                        <i class="fa-solid fa-check fs-7"></i>
+                      </a>
+                    </th:block>
+                    <!-- Ver Panel de Control -->
+                    <a th:href="@{/panel-control/{id}(id=${u.id})}" class="btn btn-sm btn-outline-dark rounded-circle d-inline-flex align-items-center justify-content-center" title="Panel de Control" style="width: 32px; height: 32px;">
+                      <i class="fa-solid fa-gauge-high fs-7"></i>
+                    </a>
+                    <!-- Editar Usuario -->
+                    <a th:href="@{/users/edit/{id}(id=${u.id})}" class="btn btn-sm btn-outline-success rounded-circle d-inline-flex align-items-center justify-content-center" title="Editar" style="width: 32px; height: 32px;">
+                      <i class="fa-solid fa-user-pen fs-7"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- TABLA PARA USUARIOS NORMALES (AGENDA) -->
+        <div th:unless="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="table-responsive">
+          <table class="table table-hover align-middle mb-0 w-100">
+            <thead class="table-light">
+              <tr>
+                <th class="px-4 py-3 text-muted fw-semibold small">Usuario</th>
+                <th class="py-3 text-muted fw-semibold small">Nombre Completo</th>
+                <th class="px-4 py-3 text-muted fw-semibold small text-end">Token de Recomendación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="contacto : ${agenda}" class="position-relative">
+                <td class="px-4 font-monospace fw-bold text-dark">
+                  <a th:href="@{/users/{id}(id=${contacto.id})}" class="stretched-link text-decoration-none text-dark" th:text="${contacto.username}">username</a>
+                </td>
+                <td th:text="${(contacto.firstName != null and !contacto.firstName.isEmpty()) or (contacto.lastName != null and !contacto.lastName.isEmpty()) ? (contacto.firstName ?: '') + ' ' + (contacto.lastName ?: '') : '—'}">Juan Pérez</td>
+                <td class="px-4 text-end position-relative" style="z-index: 2;">
+                  <div class="d-inline-flex justify-content-end w-100">
+                    <div class="input-group input-group-sm" style="max-width: 300px;">
+                      <span class="input-group-text bg-light border-end-0" style="border: 1px solid #d3cfc7;"><i class="fa-solid fa-key text-muted"></i></span>
+                      <input type="text" class="form-control bg-light border-start-0 font-monospace small"
+                             th:value="${contacto.tokenforRecommended}" th:id="'tokenInput-' + ${contacto.id}" readonly style="border: 1px solid #d3cfc7; border-left: none;">
+                      <button class="btn btn-outline-brand btn-sm" type="button" 
+                              th:data-token="${contacto.tokenforRecommended}"
+                              th:data-target-id="'tokenInput-' + ${contacto.id}"
+                              onclick="guardarytoast(this.dataset.token, this.dataset.targetId)"
+                              title="Copiar Token">
+                          <i class="fa-regular fa-copy"></i>
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura del Toast -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+    <div id="miToast" class="toast align-items-center bg-white border-0 shadow-lg rounded-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000" style="border-left: 4px solid var(--brand-color, #f1461d) !important;">
+      <div class="d-flex">
+        <div class="toast-body fw-semibold text-dark">
+          <i class="fa-solid fa-circle-check text-brand me-2"></i> Token copiado al portapapeles.
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+<script th:replace="~{layout/footer :: scripts}"></script>
+
+<script>
+  function volverAtras() {
+      if (window.history.length > 1) {
+          window.history.back();
+      } else {
+          window.location.href = '/';
+      }
+  }
+  function guardarytoast(token, targetId) {
+      if (targetId) {
+          var input = document.getElementById(targetId);
+          if (input) {
+              input.select();
+              input.setSelectionRange(0, 99999);
+          }
+      }
+      navigator.clipboard.writeText(token).then(function() {
+          var toastElement = document.getElementById('miToast');
+          var toast = new bootstrap.Toast(toastElement);
+          toast.show();
+      });
+  }
+</script>
+
+</body>
+</html>
