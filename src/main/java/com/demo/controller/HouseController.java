@@ -71,7 +71,21 @@ public class HouseController {
             houseService.save(house);
 
         }
-        return "redirect:/houses";
+        return "redirect:/houses#house-card-" + id;
+    }
+
+    @GetMapping("/houses/activate/{id}")
+    public String houseActivate(@PathVariable Long id) {
+        Optional<House> houseOptional = houseService.findById(id);
+
+        if (houseOptional.isPresent()) {
+            // casa sí existe
+            House house = houseOptional.get();
+            house.setActive(true);
+            houseService.save(house);
+
+        }
+        return "redirect:/houses#house-card-" + id;
     }
 
     // nuevo metodo para traer un solo restaurante por su id

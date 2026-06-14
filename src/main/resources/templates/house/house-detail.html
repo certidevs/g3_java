@@ -85,12 +85,16 @@
                             <a th:href="@{/houses/edit/{id}(id=${house.id})}" class="btn btn-outline-success flex-grow-1">
                                 <i class="fa-solid fa-pencil me-1"></i> Editar
                             </a>
-                            <a th:href="@{/houses/deactivate/{id}(id=${house.id})}" class="btn flex-grow-1"
-                               th:classappend="${house.active ? 'btn-outline-danger' : 'btn-outline-primary'}"
-                               onclick="return confirm('¿Seguro que quieres cambiar el estado de esta casa?');">
-                                <i class="fa-solid fa-ban me-1" th:if="${house.active}"></i>
-                                <i class="fa-solid fa-check me-1" th:unless="${house.active}"></i>
-                                <span th:text="${house.active ? 'Desactivar' : 'Activar'}"></span>
+
+                            <a th:if="${house.active}" th:href="@{/houses/deactivate/{id}(id=${house.id})}"
+                               class="btn btn-outline-danger flex-grow-1"
+                               onclick="return confirm('¿Seguro que quieres desactivar esta casa?');">
+                                <i class="fa-solid fa-ban me-1"></i> Desactivar
+                            </a>
+                            <a th:unless="${house.active}" th:href="@{/houses/activate/{id}(id=${house.id})}"
+                               class="btn btn-outline-primary flex-grow-1"
+                               onclick="return confirm('¿Seguro que quieres activar esta casa?');">
+                                <i class="fa-solid fa-check me-1"></i> Activar
                             </a>
                         </div>
                     </div>
