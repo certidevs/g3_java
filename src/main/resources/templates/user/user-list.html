@@ -27,18 +27,25 @@
       <div class="custom-form-card shadow-sm">
         
         <!-- Cabecera de la vista -->
-        <div class="custom-form-header">
+        <div class="custom-form-header d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-3">
           <div class="d-flex align-items-center gap-3">
             <div class="bg-brand bg-opacity-10 text-brand rounded-4 p-3 d-inline-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
               <i th:if="${showAdminView}" class="fa-solid fa-users fs-4"></i>
               <i th:unless="${showAdminView}" class="fa-solid fa-address-book fs-4"></i>
             </div>
             <div>
-              <h1 th:if="${showAdminView}">Gestión de Usuarios</h1>
-              <h1 th:unless="${showAdminView}">Agenda de Contactos</h1>
-              <p th:if="${showAdminView}">Administre los accesos, roles y perfiles del sistema.</p>
-              <p th:unless="${showAdminView}">Busque y copie tokens de recomendación de otros huéspedes.</p>
+              <h1 th:if="${showAdminView}" class="mb-1">Gestión de Usuarios</h1>
+              <h1 th:unless="${showAdminView}" class="mb-1">Agenda de Contactos</h1>
+              <p th:if="${showAdminView}" class="mb-0">Administre los accesos, roles y perfiles del sistema.</p>
+              <p th:unless="${showAdminView}" class="mb-0">Busque y copie tokens de recomendación de otros huéspedes.</p>
             </div>
+          </div>
+          <!-- Botón Añadir Usuario (Solo Admin) -->
+          <div th:if="${showAdminView}" class="mt-2 mt-sm-0">
+            <a th:href="@{/users/new}" class="btn btn-brand rounded-pill px-4 py-2.5 fw-semibold text-white shadow-sm d-inline-flex align-items-center gap-2">
+              <i class="fa-solid fa-user-plus"></i>
+              <span>Añadir usuario</span>
+            </a>
           </div>
         </div>
 
@@ -214,8 +221,19 @@
 <script th:replace="~{layout/footer :: scripts}"></script>
 
 <script>
+  // Guardar la página de procedencia original (fuera de agenda/usuarios)
+  (function() {
+      const ref = document.referrer;
+      if (ref && !ref.includes('/agenda') && !ref.includes('/users')) {
+          sessionStorage.setItem('agenda_referrer', ref);
+      }
+  })();
+
   function volverAtras() {
-      if (window.history.length > 1) {
+      const originalReferrer = sessionStorage.getItem('agenda_referrer');
+      if (originalReferrer && !originalReferrer.includes('/agenda') && !originalReferrer.includes('/users')) {
+          window.location.href = originalReferrer;
+      } else if (window.history.length > 1) {
           window.history.back();
       } else {
           window.location.href = '/';

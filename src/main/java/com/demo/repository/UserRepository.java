@@ -46,7 +46,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("""
             SELECT us FROM User us  WHERE us.firstName IS NOT NULL AND
                 ((:textfind IS NULL OR us.firstName LIKE  %:textfind%) OR
-                (:textfind IS NULL OR us.lastName LIKE  %:textfind%))                                       
+                (:textfind IS NULL OR us.lastName LIKE  %:textfind%))
             """)
     List<User> userallOrderFirstNameFilterText (
             @Param("textfind") String textoFind);
@@ -60,25 +60,28 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("""
         SELECT new com.demo.dto.UserRecommendationsDto(
-            us.id,
-            us.username,
-            us.firstName,
-            us.lastName,
-            us.email,
-            us.active,
-            us.role,
-            us.tokenforRecommended,
-            COALESCE(SUM(CASE WHEN hr.userFrom.id = ?1 THEN 1L ELSE 0L END), 0L),
-            COALESCE(SUM(CASE WHEN hr.userTo.id = ?1 THEN 1L ELSE 0L END), 0L)
+            us.id as id,
+            us.username as username,
+            us.firstName as firstName,
+            us.lastName as lastName,
+            us.email as email,
+            us.active as active,
+            us.role as role,
+            us.tokenforRecommended as tokenforRecommended,
+            COALESCE(SUM(CASE WHEN hr.userFrom.id = ?1 THEN 1L ELSE 0L END), 0L) as recommendedCount,
+            COALESCE(SUM(CASE WHEN hr.userTo.id = ?1 THEN 1L ELSE 0L END), 0L) as recommendationsReceivedCount
         )
         FROM User us
         LEFT JOIN HouseRecommended hr ON (hr.userFrom.id = ?1 AND hr.userTo.id = us.id) OR (hr.userFrom.id = us.id AND hr.userTo.id = ?1)
         WHERE us.id <> ?1
         GROUP BY us.id, us.username, us.firstName, us.lastName, us.email, us.active, us.role, us.tokenforRecommended
-        ORDER BY 
+        ORDER BY
             COALESCE(SUM(CASE WHEN hr.userFrom.id = ?1 THEN 1L ELSE 0L END), 0L) DESC,
             COALESCE(SUM(CASE WHEN hr.userTo.id = ?1 THEN 1L ELSE 0L END), 0L) DESC,
-            us.firstName ASC
+            CASE WHEN (us.firstName IS NOT NULL AND us.firstName <> '') OR (us.lastName IS NOT NULL AND us.lastName <> '') THEN 0 ELSE 1 END ASC,
+            us.firstName ASC,
+            us.lastName ASC,
+            us.username ASC
     """)
     List<UserRecommendationsDto> findAllUsersWithRecommendationCounts(Long currentUserId);
 }
