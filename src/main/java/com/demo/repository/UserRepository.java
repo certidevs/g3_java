@@ -1,5 +1,6 @@
 package com.demo.repository;
 
+import com.demo.dto.UserRecommendationsDto;
 import com.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -43,7 +44,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // USUARIOS FILTRADOS POR TEXTO
     @Query("""
-            SELECT us FROM User us  WHERE us.firstName IS NOT NULL AND  
+            SELECT us FROM User us  WHERE us.firstName IS NOT NULL AND
                 ((:textfind IS NULL OR us.firstName LIKE  %:textfind%) OR
                 (:textfind IS NULL OR us.lastName LIKE  %:textfind%))                                       
             """)
@@ -56,4 +57,23 @@ public interface UserRepository extends JpaRepository<User, Long> {
         )
     """)
     List<User> userRecommendedByUser (Long idUser);
+
+    @Query("""
+        SELECT new com.demo.dto.UserRecommendationsDto(
+            us.id,
+            us.username,
+            us.firstName,
+            us.lastName,
+            us.email,
+            us.active,
+            us.role,
+            us.tokenforRecommended,
+            COUNT(hr)
+        )
+        FROM User us
+        LEFT JOIN HouseRecommended hr ON hr.userFrom.id = us.id
+        GROUP BY us.id, us.username, us.firstName, us.lastName, us.email, us.active, us.role, us.tokenforRecommended
+        ORDER BY COUNT(hr) DESC
+    """)
+    List<UserRecommendationsDto> findAllUsersWithRecommendationCount();
 }

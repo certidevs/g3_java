@@ -3,9 +3,9 @@ package com.demo.controller;
 import com.demo.model.House;
 import com.demo.model.HouseRecommended;
 import com.demo.model.User;
-import com.demo.repository.HouseRecommendedRepository;
 import com.demo.service.HouseService;
 import com.demo.service.BookingService;
+import com.demo.service.RecommendedService;
 import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +23,7 @@ public class RecommendedController {
 
     private final HouseService houseService;
     private final UserService userService;
-    private final HouseRecommendedRepository houseRecommendedRepository;
+    private final RecommendedService recommendedService;
 
     @GetMapping("recommended/{token}/{idHouse}/{idUsuario}")
     public String createRecommended(Model model,
@@ -92,7 +92,7 @@ public class RecommendedController {
         }
 
         // 3) Comprobar duplicado (mismo recomendador, mismo destinatario, misma casa)
-        Optional<HouseRecommended> dup = houseRecommendedRepository.findRecommendation(
+        Optional<HouseRecommended> dup = recommendedService.findRecommendation(
                 userFrom.getTokenforRecommended(),
                 userTo.getTokenforRecommended(),
                 houseId);                                  // ← ahora SÍ el id de la casa
@@ -121,7 +121,7 @@ public class RecommendedController {
 
                  */
 
-        houseRecommendedRepository.save(nueva);
+        recommendedService.save(nueva);
 
         redirectAttributes.addFlashAttribute("mensajeExito","Recomendación creada satisfactoriamente.");
 
@@ -131,7 +131,7 @@ public class RecommendedController {
     @GetMapping("recommended-show/{idUsuario}")
     public String showRecommendations(Model model, @PathVariable Long idUsuario) {
         // Recomendaciones lanzadas
-        List<HouseRecommended> recommendedFrom = houseRecommendedRepository.listHousesFrom(idUsuario);
+        List<HouseRecommended> recommendedFrom = recommendedService.listHousesFrom(idUsuario);
 
 
         // Recomendaciones obtenidas
@@ -139,7 +139,7 @@ public class RecommendedController {
         String token = datosUsuario.getTokenforRecommended();
         String email = datosUsuario.getEmail();
 
-        List<HouseRecommended> recommendedToTokenEmail = houseRecommendedRepository.listHousesToEmail(email, token);
+        List<HouseRecommended> recommendedToTokenEmail = recommendedService.listHousesToEmail(email, token);
 
         model.addAttribute("recommfrom", recommendedFrom);
         model.addAttribute("recommto", recommendedToTokenEmail);

@@ -1,7 +1,9 @@
 package com.demo.controller;
 
+import com.demo.dto.UserRecommendationsDto;
 import com.demo.model.User;
 import com.demo.model.enums.Role;
+import com.demo.service.RecommendedService;
 import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 class UserController {
     private final UserService userService;
+    private final RecommendedService recommendedService;
 
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal User user) {
@@ -99,10 +102,10 @@ class UserController {
 
     @GetMapping("/agenda")
     public String showAgenda(Model model, @RequestParam(required = false) String textfind, @AuthenticationPrincipal User user) {
-        List<User> agenda = userService.getAgendaUsers(textfind);
+        List<UserRecommendationsDto> agenda = userService.getAgendaUsers(textfind);
         model.addAttribute("agenda", agenda);
 
-        model.addAttribute("agendaRecommended", userService.userRecommendedByUser(user.getId()));
+        model.addAttribute("agendaRecommended", recommendedService.userRecommendedByUser(user.getId()));
         return "user/user-list";
     }
 }

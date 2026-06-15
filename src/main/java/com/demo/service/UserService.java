@@ -1,6 +1,7 @@
 package com.demo.service;
 
 import com.demo.dto.RegisterForm;
+import com.demo.dto.UserRecommendationsDto;
 import com.demo.model.User;
 import com.demo.model.enums.Role;
 import com.demo.repository.UserRepository;
@@ -157,20 +158,20 @@ public class UserService implements UserDetailsService {
         return userRepository.save(newUser);
     }
 
-    public List<User> getAgendaUsers(String textFind) {
-        List<User> allUsers = userRepository.userallOrderFirstName();
+    public List<UserRecommendationsDto> getAgendaUsers(String textFind) {
+        List<UserRecommendationsDto> allUsers = userRepository.findAllUsersWithRecommendationCount();
         if (textFind == null || textFind.isBlank()) {
             return allUsers;
         }
         String query = normalize(textFind);
         return allUsers.stream()
-                .filter(u -> normalize(u.getUsername()).contains(query)
-                        || normalize(u.getFirstName()).contains(query)
-                        || normalize(u.getLastName()).contains(query))
+                .filter(u -> normalize(u.username()).contains(query)
+                        || normalize(u.firstName()).contains(query)
+                        || normalize(u.lastName()).contains(query))
                 .toList();
     }
 
-    public List<User> getAgendaUsers() {
+    public List<UserRecommendationsDto> getAgendaUsers() {
         return getAgendaUsers(null);
     }
 
@@ -191,9 +192,5 @@ public class UserService implements UserDetailsService {
             return userRepository.verificarEmail(email);
         }
         return Optional.empty();
-    }
-
-    public List<User> userRecommendedByUser (Long idUser) {
-        return userRepository.userRecommendedByUser(idUser);
     }
 }

@@ -1,5 +1,6 @@
 package com.demo.repository;
 
+import com.demo.dto.UserRecommendationsDto;
 import com.demo.model.Booking;
 import com.demo.model.HouseRecommended;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,5 +37,21 @@ public interface HouseRecommendedRepository extends JpaRepository<HouseRecommend
     List<HouseRecommended> listHousesToEmail(@Param("email") String email,
                                              @Param("token") String token);
 
-
+    // Top de recomendados por id userFrom
+    @Query("""
+                SELECT new com.demo.dto.UserRecommendationsDto(
+                    us.id,
+                    us.username,
+                    us.firstName,
+                    us.lastName,
+                    us.tokenforRecommended,
+                    COUNT(hr)
+                )
+                FROM HouseRecommended hr
+                JOIN hr.userTo us
+                WHERE hr.userFrom.id = ?1
+                GROUP BY us.id, us.username, us.firstName, us.lastName, us.tokenforRecommended
+                ORDER BY COUNT(hr) DESC
+            """)
+    List<UserRecommendationsDto> userRecommendedByUserTop (Long idUser);
 }
