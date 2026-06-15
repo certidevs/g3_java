@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout/head :: head('Revista de Recomendaciones')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<main class="container flex-grow-1 mb-5">
+
+  <!-- Enlace de regreso -->
+  <div class="mt-4 mb-3">
+    <a th:href="@{/panel-control/{id}(id=${#authentication.principal.id})}" class="text-decoration-none text-muted d-inline-flex align-items-center hover-brand-transition">
+      <i class="fa-solid fa-arrow-left me-2"></i> Volver al Panel de Control
+    </a>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-11">
+      <div class="custom-form-card shadow-sm">
+
+        <!-- Cabecera de la vista -->
+        <div class="custom-form-header">
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-brand bg-opacity-10 text-brand rounded-4 p-3 d-inline-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
+              <i class="fa-solid fa-envelope-open-text fs-4"></i>
+            </div>
+            <div>
+              <h1>Revista de Recomendaciones</h1>
+              <p>Historial de recomendaciones enviadas y recibidas sobre alojamientos vacacionales.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensajes de feedback -->
+        <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show mb-4 rounded-3 border-0 shadow-sm" role="alert" style="border-left: 4px solid #198754 !important;">
+          <div class="d-flex align-items-center">
+            <i class="fa-solid fa-circle-check fs-5 me-2 text-success"></i>
+            <span th:text="${mensajeExito}" class="fw-semibold"></span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show mb-4 rounded-3 border-0 shadow-sm" role="alert" style="border-left: 4px solid #dc3545 !important;">
+          <div class="d-flex align-items-center">
+            <i class="fa-solid fa-circle-xmark fs-5 me-2 text-danger"></i>
+            <span th:text="${errorMessage}" class="fw-semibold"></span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row g-4 mt-2">
+          <!-- Primera Lista: Recomendaciones Lanzadas -->
+          <div class="col-lg-6">
+            <div class="p-3 bg-light rounded-4 h-100">
+              <h3 class="h5 fw-bold text-dark mb-4 px-2 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-paper-plane text-muted"></i>
+                Recomendaciones enviadas
+              </h3>
+
+              <div th:if="${#lists.isEmpty(recommfrom)}" class="text-center py-5 text-muted">
+                <i class="fa-regular fa-paper-plane fs-1 mb-3"></i>
+                <p class="mb-0">No has enviado ninguna recomendación aún.</p>
+              </div>
+
+              <div th:unless="${#lists.isEmpty(recommfrom)}" class="d-flex flex-column gap-3">
+                <div class="card border-0 shadow-sm rounded-4 p-4" th:each="cat : ${recommfrom}">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h4 class="h6 fw-bold mb-1">
+                        <a th:href="@{/users/{id}(id=${cat.userTo.id})}" class="text-decoration-none hover-brand-transition" style="color: #212529;" 
+                           th:text="'A: ' + (${(cat.userTo.firstName != null and !cat.userTo.firstName.isEmpty()) or (cat.userTo.lastName != null and !cat.userTo.lastName.isEmpty()) ? (cat.userTo.firstName ?: '') + ' ' + (cat.userTo.lastName ?: '') : cat.userTo.username})">Destinatario</a>
+                      </h4>
+                      <span class="text-muted small">
+                        <i class="fa-regular fa-calendar me-1"></i>
+                        <span th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy HH:mm')}"></span>
+                      </span>
+                    </div>
+                  </div>
+                  <p class="card-text text-muted my-3" th:text="${cat.message}">Mensaje</p>
+                  <div class="d-flex justify-content-between align-items-center mt-2 pt-3 border-top border-light">
+                    <span class="small text-muted"><i class="fa-solid fa-house me-1"></i> <span th:text="${cat.houseRecommended.title}">Alojamiento</span></span>
+                    <a th:href="@{/houses/{id}(id=${cat.houseRecommended.id})}" class="btn btn-outline-brand btn-sm rounded-pill px-3 fw-medium">
+                      Ver alojamiento
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Segunda Lista: Recomendaciones Recibidas -->
+          <div class="col-lg-6">
+            <div class="p-3 bg-light rounded-4 h-100">
+              <h3 class="h5 fw-bold text-dark mb-4 px-2 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-inbox text-muted"></i>
+                Recomendaciones recibidas
+              </h3>
+
+              <div th:if="${#lists.isEmpty(recommto)}" class="text-center py-5 text-muted">
+                <i class="fa-regular fa-envelope fs-1 mb-3"></i>
+                <p class="mb-0">No has recibido ninguna recomendación todavía.</p>
+              </div>
+
+              <div th:unless="${#lists.isEmpty(recommto)}" class="d-flex flex-column gap-3">
+                <div class="card border-0 shadow-sm rounded-4 p-4 position-relative overflow-hidden transition-card" 
+                     th:each="cat : ${recommto}"
+                     th:style="${!cat.viewed} ? 'border-left: 4px solid var(--brand-color, #f1461d) !important;' : ''">
+                  
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h4 class="h6 fw-bold mb-1">
+                        <a th:href="@{/users/{id}(id=${cat.userFrom.id})}" class="text-decoration-none hover-brand-transition" style="color: #212529;" 
+                           th:text="'De: ' + (${(cat.userFrom.firstName != null and !cat.userFrom.firstName.isEmpty()) or (cat.userFrom.lastName != null and !cat.userFrom.lastName.isEmpty()) ? (cat.userFrom.firstName ?: '') + ' ' + (cat.userFrom.lastName ?: '') : cat.userFrom.username})">Recomendador</a>
+                      </h4>
+                      <span class="text-muted small">
+                        <i class="fa-regular fa-calendar me-1"></i>
+                        <span th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy HH:mm')}"></span>
+                      </span>
+                    </div>
+                    <!-- Insignia de Notificación -->
+                    <div>
+                      <span th:if="${!cat.viewed}" class="badge bg-danger rounded-pill px-2.5 py-1.5 fw-semibold d-inline-flex align-items-center gap-1 shadow-sm animation-pulse">
+                        <i class="fa-solid fa-bell"></i> Nueva
+                      </span>
+                      <span th:if="${cat.viewed}" class="badge bg-light text-muted border rounded-pill px-2.5 py-1.5 fw-medium">
+                        Leída
+                      </span>
+                    </div>
+                  </div>
+                  <p class="card-text text-muted my-3" th:text="${cat.message}">Mensaje</p>
+                  
+                  <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mt-2 pt-3 border-top border-light">
+                    <span class="small text-muted"><i class="fa-solid fa-house me-1"></i> <span th:text="${cat.houseRecommended.title}">Alojamiento</span></span>
+                    <div class="d-flex gap-2">
+                      <a th:href="@{/houses/{id}(id=${cat.houseRecommended.id})}" class="btn btn-outline-brand btn-sm rounded-pill px-3 fw-medium">
+                        Ver alojamiento
+                      </a>
+                      <form th:if="${!cat.viewed}" th:action="@{/recommended/{id}/view(id=${cat.id})}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-brand btn-sm rounded-pill px-3 fw-semibold text-white">
+                          Marcar como leída
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+<script th:replace="~{layout/footer :: scripts}"></script>
+
+<style>
+  .transition-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .transition-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06) !important;
+  }
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.03);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  .animation-pulse {
+    animation: pulse 2s infinite ease-in-out;
+  }
+</style>
+
+</body>
+</html>

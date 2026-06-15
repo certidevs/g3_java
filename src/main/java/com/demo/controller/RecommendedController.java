@@ -58,7 +58,7 @@ public class RecommendedController {
 
             model.addAttribute("recommendation", recommendation);
 
-            return "house/house-recommended";
+            return "recommended/recommended-form";
         } else {
             return "redirect:/booking/" + idUsuario.toString();
         }
@@ -125,7 +125,7 @@ public class RecommendedController {
 
         redirectAttributes.addFlashAttribute("mensajeExito","Recomendación creada satisfactoriamente.");
 
-        return "redirect:/panel-control/" + userFrom.getId();
+        return "redirect:/recommended-show/" + userFrom.getId();
     }
 
     @GetMapping("recommended-show/{idUsuario}")
@@ -144,8 +144,30 @@ public class RecommendedController {
         model.addAttribute("recommfrom", recommendedFrom);
         model.addAttribute("recommto", recommendedToTokenEmail);
 
-        return "house/recommended-list";
+        return "recommended/recommended-list";
 
+    }
+
+    @PostMapping("/recommended/{id}/view")
+    public String markAsViewed(@PathVariable Long id,
+                               @AuthenticationPrincipal User user,
+                               RedirectAttributes redirectAttributes) {
+        if (user == null) {
+            return "redirect:/login";
+        }
+        Optional<HouseRecommended> recOpt = recommendedService.findById(id);
+        if (recOpt.isPresent()) {
+            HouseRecommended rec = recOpt.get();
+            if (rec.getUserTo() != null && user.getId().equals(rec.getUserTo().getId())) {
+                rec.setViewed(true);
+                recommendedService.save(rec);
+                redirectAttributes.addFlashAttribute("mensajeExito", "Recomendación marcada como vista.");
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "No tienes permiso para marcar esta recomendación como vista.");
+            }
+            return "redirect:/recommended-show/" + user.getId();
+        }
+        return "redirect:/";
     }
 
 }

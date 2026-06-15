@@ -494,5 +494,12 @@ main.container {
     color: var(--brand-color) !important;
 }
 
+.hover-brand-transition {
+    transition: all 0.2s ease-in-out;
+}
+.hover-brand-transition:hover {
+    color: var(--brand-color) !important;
+}
+
 
 

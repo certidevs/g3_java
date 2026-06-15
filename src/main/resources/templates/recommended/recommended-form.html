@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/head :: head('Nueva Recomendación')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<nav th:replace="~{layout/navbar :: navbar}"></nav>
+
+<main class="container flex-grow-1 mb-5">
+
+  <!-- Enlace de regreso -->
+  <div class="mt-4 mb-3">
+    <a th:href="@{/panel-control/{id}(id=${recommendation.userFrom.id})}" class="text-decoration-none text-muted d-inline-flex align-items-center hover-brand-transition">
+      <i class="fa-solid fa-arrow-left me-2"></i> Volver al Panel de Control
+    </a>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      <div class="custom-form-card shadow-sm">
+
+        <!-- Cabecera de la vista -->
+        <div class="custom-form-header">
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-brand bg-opacity-10 text-brand rounded-4 p-3 d-inline-flex align-items-center justify-content-center" style="width: 54px; height: 54px;">
+              <i class="fa-solid fa-share-nodes fs-4"></i>
+            </div>
+            <div>
+              <h1>Recomendar Alojamiento</h1>
+              <p>Comparta este alojamiento con otro huésped mediante su token o su correo electrónico.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensajes de error del Flash Attribute -->
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show mb-4 rounded-3 border-0 shadow-sm" role="alert" style="border-left: 4px solid #dc3545 !important;">
+          <div class="d-flex align-items-center">
+            <i class="fa-solid fa-circle-xmark fs-5 me-2 text-danger"></i>
+            <span th:text="${errorMessage}" class="fw-semibold"></span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Componente Visual del Alojamiento (Ficha Interactiva de review-form) -->
+        <div class="col-12 mb-4" th:if="${recommendation.houseRecommended != null}">
+          <p class="form-label-custom">Alojamiento a recomendar</p>
+          <a th:href="@{/houses/{id}(id=${recommendation.houseRecommended.id})}" class="text-decoration-none text-reset d-block" title="Ver detalles del alojamiento">
+            <div class="p-3 bg-light rounded-4 d-flex align-items-center gap-3 border border-light-subtle property-card-hover-effect">
+              <!-- Foto Rectangular -->
+              <img th:src="@{'/images/' + ${recommendation.houseRecommended.imageUrl}}" class="rounded-3 shadow-sm" style="width: 120px; height: 80px; object-fit: cover;" alt="Imagen del alojamiento">
+              
+              <!-- Información -->
+              <div class="flex-grow-1">
+                <strong class="text-dark fs-5 d-block house-title-link" th:text="${recommendation.houseRecommended.title}">Nombre del alojamiento</strong>
+                <div class="text-muted small mt-1">
+                  <i class="fa-solid fa-map-pin me-1"></i>
+                  <span th:text="${recommendation.houseRecommended.location} + ', ' + ${recommendation.houseRecommended.province}">Ubicación</span>
+                  <span class="mx-2">•</span>
+                  <i class="fa-solid fa-user-group me-1"></i>
+                  <span th:text="${recommendation.houseRecommended.maxGuests} + ' huéspedes máx.'">Capacidad</span>
+                </div>
+              </div>
+              
+              <!-- Flecha indicativa de enlace -->
+              <div class="text-muted pe-2 d-none d-sm-block">
+                <i class="fa-solid fa-chevron-right text-brand"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Información del Remitente -->
+        <div class="mb-4">
+          <div class="p-3 bg-light rounded-4 d-flex align-items-center gap-3 border border-light-subtle">
+            <div class="bg-white rounded-3 p-2 border border-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; flex-shrink: 0;">
+              <i class="fa-solid fa-user-pen text-brand fs-5"></i>
+            </div>
+            <div class="flex-grow-1">
+              <span class="text-muted small d-block">Recomendado por ti</span>
+              <strong class="text-dark" th:text="${(recommendation.userFrom.firstName != null and !recommendation.userFrom.firstName.isEmpty()) or (recommendation.userFrom.lastName != null and !recommendation.userFrom.lastName.isEmpty()) ? (recommendation.userFrom.firstName ?: '') + ' ' + (recommendation.userFrom.lastName ?: '') : recommendation.userFrom.username}">Tu Nombre</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario principal -->
+        <form th:action="@{/recommended}" method="post" class="row g-4">
+          <input type="hidden" name="houseId" th:value="${recommendation.houseRecommended.id}" />
+
+          <!-- Destinatario (Búsqueda por Token O por Email) -->
+          <div class="col-12">
+            <div class="bg-light rounded-4 p-4 border border-light-subtle">
+              <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-3">
+                <div>
+                  <h3 class="h6 fw-bold text-dark mb-1">
+                    <i class="fa-solid fa-circle-user text-muted me-2"></i>Destinatario de la recomendación
+                  </h3>
+                  <p class="text-muted small mb-0">Identifique al usuario utilizando uno de los siguientes datos alternativos:</p>
+                </div>
+                <a th:href="@{/agenda}" class="btn btn-outline-brand btn-sm rounded-pill px-3 fw-semibold shadow-sm hover-brand-transition">
+                  <i class="fa-solid fa-address-book me-1"></i>Abrir agenda
+                </a>
+              </div>
+
+              <div class="row g-3 align-items-center">
+                <!-- Email (Primero) -->
+                <div class="col-md-5">
+                  <label for="emailTo" class="form-label-custom mb-1 d-block">Por Correo electrónico</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0" style="border: 1px solid #d3cfc7;"><i class="fa-solid fa-envelope text-muted"></i></span>
+                    <input type="email" class="form-control border-start-0" id="emailTo" name="emailTo" placeholder="Ej. amigo@correo.com" style="border: 1px solid #d3cfc7;">
+                  </div>
+                </div>
+
+                <!-- OR Separator -->
+                <div class="col-md-2 text-center my-2 my-md-0 d-flex justify-content-center align-items-center">
+                  <span class="badge bg-secondary rounded-pill px-3 py-1.5 fw-semibold small shadow-sm">O</span>
+                </div>
+
+                <!-- Token (Segundo) -->
+                <div class="col-md-5">
+                  <label for="tokenTo" class="form-label-custom mb-1 d-block">Por Token personal</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0" style="border: 1px solid #d3cfc7;"><i class="fa-solid fa-key text-muted"></i></span>
+                    <input type="text" class="form-control border-start-0 font-monospace" id="tokenTo" name="tokenTo" placeholder="Ej. xY8zW2qR" style="border: 1px solid #d3cfc7;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensaje -->
+          <div class="col-12">
+            <label for="message" class="form-label-custom">Mensaje personal</label>
+            <textarea rows="4" class="form-control" id="message" name="message" 
+                      placeholder="Recomiéndale la casa explicando por qué le va a gustar (precio, servicios, ubicación, etc.)...." required></textarea>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="col-12 d-flex justify-content-end gap-3 mt-4">
+            <a th:href="@{/panel-control/{id}(id=${recommendation.userFrom.id})}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-medium">
+              <i class="fa-solid fa-xmark me-2"></i>Cancelar
+            </a>
+            <button type="submit" class="btn btn-brand rounded-pill px-5 py-2 fw-semibold text-white shadow-sm">
+              <i class="fa-regular fa-paper-plane me-2"></i>Enviar recomendación
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer th:replace="~{layout/footer :: footer}"></footer>
+<script th:replace="~{layout/footer :: scripts}"></script>
+
+</body>
+</html>

@@ -26,6 +26,7 @@ public interface HouseRecommendedRepository extends JpaRepository<HouseRecommend
     // Recomendaciones lanzadas
     @Query("""
         SELECT hs FROM HouseRecommended hs WHERE hs.userFrom.id=:idUsuario
+        ORDER BY hs.timeRecommended DESC
     """)
     List<HouseRecommended> listHousesFrom(@Param("idUsuario") Long idUsuario);
 
@@ -33,8 +34,16 @@ public interface HouseRecommendedRepository extends JpaRepository<HouseRecommend
     @Query("""
         SELECT hs FROM HouseRecommended hs WHERE hs.userTo.email=:email OR
             hs.userTo.tokenforRecommended=:token
+        ORDER BY hs.timeRecommended DESC
     """)
     List<HouseRecommended> listHousesToEmail(@Param("email") String email,
                                              @Param("token") String token);
+
+    @Query("""
+        SELECT COUNT(hs) > 0 FROM HouseRecommended hs 
+        WHERE (hs.userTo.email = :email OR hs.userTo.tokenforRecommended = :token) 
+        AND hs.viewed = false
+    """)
+    boolean hasUnreadRecommendations(@Param("email") String email, @Param("token") String token);
 
 }

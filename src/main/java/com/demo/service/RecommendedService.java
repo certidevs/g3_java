@@ -36,4 +36,12 @@ public class RecommendedService {
         return recommendedRepository.listHousesToEmail(email, token);
     }
 
+    public Optional<HouseRecommended> findById(Long id) {
+        return recommendedRepository.findById(id);
+    }
+
+    public boolean hasUnreadRecommendations(String email, String token) {
+        return recommendedRepository.hasUnreadRecommendations(email, token);
+    }
+
 }

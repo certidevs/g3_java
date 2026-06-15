@@ -49,4 +49,8 @@ public class HouseRecommended {
     @ManyToOne
     @ToString.Exclude
     private User userTo;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean viewed = false;
 }
