@@ -65,6 +65,9 @@ public class Booking {
 
     public Long calculateNights (LocalDateTime tiempoin,LocalDateTime tiempoout)
     {
+        if (tiempoin == null || tiempoout == null) {
+            return 0L;
+        }
         // Calcular noches
         Long noches = ChronoUnit.DAYS.between(tiempoin,tiempoout);
         return  noches;

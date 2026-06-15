@@ -367,7 +367,9 @@ public class BookingController {
         }
         if ((toSave.getStatusbooking() == StatusBooking.CONFIRMED)
                 || (toSave.getStatusbooking() == StatusBooking.COMPLETED)) {
-            toSave.setNumberNights(toSave.calculateNights(toSave.getCheckin(), toSave.getCheckout()));
+            LocalDateTime start = toSave.getCheckin() != null ? toSave.getCheckin() : toSave.getEstimatedCheckin();
+            LocalDateTime end = toSave.getCheckout() != null ? toSave.getCheckout() : toSave.getEstimatedCheckout();
+            toSave.setNumberNights(toSave.calculateNights(start, end));
             toSave.setTotalPrice(toSave.calculateTotalPrice(toSave.getNumberNights()));
         }
 
