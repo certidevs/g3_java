@@ -46,4 +46,7 @@ public interface HouseRecommendedRepository extends JpaRepository<HouseRecommend
     """)
     boolean hasUnreadRecommendations(@Param("email") String email, @Param("token") String token);
 
+    boolean existsByUserFromIdAndHouseRecommendedId(Long userFromId, Long houseId);
+
 }
+

@@ -192,11 +192,12 @@
                                     <input type="hidden" name="redirectUrl"
                                            th:value="'/houses#house-card-' + ${house.id}"/>
                                     <button type="submit"
-                                            class="btn btn-sm btn-link text-decoration-none p-0 favorite-btn"
-                                            title="Agregar a favoritos"
-                                            th:classappend="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'text-danger' : 'text-secondary'">
-                                        <i th:class="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'fa-solid fa-heart fs-3' : 'fa-regular fa-heart fs-3'"></i>
-                                    </button>
+                                             class="btn btn-sm btn-link text-decoration-none p-0 favorite-btn"
+                                             th:title="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+                                             th:classappend="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'text-danger' : 'text-secondary'">
+                                         <i th:class="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'fa-solid fa-heart fs-3' : 'fa-regular fa-heart fs-3'"></i>
+                                     </button>
+
                                 </form>
                                 <div sec:authorize="!isAuthenticated()" class="m-0 p-0 position-relative z-3">
                                     <a th:href="@{/login}"

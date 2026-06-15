@@ -367,7 +367,18 @@ main.container {
 }
 .favorite-btn:hover {
     transform: scale(1.15);
+    color: #dc3545 !important; /* bootstrap danger color */
 }
+
+
+/* Botón de recomendar */
+.recommend-btn {
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+.recommend-btn:hover {
+    transform: scale(1.15);
+}
+
 
 /* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {

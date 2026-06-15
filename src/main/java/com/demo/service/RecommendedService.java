@@ -44,4 +44,8 @@ public class RecommendedService {
         return recommendedRepository.hasUnreadRecommendations(email, token);
     }
 
-}
+    public boolean hasUserRecommendedHouse(Long userFromId, Long houseId) {
+        return recommendedRepository.existsByUserFromIdAndHouseRecommendedId(userFromId, houseId);
+    }
+
+}

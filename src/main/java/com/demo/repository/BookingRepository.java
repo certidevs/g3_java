@@ -2,6 +2,8 @@ package com.demo.repository;
 
 import com.demo.model.Booking;
 import com.demo.model.House;
+import com.demo.model.enums.StatusBooking;
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -100,4 +102,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             """)
     List<Booking> bookingsHost(@Param("id") Long id, @Param("searchDate") LocalDateTime searchDate, @Param("price") Double price);
 
+    boolean existsByUserBookingIdAndUserHouseIdAndStatusbookingIn(Long guestId, Long houseId, List<StatusBooking> statuses);
 }
+

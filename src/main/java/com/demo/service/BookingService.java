@@ -99,8 +99,15 @@ public class BookingService {
         return bookingRepository.findById(id);
     }
 
+    public boolean hasUserVisitedHouse(Long guestId, Long houseId) {
+        return bookingRepository.existsByUserBookingIdAndUserHouseIdAndStatusbookingIn(
+                guestId, houseId, List.of(StatusBooking.CONFIRMED, StatusBooking.COMPLETED)
+        );
+    }
+
     public Booking save(Booking booking) {
         return bookingRepository.save(booking);
     }
 
 }
+

@@ -26,6 +26,10 @@ public class HouseController {
     private final HouseService houseService;
     private final ReviewService reviewService;
     private final FileService fileService;
+    private final com.demo.service.BookingService bookingService;
+    private final com.demo.service.RecommendedService recommendedService;
+
+
 
     @GetMapping("/houses")
     public String houseList(Model model,
@@ -111,12 +115,20 @@ public class HouseController {
             List<Review> reviews = reviewService.findByHouseIdOrderByCreatedAtDesc(house.getId());
             model.addAttribute("reviews", reviews); // accesibles desde HTML
 
+            boolean hasVisited = user != null && bookingService.hasUserVisitedHouse(user.getId(), house.getId());
+            model.addAttribute("hasVisited", hasVisited);
+
+            boolean hasRecommended = user != null && recommendedService.hasUserRecommendedHouse(user.getId(), house.getId());
+            model.addAttribute("hasRecommended", hasRecommended);
+
             return "house/house-detail";
+
 
         }
 
         return "redirect:/houses";
     }
+
 
 
     @GetMapping("houses/new")

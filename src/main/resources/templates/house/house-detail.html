@@ -19,15 +19,30 @@
         <div>
             <div class="d-flex align-items-center gap-3 mb-2">
                 <h1 class="mb-0 fw-bold display-5" th:text="${house.title}">Nombre de la Casa</h1>
-                <form sec:authorize="isAuthenticated()" th:action="@{/favorites/toggle}" method="post" class="m-0 p-0">
-                    <input type="hidden" name="id" th:value="${house.id}" />
-                    <input type="hidden" name="redirectUrl" th:value="'/houses/' + ${house.id}" />
-                    <button type="submit" class="btn btn-link text-decoration-none favorite-btn p-0"
-                            th:classappend="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'text-danger' : 'text-secondary'">
-                        <i th:class="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'fa-solid fa-heart fs-2' : 'fa-regular fa-heart fs-2'"></i>
-                    </button>
-                </form>
+                <div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-3">
+                    <form th:action="@{/favorites/toggle}" method="post" class="m-0 p-0">
+                        <input type="hidden" name="id" th:value="${house.id}" />
+                        <input type="hidden" name="redirectUrl" th:value="'/houses/' + ${house.id}" />
+                        <button type="submit" class="btn btn-link text-decoration-none favorite-btn p-0 text-hover-danger"
+                                th:classappend="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'text-danger' : 'text-secondary'"
+                                th:title="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'Quitar de favoritos' : 'Añadir a favoritos'">
+                            <i th:class="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'fa-solid fa-heart fs-2' : 'fa-regular fa-heart fs-2'"></i>
+                        </button>
+                    </form>
+
+                    <a th:if="${hasVisited}" th:href="@{/recommended/{token}/{idHouse}/{idUsuario}(token=${#authentication.principal.tokenforRecommended}, idHouse=${house.id}, idUsuario=${#authentication.principal.id})}"
+                       class="btn btn-link text-decoration-none recommend-btn p-0 text-hover-brand"
+                       th:classappend="${hasRecommended} ? 'text-brand' : 'text-secondary'"
+                       th:title="${hasRecommended} ? 'Volver a recomendar este alojamiento' : 'Recomendar este alojamiento'">
+                        <i th:class="${hasRecommended} ? 'fa-solid fa-thumbs-up fs-2' : 'fa-regular fa-thumbs-up fs-2'"></i>
+                    </a>
+                </div>
+
+
+
+
             </div>
+
             <div class="text-muted fs-5 d-flex align-items-center flex-wrap gap-3 mt-2">
                 <span th:text="${house.houseType != null ? house.houseType : 'Alojamiento'}">Tipo de Casa</span>
                 <span class="text-muted d-none d-md-inline">•</span>
