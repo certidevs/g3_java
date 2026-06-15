@@ -29,6 +29,33 @@
         </form>
     </div>
 
+<!--    Tabla de usuarios ya conocidos -->
+    <span th:if="${agendaRecommended} != null and !${agendaRecommended}.isEmpty()">Usuarios ya conectados</span>
+    <table th:if="${agendaRecommended} != null and !${agendaRecommended}.isEmpty()" class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Token</th>
+            <th>Copiar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contacto : ${agendaRecommended}">
+            <td th:text="${contacto.username}">Username</td>
+            <td th:text="|${contacto.firstName} ${contacto.lastName}|">Titulo</td>
+            <td th:text="${contacto.tokenforRecommended}">Token</td>
+            <td>
+                <button class="btn btn-sm btn-brand"
+                        th:data-token="${contacto.tokenforRecommended}"
+                        onclick="guardarytoast(this.dataset.token)">
+                    Copiar token
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
 <!--    Tabla de usuarios-->
 
     <table class="table table-striped table-bordered">

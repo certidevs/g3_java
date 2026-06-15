@@ -5,6 +5,7 @@ import com.demo.model.House;
 import com.demo.model.User;
 import com.demo.repository.HouseRepository;
 import com.demo.repository.ReviewRepository;
+import com.demo.repository.UserRepository;
 import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class AgendaController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     // Obtiene la tabla entera
 
@@ -31,6 +33,10 @@ public class AgendaController {
 
         List<User> agenda = userService.getAgendaUsers();
         model.addAttribute("agenda", agenda);
+
+        List<User> agendaRecommended = userRepository.userRecommendedByUser(user.getId());
+        model.addAttribute("agendaRecommended", agendaRecommended);
+
 
         // TODO Mostrar arriba los ya recomendados
 

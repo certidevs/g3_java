@@ -50,4 +50,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> userallOrderFirstNameFilterText (
             @Param("textfind") String textoFind);
 
+    // Muestra usados por usuario
+    @Query("""
+        SELECT us FROM User us WHERE us.id IN (
+            SELECT hr.id_destination FROM HouseRecommended hr WHERE hr.userRecommended.id=?1
+        )           
+    """)
+    List<User> userRecommendedByUser (Long idUser);
 }

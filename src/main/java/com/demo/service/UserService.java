@@ -161,6 +161,9 @@ public class UserService implements UserDetailsService {
         return getAgendaUsers(null);
     }
 
+
+
+
     public Optional<User> resolveUserByTokenOrEmail(String token, String email) {
         if (token != null && !token.isBlank()) {
             return userRepository.verificarToken(token);
