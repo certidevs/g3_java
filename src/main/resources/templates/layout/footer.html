@@ -5,10 +5,10 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                <h5 class="mb-2">
+                <a th:href="@{/}" class="mb-2">
                     <th:block
                             th:replace="~{layout/logo :: logo(color='#f1461d', size='24px', titlePosition='right', titleClass='logo-text fw-bold fs-5 text-white')}"></th:block>
-                </h5>
+                </a>
                 <p class="text-secondary small mb-0">
                     <i class="fa-regular fa-copyright"></i> 2026 Rods — Fundación Adecco. Todos los derechos reservados.
                 </p>
@@ -18,23 +18,54 @@
                    style="transition: color 0.2s;"
                    onmouseover="this.className='text-white text-decoration-none me-4 small fw-medium'"
                    onmouseout="this.className='text-secondary text-decoration-none me-4 small fw-medium'">Inicio</a>
-                <a class="text-secondary text-decoration-none me-3 fs-5 table-hover" href="#"
+                <a class="text-secondary text-decoration-none me-3 fs-5 table-hover"
+                   href="https://github.com/certidevs/g3_java"
+                   target="_blank"
                    style="transition: color 0.2s;"
                    onmouseover="this.className='text-white text-decoration-none me-3 fs-5'"
                    onmouseout="this.className='text-secondary text-decoration-none me-3 fs-5'"><i
                         class="fa-brands fa-github"></i></a>
-                <a class="text-secondary text-decoration-none me-3 fs-5" href="#" style="transition: color 0.2s;"
-                   onmouseover="this.className='text-white text-decoration-none me-3 fs-5'"
-                   onmouseout="this.className='text-secondary text-decoration-none me-3 fs-5'"><i
-                        class="fa-brands fa-x-twitter"></i></a>
-                <a class="text-secondary text-decoration-none fs-5" href="#" style="transition: color 0.2s;"
+                <a class="text-secondary text-decoration-none fs-5" href="mailto:" style="transition: color 0.2s;"
                    onmouseover="this.className='text-white text-decoration-none fs-5'"
                    onmouseout="this.className='text-secondary text-decoration-none fs-5'"><i
                         class="fa-regular fa-envelope"></i></a>
             </div>
         </div>
     </div>
+    <!-- Estructura de Toast Global para Copiar Token -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+        <div id="copyTokenToast" class="toast align-items-center bg-white border-0 shadow-lg rounded-3" role="alert"
+             aria-live="assertive" aria-atomic="true" data-bs-delay="2000"
+             style="border-left: 4px solid var(--brand-color, #f1461d) !important;">
+            <div class="d-flex">
+                <div class="toast-body fw-semibold text-dark">
+                    <i class="fa-solid fa-circle-check text-brand me-2"></i> Token copiado al portapapeles.
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
 </footer>
-<script th:fragment="scripts" th:src="@{/webjars/bootstrap/5.3.8/dist/js/bootstrap.bundle.min.js}" defer></script>
+<th:block th:fragment="scripts">
+    <script th:src="@{/webjars/bootstrap/5.3.8/dist/js/bootstrap.bundle.min.js}" defer></script>
+    <script defer>
+        function copyTokenToClipboard(token, targetInputId) {
+            if (targetInputId) {
+                var input = document.getElementById(targetInputId);
+                if (input) {
+                    input.select();
+                    input.setSelectionRange(0, 99999);
+                }
+            }
+            navigator.clipboard.writeText(token).then(function () {
+                var toastElement = document.getElementById('copyTokenToast');
+                if (toastElement) {
+                    var toast = new bootstrap.Toast(toastElement);
+                    toast.show();
+                }
+            });
+        }
+    </script>
+</th:block>
 </body>
 </html>

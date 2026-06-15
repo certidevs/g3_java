@@ -187,7 +187,7 @@
                       <button class="btn btn-outline-brand btn-sm" type="button" 
                               th:data-token="${contacto.tokenforRecommended}"
                               th:data-target-id="'tokenInput-' + ${contacto.id}"
-                              onclick="guardarytoast(this.dataset.token, this.dataset.targetId)"
+                              onclick="copyTokenToClipboard(this.dataset.token, this.dataset.targetId)"
                               title="Copiar Token">
                           <i class="fa-regular fa-copy"></i>
                       </button>
@@ -203,17 +203,7 @@
     </div>
   </div>
 
-  <!-- Estructura del Toast -->
-  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
-    <div id="miToast" class="toast align-items-center bg-white border-0 shadow-lg rounded-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000" style="border-left: 4px solid var(--brand-color, #f1461d) !important;">
-      <div class="d-flex">
-        <div class="toast-body fw-semibold text-dark">
-          <i class="fa-solid fa-circle-check text-brand me-2"></i> Token copiado al portapapeles.
-        </div>
-        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    </div>
-  </div>
+
 
 </main>
 
@@ -238,20 +228,6 @@
       } else {
           window.location.href = '/';
       }
-  }
-  function guardarytoast(token, targetId) {
-      if (targetId) {
-          var input = document.getElementById(targetId);
-          if (input) {
-              input.select();
-              input.setSelectionRange(0, 99999);
-          }
-      }
-      navigator.clipboard.writeText(token).then(function() {
-          var toastElement = document.getElementById('miToast');
-          var toast = new bootstrap.Toast(toastElement);
-          toast.show();
-      });
   }
 </script>
 

@@ -16,14 +16,14 @@
         <div class="card-body p-4">
             <div class="row align-items-center g-4">
                 <div class="col-12 col-md-5 d-flex align-items-center gap-3">
-                    <a th:href="@{/profile}" class="text-decoration-none">
+                    <a th:href="@{/users/{id}(id=${user.id})}" class="text-decoration-none">
                         <div class="bg-brand text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm"
                              style="width: 60px; height: 60px;">
                             <i class="fa-regular fa-user fa-2x"></i>
                         </div>
                     </a>
                     <div>
-                        <a th:href="@{/profile}" class="fw-bold text-dark text-hover-brand text-decoration-none fs-4"
+                        <a th:href="@{/users/{id}(id=${user.id})}" class="fw-bold text-dark text-hover-brand text-decoration-none fs-4"
                            th:text="${user.firstName != null and user.lastName != null ? user.firstName + ' ' + user.lastName + ' (' + user.username + ')' : user.username}">Usuario</a>
                         <p class="text-muted small mb-0">Gestiona tus reservas, propiedades y recomendaciones.</p>
                     </div>
@@ -34,7 +34,9 @@
                         <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-key text-muted"></i></span>
                         <input type="text" class="form-control bg-light border-start-0 font-monospace small"
                                th:value="${user.tokenforRecommended}" id="tokenInput" readonly>
-                        <button class="btn btn-brand fw-semibold" type="button" onclick="copyToken()" id="copyBtn"
+                        <button class="btn btn-brand fw-semibold" type="button"
+                                onclick="copyTokenToClipboard(document.getElementById('tokenInput').value, 'tokenInput')"
+                                id="copyBtn"
                                 title="Copiar Token">
                             <i class="fa-regular fa-copy me-1"></i> Copiar Token
                         </button>
@@ -310,21 +312,5 @@
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>
-
-<script>
-    function copyToken() {
-        var copyText = document.getElementById("tokenInput");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999);
-        navigator.clipboard.writeText(copyText.value).then(function () {
-            var btn = document.getElementById("copyBtn");
-            var originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check me-1"></i> Copiado';
-            setTimeout(function () {
-                btn.innerHTML = originalHTML;
-            }, 2000);
-        });
-    }
-</script>
 </body>
 </html>

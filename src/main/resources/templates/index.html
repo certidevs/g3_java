@@ -86,11 +86,13 @@
                     <form th:action="@{/houses}" class="card-body" method="get">
                         <div class="row g-3 align-items-end">
 
-                            <div class="col-md-12 col-lg-4">
-                                <label class="form-label text-dark fw-bold mb-1">Provincia de España</label>
+                            <!-- Provincia -->
+                            <div class="col-md-12 col-lg-3">
+                                <label class="form-label text-dark fw-bold mb-1">Provincia</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white"><i class="fa-solid fa-map"></i></span>
-                                    <select th:name="province" class="form-select form-control"
+                                    <span class="input-group-text bg-white border-end-0"><i
+                                            class="fa-solid fa-map-location-dot text-muted"></i></span>
+                                    <select th:name="province" class="form-select form-control border-start-0 pe-5"
                                             th:value="${selectedProvince}">
                                         <option value="">Todas las provincias</option>
                                         <option th:each="p : ${housesProvinces}"
@@ -99,25 +101,38 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-lg-4">
-                                <label class="form-label text-dark fw-bold mb-1">Precio por noche</label>
+
+                            <!-- Huéspedes -->
+                            <div class="col-md-12 col-lg-3">
+                                <label class="form-label text-dark fw-bold mb-1">Huéspedes</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white"><i
-                                            class="fa-solid fa-dollar-sign"></i></span>
-                                    <input type="number"
-                                           th:name="pricePerNight"
-                                           class="form-control border-left-0 bg-white"
-                                           placeholder="Precio máximo por noche"/>
+                                    <span class="input-group-text bg-white border-end-0"><i
+                                            class="fa-solid fa-user-group text-muted"></i></span>
+                                    <input type="number" min="1" th:name="maxGuests"
+                                           class="form-control border-start-0 bg-white"
+                                           placeholder="Ej. 2"/>
                                 </div>
                             </div>
 
-                            <div class="col-12 col-lg-2 mt-4 mt-lg-0">
-                                <button class="btn btn-brand w-100 py-2 rounded-3 fw-bold text-white shadow-sm"
-                                        type="submit">
+                            <!-- Precio Máximo -->
+                            <div class="col-md-12 col-lg-3">
+                                <label class="form-label text-dark fw-bold mb-1">Precio máximo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0"><i
+                                            class="fa-solid fa-euro-sign text-muted"></i></span>
+                                    <input type="number" step="1" th:name="pricePerNight"
+                                           class="form-control border-start-0 bg-white"
+                                           placeholder="Ej. 100"/>
+                                </div>
+                            </div>
+
+                            <!-- Botón Buscar -->
+                            <div class="col-md-12 col-lg-3 mt-4 mt-lg-0">
+                                <button class="btn btn-brand w-100 fw-bold text-white shadow-sm d-flex align-items-center justify-content-center gap-2"
+                                        style="height: 48px;" type="submit">
                                     <i class="fa-solid fa-magnifying-glass"></i> Buscar
                                 </button>
                             </div>
-                            <!-- TODO se puede agregar un botón para ver todas las casas por ejemplo -->
                         </div>
                     </form>
                 </div>
@@ -126,14 +141,16 @@
     </div>
 
     <!-- RESEÑAS -->
-    <section class="container my-5 pb-5">
-        <h2 class="text-center fw-bold mb-5 text-dark h1">⭐ Reseñas de nuestros huéspedes</h2>
+    <section class="container py-5 my-5">
+        <h2 class="text-center fw-bold mb-5 text-dark h1">
+            <i class="fa-solid fa-star text-warning me-2"></i> Reseñas de nuestros huéspedes
+        </h2>
         <div class="row g-4">
             <th:block th:each="i : ${#numbers.sequence(0, 2)}">
                 <div class="col-md-4">
                     <a th:if="${reviews != null and i < reviews.size()}" th:href="@{/reviews/{id}(id=${reviews[i].id})}"
                        class="text-decoration-none text-dark d-block h-100">
-                        <div class="card h-100 shadow-sm bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between border">
+                        <div class="card h-100 shadow-sm bg-white rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between border">
                             <div>
                                 <div class="text-warning mb-2 fs-5">
                                     <i class="fa-solid fa-star"
@@ -163,7 +180,7 @@
                         </div>
                     </a>
                     <div th:unless="${reviews != null and i < reviews.size()}"
-                         class="card h-100 shadow-sm border bg-light rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between">
+                         class="card h-100 shadow-sm border bg-white rounded-4 p-4 text-center property-card d-flex flex-column justify-content-between">
                         <div>
                             <div class="text-warning mb-2 fs-5">
                                 <i class="fa-solid fa-star" th:each="star : ${#numbers.sequence(1, 5)}"></i>
@@ -184,8 +201,10 @@
     </section>
 
     <!-- CARACTERÍSTICAS Y UBICACIONES -->
-    <section class="container my-5 pb-5">
-        <h2 class="text-center fw-bold mb-5 text-dark h1">🌟 Características y ubicaciones</h2>
+    <section class="container py-5 my-5">
+        <h2 class="text-center fw-bold mb-5 text-dark h1">
+            <i class="fa-solid fa-couch text-brand me-2"></i> Características y comodidades
+        </h2>
         <div class="row g-4">
             <div class="col-12 col-md-6 col-lg-4" th:each="amenity : ${amenities}">
                 <a th:href="@{/houses(amenityIds=${amenity.id})}" class="text-decoration-none text-dark d-block h-100">
@@ -203,10 +222,17 @@
             </div>
         </div>
     </section>
-    <div class="container text-center my-5 pt-5 pb-4">
-        <h2 class="display-5 fw-bold text-dark mb-3">🌍 Descubre tu próxima escapada</h2>
-        <p class="lead text-muted mb-4">Casas únicas para experiencias inolvidables</p>
-        <a class="btn btn-brand btn-lg px-5 py-3 rounded-pill shadow-sm fw-semibold" href="/houses">Explorar casas</a>
+
+    <!-- CTA DE EXPLORAR -->
+    <div class="container my-5 py-5 text-center">
+        <div class="p-5 bg-white cta-banner rounded-4 shadow mx-auto" style="max-width: 800px; margin: 0 auto;">
+            <h2 class="display-5 fw-bold text-dark mb-3">
+                <i class="fa-solid fa-earth-americas text-brand me-2"></i> Descubre tu próxima escapada
+            </h2>
+            <p class="lead text-muted mb-4 fs-5">Casas únicas para experiencias inolvidables</p>
+            <a class="btn btn-brand btn-lg px-5 py-3 rounded-pill shadow-sm fw-semibold" href="/houses">Explorar
+                casas</a>
+        </div>
     </div>
 
 </main>
@@ -215,6 +241,4 @@
 <script th:replace="~{layout/footer :: scripts}"></script>
 
 </body>
-
-
 </html>

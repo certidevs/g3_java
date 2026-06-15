@@ -33,8 +33,8 @@
 
                     <a th:if="${hasVisited}"
                        th:href="@{/recommended/{token}/{idHouse}/{idUsuario}(token=${#authentication.principal.tokenforRecommended}, idHouse=${house.id}, idUsuario=${#authentication.principal.id})}"
-                       class="btn btn-link text-decoration-none recommend-btn p-0 text-hover-brand"
-                       th:classappend="${hasRecommended} ? 'text-brand' : 'text-secondary'"
+                       class="btn btn-link text-decoration-none recommend-btn p-0 text-hover-success"
+                       th:classappend="${hasRecommended} ? 'text-success' : 'text-secondary'"
                        th:title="${hasRecommended} ? 'Volver a recomendar este alojamiento' : 'Recomendar este alojamiento'">
                         <i th:class="${hasRecommended} ? 'fa-solid fa-thumbs-up fs-2' : 'fa-regular fa-thumbs-up fs-2'"></i>
                     </a>

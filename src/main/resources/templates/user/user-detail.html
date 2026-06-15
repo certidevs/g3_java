@@ -82,7 +82,8 @@
               <span class="input-group-text bg-light border-end-0" style="border: 1px solid #d3cfc7;"><i class="fa-solid fa-key text-muted"></i></span>
               <input type="text" class="form-control bg-light border-start-0 font-monospace small"
                      th:value="${user.tokenforRecommended}" id="tokenInput" readonly style="border: 1px solid #d3cfc7; border-left: none;">
-              <button class="btn btn-outline-brand fw-semibold" type="button" onclick="copyToken()" id="copyBtn"
+              <button class="btn btn-outline-brand fw-semibold" type="button"
+                      onclick="copyTokenToClipboard(document.getElementById('tokenInput').value, 'tokenInput')"
                       title="Copiar Token">
                   <i class="fa-regular fa-copy"></i>
               </button>
@@ -132,21 +133,6 @@
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>
 
-<script>
-  function copyToken() {
-      var copyText = document.getElementById("tokenInput");
-      copyText.select();
-      copyText.setSelectionRange(0, 99999);
-      navigator.clipboard.writeText(copyText.value).then(function () {
-          var btn = document.getElementById("copyBtn");
-          var originalHTML = btn.innerHTML;
-          btn.innerHTML = '<i class="fa-solid fa-check"></i>';
-          setTimeout(function () {
-              btn.innerHTML = originalHTML;
-          }, 2000);
-      });
-  }
-</script>
 
 </body>
 </html>
