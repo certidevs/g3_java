@@ -36,7 +36,4 @@ public class RecommendedService {
         return recommendedRepository.listHousesToEmail(email, token);
     }
 
-    public List<UserRecommendationsDto> userRecommendedByUser(Long idUser) {
-        return recommendedRepository.userRecommendedByUserTop(idUser);
-    }
 }

@@ -158,8 +158,8 @@ public class UserService implements UserDetailsService {
         return userRepository.save(newUser);
     }
 
-    public List<UserRecommendationsDto> getAgendaUsers(String textFind) {
-        List<UserRecommendationsDto> allUsers = userRepository.findAllUsersWithRecommendationCount();
+    public List<UserRecommendationsDto> getAgendaUsers(String textFind, Long currentUserId) {
+        List<UserRecommendationsDto> allUsers = userRepository.findAllUsersWithRecommendationCounts(currentUserId);
         if (textFind == null || textFind.isBlank()) {
             return allUsers;
         }
@@ -171,8 +171,17 @@ public class UserService implements UserDetailsService {
                 .toList();
     }
 
-    public List<UserRecommendationsDto> getAgendaUsers() {
-        return getAgendaUsers(null);
+    public List<User> getAdminUsers(String textFind) {
+        List<User> allUsers = userRepository.userallOrderFirstName();
+        if (textFind == null || textFind.isBlank()) {
+            return allUsers;
+        }
+        String query = normalize(textFind);
+        return allUsers.stream()
+                .filter(u -> normalize(u.getUsername()).contains(query)
+                        || normalize(u.getFirstName()).contains(query)
+                        || normalize(u.getLastName()).contains(query))
+                .toList();
     }
 
     private String normalize(String str) {

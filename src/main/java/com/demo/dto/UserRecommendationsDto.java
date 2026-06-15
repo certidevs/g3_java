@@ -11,17 +11,7 @@ public record UserRecommendationsDto(
         Boolean active,
         Role role,
         String tokenforRecommended,
-        Long recommendedCount
+        Long recommendedCount,
+        Long recommendationsReceivedCount
 ) {
-    // Constructor de compatibilidad para consultas simplificadas
-    public UserRecommendationsDto(
-            Long id,
-            String username,
-            String firstName,
-            String lastName,
-            String tokenforRecommended,
-            Long recommendedCount
-    ) {
-        this(id, username, firstName, lastName, null, null, null, tokenforRecommended, recommendedCount);
-    }
 }

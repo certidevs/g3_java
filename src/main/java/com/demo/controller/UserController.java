@@ -100,12 +100,27 @@ class UserController {
         }
     }
 
+    @GetMapping("/users")
+    public String showUsers(Model model, 
+                            @RequestParam(required = false) String textfind, 
+                            @AuthenticationPrincipal User user) {
+        if (user.getRole() != Role.ROLE_ADMIN) {
+            return "redirect:/agenda";
+        }
+        model.addAttribute("agenda", userService.getAdminUsers(textfind));
+        model.addAttribute("showAdminView", true);
+        return "user/user-list";
+    }
+
     @GetMapping("/agenda")
-    public String showAgenda(Model model, @RequestParam(required = false) String textfind, @AuthenticationPrincipal User user) {
-        List<UserRecommendationsDto> agenda = userService.getAgendaUsers(textfind);
+    public String showAgenda(Model model, 
+                             @RequestParam(required = false) String textfind, 
+                             @AuthenticationPrincipal User user) {
+        List<UserRecommendationsDto> agenda = userService.getAgendaUsers(textfind, user.getId());
         model.addAttribute("agenda", agenda);
 
-        model.addAttribute("agendaRecommended", recommendedService.userRecommendedByUser(user.getId()));
+        model.addAttribute("showAdminView", false);
+        
         return "user/user-list";
     }
 }

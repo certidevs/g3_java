@@ -68,12 +68,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
             us.active,
             us.role,
             us.tokenforRecommended,
-            COUNT(hr)
+            COALESCE(SUM(CASE WHEN hr.userFrom.id = ?1 THEN 1L ELSE 0L END), 0L),
+            COALESCE(SUM(CASE WHEN hr.userTo.id = ?1 THEN 1L ELSE 0L END), 0L)
         )
         FROM User us
-        LEFT JOIN HouseRecommended hr ON hr.userFrom.id = us.id
+        LEFT JOIN HouseRecommended hr ON (hr.userFrom.id = ?1 AND hr.userTo.id = us.id) OR (hr.userFrom.id = us.id AND hr.userTo.id = ?1)
+        WHERE us.id <> ?1
         GROUP BY us.id, us.username, us.firstName, us.lastName, us.email, us.active, us.role, us.tokenforRecommended
-        ORDER BY COUNT(hr) DESC
+        ORDER BY 
+            COALESCE(SUM(CASE WHEN hr.userFrom.id = ?1 THEN 1L ELSE 0L END), 0L) DESC,
+            COALESCE(SUM(CASE WHEN hr.userTo.id = ?1 THEN 1L ELSE 0L END), 0L) DESC,
+            us.firstName ASC
     """)
-    List<UserRecommendationsDto> findAllUsersWithRecommendationCount();
+    List<UserRecommendationsDto> findAllUsersWithRecommendationCounts(Long currentUserId);
 }
