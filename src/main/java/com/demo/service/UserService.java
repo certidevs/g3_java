@@ -192,4 +192,8 @@ public class UserService implements UserDetailsService {
         }
         return Optional.empty();
     }
+
+    public List<User> userRecommendedByUser (Long idUser) {
+        return userRepository.userRecommendedByUser(idUser);
+    }
 }

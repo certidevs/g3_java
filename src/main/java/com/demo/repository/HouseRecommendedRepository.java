@@ -14,7 +14,7 @@ public interface HouseRecommendedRepository extends JpaRepository<HouseRecommend
     // TODO
 
     @Query("""
-        SELECT hs FROM HouseRecommended hs WHERE hs.tokenFrom=:tokenfrom AND hs.tokenTo=:tokento AND
+        SELECT hs FROM HouseRecommended hs WHERE hs.userFrom.tokenforRecommended=:tokenfrom AND hs.userTo.tokenforRecommended=:tokento AND
          hs.houseRecommended.id=:idhouse
     """)
     Optional<HouseRecommended> findRecommendation ( @Param("tokenfrom") String tokenFrom,
@@ -24,14 +24,14 @@ public interface HouseRecommendedRepository extends JpaRepository<HouseRecommend
 
     // Recomendaciones lanzadas
     @Query("""
-        SELECT hs FROM HouseRecommended hs WHERE hs.userRecommended.id=:idUsuario
+        SELECT hs FROM HouseRecommended hs WHERE hs.userFrom.id=:idUsuario
     """)
     List<HouseRecommended> listHousesFrom(@Param("idUsuario") Long idUsuario);
 
     // Recomendaciones recibidas
     @Query("""
-        SELECT hs FROM HouseRecommended hs WHERE hs.emailTo=:email OR
-            hs.tokenTo=:token
+        SELECT hs FROM HouseRecommended hs WHERE hs.userTo.email=:email OR
+            hs.userTo.tokenforRecommended=:token
     """)
     List<HouseRecommended> listHousesToEmail(@Param("email") String email,
                                              @Param("token") String token);

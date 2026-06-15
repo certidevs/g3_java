@@ -29,7 +29,7 @@
                        <div class="col" th:each="cat : ${recommfrom}">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <h5 class="title" th:text="|${cat.firstNameTo} ${cat.lastNameTo}|"></h5>
+                                    <h5 class="title" th:text="|${cat.userTo.firstName} ${cat.userTo.lastName}|"></h5>
                                     <p class="card-text" th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy')}"></p>
                                     <p class="card-text" th:text="${cat.message}"></p>
                                 </div>
@@ -56,7 +56,7 @@
                         <div class="col" th:each="cat : ${recommto}">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <h5 class="title" th:text="|${cat.firstNameTo} ${cat.lastNameTo}|"></h5>
+                                    <h5 class="title" th:text="|${cat.userFrom.firstName} ${cat.userFrom.lastName}|"></h5>
                                     <p class="card-text" th:text="${#temporals.format(cat.timeRecommended, 'dd/MM/yyyy')}"></p>
                                     <p class="card-text" th:text="${cat.message}"></p>
                                 </div>

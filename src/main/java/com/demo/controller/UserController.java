@@ -98,9 +98,11 @@ class UserController {
     }
 
     @GetMapping("/agenda")
-    public String showAgenda(Model model, @RequestParam(required = false) String textfind) {
+    public String showAgenda(Model model, @RequestParam(required = false) String textfind, @AuthenticationPrincipal User user) {
         List<User> agenda = userService.getAgendaUsers(textfind);
         model.addAttribute("agenda", agenda);
+
+        model.addAttribute("agendaRecommended", userService.userRecommendedByUser(user.getId()));
         return "user/user-list";
     }
 }

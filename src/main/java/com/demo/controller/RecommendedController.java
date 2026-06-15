@@ -8,6 +8,7 @@ import com.demo.service.HouseService;
 import com.demo.service.BookingService;
 import com.demo.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,8 @@ public class RecommendedController {
             HouseRecommended recommendation = new HouseRecommended();
 
             recommendation.setHouseRecommended(houseValid);
+            recommendation.setUserFrom(userValid);
+            /*
             recommendation.setTokenFrom(token);
             // Datos usuario que crea la recomendacion
             recommendation.setUserRecommended(userValid);
@@ -49,6 +52,8 @@ public class RecommendedController {
             recommendation.setEmailFrom(userValid.getEmail());
 
             recommendation.setEmailFrom(userValid.getEmail());
+            */
+
 
             model.addAttribute("recommendation", recommendation);
 
@@ -62,42 +67,48 @@ public class RecommendedController {
     @PostMapping("recommended")
     public String addRecommendation(
             @RequestParam Long houseId,
+            /*
             @RequestParam Long userFromId,
             @RequestParam String tokenFrom,
+             */
             @RequestParam(required = false) String tokenTo,
-            @RequestParam(required = false) String emailFrom,
             @RequestParam(required = false) String emailTo,
             @RequestParam(required = false) String message,
+            @AuthenticationPrincipal User userFrom,
             RedirectAttributes redirectAttributes)
             {
 
         // 1) Cargar entidades base (las que estaban en el formulario son referencias, las recargamos por id)
         House house = houseService.findById(houseId).orElseThrow();
-        User userFrom = userService.findById(userFromId).orElseThrow();
+        // User userFrom = userService.findById(userFromId).orElseThrow();
 
         // 2) Resolver destinatario, por token y luego email, abstraído en el UserService
         User userTo = userService.resolveUserByTokenOrEmail(tokenTo, emailTo).orElse(null);
         if (userTo == null) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Ni el token ni el correo son válidos.");
-            return "redirect:/recommended/" + tokenFrom + "/" + houseId + "/" + userFromId;
+            return "redirect:/recommended/" + userFrom.getTokenforRecommended() + "/" + houseId + "/" + userFrom.getId();
         }
 
         // 3) Comprobar duplicado (mismo recomendador, mismo destinatario, misma casa)
         Optional<HouseRecommended> dup = houseRecommendedRepository.findRecommendation(
-                tokenFrom,
+                userFrom.getTokenforRecommended(),
                 userTo.getTokenforRecommended(),
                 houseId);                                  // ← ahora SÍ el id de la casa
         if (dup.isPresent()) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Ya ha recomendado esta casa al usuario.");
-            return "redirect:/recommended/" + tokenFrom + "/" + houseId + "/" + userFromId;
+            return "redirect:/recommended/" + userFrom.getTokenforRecommended() + "/" + houseId + "/" + userFrom.getId();
         }
 
         // 4) Crear entidad NUEVA → id null → JPA hará INSERT seguro
         HouseRecommended nueva = HouseRecommended.builder()
                 .houseRecommended(house)
-                .userRecommended(userFrom)
+                .userFrom(userFrom)
+                .userTo(userTo)
+                .message(message)
+                .build();
+                /*
                 .tokenFrom(tokenFrom)
                 .tokenTo(userTo.getTokenforRecommended())
                 .emailFrom(userFrom.getEmail())
@@ -106,14 +117,14 @@ public class RecommendedController {
                 .lastNameFrom(userFrom.getLastName())
                 .firstNameTo(userTo.getFirstName())
                 .lastNameTo(userTo.getLastName())
-                .message(message)
-                .build();
+
+                 */
 
         houseRecommendedRepository.save(nueva);
 
         redirectAttributes.addFlashAttribute("mensajeExito","Recomendación creada satisfactoriamente.");
 
-        return "redirect:/panel-control/" + userFromId;
+        return "redirect:/panel-control/" + userFrom.getId();
     }
 
     @GetMapping("recommended-show/{idUsuario}")

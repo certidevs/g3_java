@@ -27,40 +27,42 @@
     <form th:action="@{/recommended}" method="post" th:object="${recommendation}">
         <!--        Estimatedcheckin-->
       <input type="hidden" name="houseId" th:value="${recommendation.houseRecommended.id}" readonly/>
-      <input type="hidden" name="userFromId" th:value="${recommendation.userRecommended.id}" readonly/>
+      <input type="hidden" name="userFromId" th:value="${recommendation.userFrom.id}" readonly/>
 
 
-      <input type="hidden" th:field="*{firstNameFrom}" readonly/>
-      <input type="hidden" th:field="*{lastNameFrom}" readonly/>
+      <input type="hidden" th:field="*{userFrom.firstName}" readonly/>
+      <input type="hidden" th:field="*{userFrom.lastName}" readonly/>
 
       <div class="mb-3">
         <label for="tokenfrom" class="form-label">Token personal : </label>
         <input type="text" class="form-control" id="tokenfrom"
-               name="tokenfrom" th:field="*{tokenFrom}"
+               name="tokenfrom" th:field="*{userFrom.tokenforRecommended}"
                 required/>
       </div>
     <div class="mb-3">
       <label for="tokento" class="form-label">Token destinatario :</label>
       <input type="text" class="form-control" id="tokento"
-             name="tokento" th:field="*{tokenTo}"
+             name="tokento"
              />
+        <!--  th:field="*{userTo.tokenforRecommended}"-->
     </div>
     <div class="mb-3">
       <label for="correofrom" class="form-label">Email personal : </label>
       <input type="text" class="form-control" id="correofrom"
-             name="correofrom" th:field="*{emailFrom}"
+             name="correofrom" th:field="*{userFrom.email}"
              />
     </div>
     <div class="mb-3">
       <label for="correoto" class="form-label">Email destino :</label>
       <input type="text" class="form-control" id="correoto"
-             name="correoto" th:field="*{emailTo}"
+             name="correoto"
              />
+        <!--th:field="*{userTo.email}"-->
     </div>
       <div class="mb-3">
           <label for="mensaje" class="form-label">Mensaje :</label>
           <textarea rows="4" class="form-control" id="mensaje"
-                 name="mensaje" th:field="*{message}" placeholder="Ubicación.Precio.Sercicios.Condiciones"
+                 name="mensaje" th:field="*{message}" placeholder="Ubicación. Precio. Servicios. Condiciones"
           ></textarea>
       </div>
       <div>

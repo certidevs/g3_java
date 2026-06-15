@@ -19,6 +19,7 @@ public class HouseRecommended {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /*
     private String tokenFrom;
     private String tokenTo;
 
@@ -29,6 +30,7 @@ public class HouseRecommended {
     private String lastNameFrom;
     private String firstNameTo;
     private String lastNameTo;
+    */
 
     @Column(length = 1000)
     private String message;
@@ -42,6 +44,9 @@ public class HouseRecommended {
 
     @ManyToOne
     @ToString.Exclude
-    private User userRecommended;
+    private User userFrom;
 
+    @ManyToOne
+    @ToString.Exclude
+    private User userTo;
 }

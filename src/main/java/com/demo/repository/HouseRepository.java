@@ -108,8 +108,16 @@ public interface HouseRepository extends JpaRepository<House, Long> {
 
     @Query("""
             SELECT new com.demo.dto.HouseStatsDto(
-                        h.id, h.title, h.pricePerNight, h.province, h.maxGuests, h.houseType, h.imageUrl, h.active,
-                        COALESCE(AVG(CAST(r.rating AS double)), 0.0), COUNT(r)
+                        h.id as id,
+                        h.title as title,
+                        h.pricePerNight as pricePerNight,
+                        h.province as province,
+                        h.maxGuests as maxGuests,
+                        h.houseType as houseType,
+                        h.imageUrl as imageUrl,
+                        h.active as active,
+                        COALESCE(AVG(CAST(r.rating AS double)), 0.0) as averageRating,
+                        COUNT(r) as reviewCount
             )
             FROM House h
             LEFT JOIN Review r ON r.house = h
