@@ -217,46 +217,46 @@ public class BookingController {
     }
 
     @GetMapping("/booking/from-pending-to-confirmed/{id}")
-    public String actionFromPendingToConfirmed(@PathVariable Long id, Model model) {
+    public String actionFromPendingToConfirmed(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Booking> bookingOptional = bookingService.findById(id);
         if (bookingOptional.isPresent()) {
             Booking bookingPresent = bookingOptional.get();
             bookingPresent.setStatusbooking(StatusBooking.CONFIRMED);
             bookingService.save(bookingPresent);
-            User user = bookingPresent.getUserHouse().getHost();
-            return "redirect:/host/pending/" + user.getId();
+            redirectAttributes.addFlashAttribute("message", "Reserva confirmada con éxito");
+            return "redirect:/booking/" + bookingPresent.getId();
         }
         return "redirect:/houses";
     }
 
     @GetMapping("/booking/from-pending-to-cancelled/{id}")
-    public String actionFromPendingToCancelled(@PathVariable Long id, Model model) {
+    public String actionFromPendingToCancelled(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Booking> bookingOptional = bookingService.findById(id);
         if (bookingOptional.isPresent()) {
             Booking bookingPresent = bookingOptional.get();
             bookingPresent.setStatusbooking(StatusBooking.CANCELLED);
             bookingService.save(bookingPresent);
-            User user = bookingPresent.getUserHouse().getHost();
-            return "redirect:/host/cancelled/" + user.getId();
+            redirectAttributes.addFlashAttribute("message", "Reserva cancelada con éxito");
+            return "redirect:/booking/" + bookingPresent.getId();
         }
         return "redirect:/houses";
     }
 
     @GetMapping("/booking/from-confirmed-to-cancelled/{id}")
-    public String actionFromConfirmedToCancelled(@PathVariable Long id, Model model) {
+    public String actionFromConfirmedToCancelled(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Booking> bookingOptional = bookingService.findById(id);
         if (bookingOptional.isPresent()) {
             Booking bookingPresent = bookingOptional.get();
             bookingPresent.setStatusbooking(StatusBooking.CANCELLED);
             bookingService.save(bookingPresent);
-            User user = bookingPresent.getUserHouse().getHost();
-            return "redirect:/host/cancelled/" + user.getId();
+            redirectAttributes.addFlashAttribute("message", "Reserva cancelada con éxito");
+            return "redirect:/booking/" + bookingPresent.getId();
         }
         return "redirect:/houses";
     }
 
     @GetMapping("/booking/from-confirmed-to-completed/{id}")
-    public String actionFromConfirmedToCompleted(@PathVariable Long id, Model model) {
+    public String actionFromConfirmedToCompleted(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Booking> bookingOptional = bookingService.findById(id);
         if (bookingOptional.isPresent()) {
             Booking bookingPresent = bookingOptional.get();
@@ -264,21 +264,22 @@ public class BookingController {
             bookingService.save(bookingPresent);
             House house = bookingPresent.getUserHouse();
             house.setReserve(StatusReserva.DISPONIBLE);
-            User user = bookingPresent.getUserHouse().getHost();
-            return "redirect:/host/completed/" + user.getId();
+            houseService.save(house);
+            redirectAttributes.addFlashAttribute("message", "Reserva completada con éxito");
+            return "redirect:/booking/" + bookingPresent.getId();
         }
         return "redirect:/houses";
     }
 
     @GetMapping("/booking/from-pending-to-cancelled-guest/{id}")
-    public String actionFromPendingToCancelledGuest(@PathVariable Long id, Model model) {
+    public String actionFromPendingToCancelledGuest(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Booking> bookingOptional = bookingService.findById(id);
         if (bookingOptional.isPresent()) {
             Booking bookingPresent = bookingOptional.get();
             bookingPresent.setStatusbooking(StatusBooking.CANCELLED);
             bookingService.save(bookingPresent);
-            User user = bookingPresent.getUserHouse().getHost();
-            return "redirect:/guest/cancelled/" + id.toString();
+            redirectAttributes.addFlashAttribute("message", "Reserva cancelada con éxito");
+            return "redirect:/booking/" + bookingPresent.getId();
         }
         return "redirect:/houses";
     }
