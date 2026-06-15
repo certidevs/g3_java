@@ -41,6 +41,7 @@ public class RecommendedController {
 
             HouseRecommended recommendation = new HouseRecommended();
 
+            recommendation.setUserTo(null);
             recommendation.setHouseRecommended(houseValid);
             recommendation.setUserFrom(userValid);
             /*
