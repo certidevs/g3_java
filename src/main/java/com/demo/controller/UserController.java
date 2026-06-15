@@ -23,6 +23,7 @@ class UserController {
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("user", userService.getByIdOrThrow(user.getId()));
+        model.addAttribute("isProfile", true);
         return "user/user-detail";
     }
 

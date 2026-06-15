@@ -129,10 +129,10 @@
 
                         <!-- Botones de Acción para Huésped -->
                         <div class="col-12 d-flex justify-content-end align-items-center gap-3 mt-3">
-                            <a th:href="@{/booking/from-pending-to-cancelled-guest/{id}(id=${booking.id})}" class="btn btn-outline-danger rounded-pill px-4 py-2.5 fw-semibold shadow-sm hover-brand-transition">
+                            <a th:href="@{/booking/from-pending-to-cancelled-guest/{id}(id=${booking.id})}" class="btn btn-outline-danger rounded-pill px-4 py-2.5 fw-semibold shadow-sm">
                                 <i class="fa-solid fa-circle-xmark me-2"></i>Cancelar reserva
                             </a>
-                            <button type="submit" class="btn btn-brand rounded-pill px-5 py-2.5 fw-semibold text-white shadow-sm hover-brand-transition">
+                            <button type="submit" class="btn btn-brand rounded-pill px-5 py-2.5 fw-semibold text-white shadow-sm">
                                 <i class="fa-solid fa-credit-card me-2"></i>Pagar y finalizar (<span th:text="${booking.totalPrice} + ' €'"></span>)
                             </button>
                         </div>
@@ -186,7 +186,7 @@
                             <span class="text-muted small d-block mb-2 text-uppercase fw-bold letter-spacing-sm">
                                 <i class="fa-solid fa-arrow-right-to-bracket me-2 text-success"></i>Entrada (Check-in)
                             </span>
-                            <h4 class="h5 fw-bold text-dark mb-0" th:text="${booking.statusbooking.name() == 'CONFIRMED' or booking.statusbooking.name() == 'COMPLETED'} ? ${booking.checkin} : ${booking.estimatedCheckin}">12/06/2026</h4>
+                            <h4 class="h5 fw-bold text-dark mb-0" th:text="${#temporals.format(booking.statusbooking.name() == 'CONFIRMED' or booking.statusbooking.name() == 'COMPLETED' ? booking.checkin : booking.estimatedCheckin, 'dd/MM/yyyy HH:mm')}">12/06/2026 12:00</h4>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -194,7 +194,7 @@
                             <span class="text-muted small d-block mb-2 text-uppercase fw-bold letter-spacing-sm">
                                 <i class="fa-solid fa-arrow-right-from-bracket me-2 text-danger"></i>Salida (Check-out)
                             </span>
-                            <h4 class="h5 fw-bold text-dark mb-0" th:text="${booking.statusbooking.name() == 'CONFIRMED' or booking.statusbooking.name() == 'COMPLETED'} ? ${booking.checkout} : ${booking.estimatedCheckout}">15/06/2026</h4>
+                            <h4 class="h5 fw-bold text-dark mb-0" th:text="${#temporals.format(booking.statusbooking.name() == 'CONFIRMED' or booking.statusbooking.name() == 'COMPLETED' ? booking.checkout : booking.estimatedCheckout, 'dd/MM/yyyy HH:mm')}">15/06/2026 12:00</h4>
                         </div>
                     </div>
                 </div>

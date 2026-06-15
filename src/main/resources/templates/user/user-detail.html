@@ -8,9 +8,9 @@
 <main class="container flex-grow-1 mb-5">
 
   <!-- Enlace de regreso -->
-  <div class="mt-4 mb-3">
-    <a th:href="@{/panel-control/{id}(id=${#authentication.principal.id})}" class="text-decoration-none text-muted d-inline-flex align-items-center hover-brand-transition">
-      <i class="fa-solid fa-arrow-left me-2"></i> Volver al panel de control
+  <div class="mt-4 mb-3" th:if="${isProfile == null or !isProfile}">
+    <a th:href="@{/users}" class="text-decoration-none text-muted d-inline-flex align-items-center text-hover-brand">
+      <i class="fa-solid fa-arrow-left me-2"></i> Volver a usuarios
     </a>
   </div>
 

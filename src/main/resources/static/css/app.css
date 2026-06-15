@@ -512,5 +512,19 @@ main.container {
     color: var(--brand-color) !important;
 }
 
+.btn-clear-filters {
+    background-color: #ffffff !important;
+    border: 1px solid #d3cfc7 !important;
+    color: #4a4842 !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.btn-clear-filters:hover {
+    background-color: #f1f0ea !important;
+    border-color: #b0aba0 !important;
+    color: #2d2c29 !important;
+}
+
+
 
 
