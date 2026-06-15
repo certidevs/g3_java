@@ -28,6 +28,7 @@ public class HouseController {
     private final FileService fileService;
     private final com.demo.service.BookingService bookingService;
     private final com.demo.service.RecommendedService recommendedService;
+    private final com.demo.repository.AmenityRepository amenityRepository;
 
 
 
@@ -41,16 +42,26 @@ public class HouseController {
                             @RequestParam(required = false) Double minRating,
                             @RequestParam(required = false) Boolean active,
                             @RequestParam(required = false) Boolean favoritesOnly,
+                            @RequestParam(required = false) Integer maxGuests,
+                            @RequestParam(required = false) Boolean rentedOnly,
+                            @RequestParam(required = false) List<Long> amenityIds,
                             @AuthenticationPrincipal User user
     ) {
         model.addAttribute("provinces", houseService.getTopProvinces());
+        model.addAttribute("allAmenities", amenityRepository.findAll());
+
+        List<Long> rentedHouseIds = new ArrayList<>();
+        if (user != null) {
+            List<House> rentedProperties = bookingService.getGuestProperties(user.getId());
+            rentedHouseIds = rentedProperties.stream().map(House::getId).toList();
+        }
 
         @SuppressWarnings("unchecked")
         Set<Long> favoritesHouses = (Set<Long>) model.getAttribute("favoritesHouses");
 
         List<HouseStatsDto> housesStats = houseService.getHousesForCatalog(
                 reserve, pricePerNight, title, province, houseType, minRating, active,
-                favoritesOnly, user, favoritesHouses
+                favoritesOnly, user, favoritesHouses, maxGuests, rentedOnly, rentedHouseIds, amenityIds
         );
 
         model.addAttribute("houses", housesStats);
@@ -60,6 +71,9 @@ public class HouseController {
         model.addAttribute("selectedMinRating", minRating);
         model.addAttribute("selectedActive", active);
         model.addAttribute("selectedFavoritesOnly", favoritesOnly);
+        model.addAttribute("selectedMaxGuests", maxGuests);
+        model.addAttribute("selectedRentedOnly", rentedOnly);
+        model.addAttribute("selectedAmenityIds", amenityIds != null ? amenityIds : new ArrayList<Long>());
 
         return "house/house-list";
     }
@@ -138,6 +152,7 @@ public class HouseController {
         }
         model.addAttribute("provinces", HouseService.PROVINCES);
         model.addAttribute("houseTypes", HouseType.values());
+        model.addAttribute("allAmenities", amenityRepository.findAll());
         return "house/house-form";
     }
 
@@ -148,6 +163,7 @@ public class HouseController {
         }
         model.addAttribute("provinces", HouseService.PROVINCES);
         model.addAttribute("houseTypes", HouseType.values());
+        model.addAttribute("allAmenities", amenityRepository.findAll());
         return "house/house-form";
     }
 

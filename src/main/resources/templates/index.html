@@ -188,16 +188,18 @@
         <h2 class="text-center fw-bold mb-5 text-dark h1">🌟 Características y ubicaciones</h2>
         <div class="row g-4">
             <div class="col-12 col-md-6 col-lg-4" th:each="amenity : ${amenities}">
-                <div class="d-flex align-items-center p-4 border rounded-4 bg-white shadow-sm h-100 property-card">
-                    <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-4"
-                         style="width: 60px; height: 60px; min-width: 60px;">
-                        <i th:class="'fa-solid fa-' + ${amenity.icon} + ' fs-3 text-brand'"></i>
+                <a th:href="@{/houses(amenityIds=${amenity.id})}" class="text-decoration-none text-dark d-block h-100">
+                    <div class="d-flex align-items-center p-4 border rounded-4 bg-white shadow-sm h-100 property-card">
+                        <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-4"
+                             style="width: 60px; height: 60px; min-width: 60px;">
+                            <i th:class="'fa-solid fa-' + ${amenity.icon} + ' fs-3 text-brand'"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1 fw-bold h5 text-dark" th:text="${amenity.name}">Amenity</h4>
+                            <p class="mb-0 text-muted small" th:text="${amenity.description}">Desc</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="mb-1 fw-bold h5 text-dark" th:text="${amenity.name}">Amenity</h4>
-                        <p class="mb-0 text-muted small" th:text="${amenity.description}">Desc</p>
-                    </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>

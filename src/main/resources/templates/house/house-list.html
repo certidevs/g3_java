@@ -33,7 +33,7 @@
                         <button type="submit" class="btn btn-brand fw-bold p-2 rounded-3 shadow-sm flex-grow-1">
                             <i class="fa-solid fa-magnifying-glass me-2"></i> Buscar
                         </button>
-                        <a th:href="@{/houses}" class="btn btn-outline-secondary p-2 rounded-3 shadow-sm"
+                        <a th:href="@{/houses}" class="btn btn-outline-secondary bg-white p-2 rounded-3 shadow-sm"
                            title="Limpiar filtros" style="width: 46px;">
                             <i class="fa-solid fa-eraser"></i>
                         </a>
@@ -51,26 +51,34 @@
                         </select>
                     </div>
 
-                    <!-- Favoritas -->
-                    <div sec:authorize="isAuthenticated()" class="mb-4">
+                    <!-- Favoritas y Alquiladas -->
+                    <div sec:authorize="isAuthenticated()" class="mb-4 d-flex flex-column gap-2">
+                        <div class="form-check ms-1">
+                            <input class="form-check-input border-success" type="checkbox" id="rentedOnly"
+                                   th:name="rentedOnly" value="true" th:checked="${selectedRentedOnly}">
+                            <label class="form-check-label text-dark fw-bold" for="rentedOnly">
+                                <i class="fa-solid fa-clock-rotate-left text-success me-1"></i> Alquiladas anteriormente
+                            </label>
+                        </div>
                         <div class="form-check ms-1">
                             <input class="form-check-input border-danger" type="checkbox" id="favoritesOnly"
                                    th:name="favoritesOnly" value="true" th:checked="${selectedFavoritesOnly}">
                             <label class="form-check-label text-dark fw-bold" for="favoritesOnly">
-                                <i class="fa-solid fa-heart text-danger me-1"></i> Solo Favoritas
+                                <i class="fa-solid fa-heart text-danger me-1"></i> Marcadas favoritas
                             </label>
                         </div>
                     </div>
 
-                    <!-- Tipo de Alojamiento -->
+                    <!-- Valoración -->
                     <div class="mb-3">
-                        <label class="form-label text-dark fw-bold mb-1 small"><i class="fa-solid fa-building me-1"></i>Tipo</label>
-                        <select th:name="houseType" class="form-select border-0 shadow-sm p-2 rounded-3">
-                            <option value="">Cualquiera</option>
-                            <option th:each="type : ${T(com.demo.model.enums.HouseType).values()}"
-                                    th:value="${type}"
-                                    th:text="${type.label}"
-                                    th:selected="${type == selectedHouseType}"></option>
+                        <label class="form-label text-dark fw-bold mb-1 small"><i
+                                class="fa-solid fa-star me-1 text-warning"></i>Valoración</label>
+                        <select th:name="minRating" class="form-select border-0 shadow-sm p-2 rounded-3">
+                            <option value="" th:selected="${selectedMinRating == null}">Todas</option>
+                            <option value="0.0" th:selected="${selectedMinRating == 0.0}">Con reseñas</option>
+                            <option value="3.0" th:selected="${selectedMinRating == 3.0}">3+ Estrellas</option>
+                            <option value="4.0" th:selected="${selectedMinRating == 4.0}">4+ Estrellas</option>
+                            <option value="5.0" th:selected="${selectedMinRating == 5.0}">5 Estrellas</option>
                         </select>
                     </div>
 
@@ -87,6 +95,14 @@
                         </select>
                     </div>
 
+                    <!-- Capacidad mínima -->
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold mb-1 small"><i
+                                class="fa-solid fa-user-group me-1"></i>Huéspedes</label>
+                        <input type="number" min="1" th:name="maxGuests" th:value="${selectedMaxGuests}"
+                               class="form-control border-0 shadow-sm p-2 rounded-3" placeholder="Ej. 2"/>
+                    </div>
+
                     <!-- Precio Maximo -->
                     <div class="mb-3">
                         <label class="form-label text-dark fw-bold mb-1 small"><i
@@ -95,17 +111,33 @@
                                class="form-control border-0 shadow-sm p-2 rounded-3" placeholder="Ej. 100"/>
                     </div>
 
-                    <!-- Valoración -->
+                    <!-- Tipo de Alojamiento -->
                     <div class="mb-3">
-                        <label class="form-label text-dark fw-bold mb-1 small"><i
-                                class="fa-solid fa-star me-1 text-warning"></i>Valoración</label>
-                        <select th:name="minRating" class="form-select border-0 shadow-sm p-2 rounded-3">
-                            <option value="" th:selected="${selectedMinRating == null}">Todas</option>
-                            <option value="0.0" th:selected="${selectedMinRating == 0.0}">Con reseñas</option>
-                            <option value="3.0" th:selected="${selectedMinRating == 3.0}">3+ Estrellas</option>
-                            <option value="4.0" th:selected="${selectedMinRating == 4.0}">4+ Estrellas</option>
-                            <option value="5.0" th:selected="${selectedMinRating == 5.0}">5 Estrellas</option>
+                        <label class="form-label text-dark fw-bold mb-1 small"><i class="fa-solid fa-building me-1"></i>Tipo</label>
+                        <select th:name="houseType" class="form-select border-0 shadow-sm p-2 rounded-3">
+                            <option value="">Cualquiera</option>
+                            <option th:each="type : ${T(com.demo.model.enums.HouseType).values()}"
+                                    th:value="${type}"
+                                    th:text="${type.label}"
+                                    th:selected="${type == selectedHouseType}"></option>
                         </select>
+                    </div>
+
+                    <!-- Comodidades -->
+                    <div class="mb-3">
+                        <label class="form-label text-dark fw-bold mb-2 small"><i class="fa-solid fa-couch me-1"></i>Comodidades</label>
+                        <div class="bg-white p-3 rounded-3 border shadow-sm d-flex flex-column gap-2">
+                            <div class="form-check" th:each="amenity : ${allAmenities}">
+                                <input type="checkbox" th:name="amenityIds" th:value="${amenity.id}"
+                                       th:checked="${selectedAmenityIds != null and selectedAmenityIds.contains(amenity.id)}"
+                                       class="form-check-input" th:id="'amenity-' + ${amenity.id}"/>
+                                <label class="form-check-label small d-flex align-items-center gap-1"
+                                       th:for="'amenity-' + ${amenity.id}">
+                                    <i th:class="'fa-solid fa-' + ${amenity.icon} + ' text-muted me-1'"></i>
+                                    <span th:text="${amenity.name}">WiFi</span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
                 </form>
@@ -192,11 +224,11 @@
                                     <input type="hidden" name="redirectUrl"
                                            th:value="'/houses#house-card-' + ${house.id}"/>
                                     <button type="submit"
-                                             class="btn btn-sm btn-link text-decoration-none p-0 favorite-btn"
-                                             th:title="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'Quitar de favoritos' : 'Agregar a favoritos'"
-                                             th:classappend="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'text-danger' : 'text-secondary'">
-                                         <i th:class="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'fa-solid fa-heart fs-3' : 'fa-regular fa-heart fs-3'"></i>
-                                     </button>
+                                            class="btn btn-sm btn-link text-decoration-none p-0 favorite-btn"
+                                            th:title="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+                                            th:classappend="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'text-danger' : 'text-secondary'">
+                                        <i th:class="${favoritesHouses != null and favoritesHouses.contains(house.id)} ? 'fa-solid fa-heart fs-3' : 'fa-regular fa-heart fs-3'"></i>
+                                    </button>
 
                                 </form>
                                 <div sec:authorize="!isAuthenticated()" class="m-0 p-0 position-relative z-3">

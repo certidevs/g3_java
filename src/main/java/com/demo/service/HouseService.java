@@ -68,6 +68,7 @@ public class HouseService {
             existingHouse.setProvince(house.getProvince());
             existingHouse.setMaxGuests(house.getMaxGuests());
             existingHouse.setHouseType(house.getHouseType());
+            existingHouse.setAmenities(house.getAmenities());
             if (house.getImageUrl() != null && !house.getImageUrl().isEmpty()) {
                 existingHouse.setImageUrl(house.getImageUrl());
             }
@@ -86,7 +87,11 @@ public class HouseService {
             Boolean active,
             Boolean favoritesOnly,
             User user,
-            Set<Long> favoritesHouses
+            Set<Long> favoritesHouses,
+            Integer maxGuests,
+            Boolean rentedOnly,
+            List<Long> rentedHouseIds,
+            List<Long> amenityIds
     ) {
         boolean isAdmin = user != null && user.getRole() == Role.ROLE_ADMIN;
         Boolean activeFilter = true;
@@ -103,9 +108,21 @@ public class HouseService {
                 ? new ArrayList<>(favoritesHouses)
                 : List.of(-1L);
 
+        boolean filterRented = Boolean.TRUE.equals(rentedOnly);
+        if (filterRented && (rentedHouseIds == null || rentedHouseIds.isEmpty())) {
+            return new ArrayList<>();
+        }
+
+        List<Long> rentedIds = (rentedHouseIds != null && !rentedHouseIds.isEmpty())
+                ? rentedHouseIds
+                : List.of(-1L);
+
+        List<Long> amenities = (amenityIds != null) ? amenityIds : List.of();
+        Long amenitiesCount = (long) amenities.size();
+
         return houseRepository.findByReserveStats(
                 reserve, pricePerNight, title, province, houseType, minRating, activeFilter,
-                filterFavorites, favIds
+                filterFavorites, favIds, maxGuests, filterRented, rentedIds, amenities, amenitiesCount
         );
     }
 }

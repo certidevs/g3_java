@@ -79,6 +79,9 @@ public interface HouseRepository extends JpaRepository<House, Long> {
               AND (:province IS NULL OR h.province = :province)
               AND (:houseType IS NULL OR h.houseType = :houseType)
               AND (:filterFavorites = false OR h.id IN :favIds)
+              AND (:maxGuests IS NULL OR h.maxGuests >= :maxGuests)
+              AND (:filterRented = false OR h.id IN :rentedIds)
+              AND (:amenitiesCount = 0L OR (SELECT COUNT(ha) FROM h.amenities ha WHERE ha.id IN :amenityIds) = :amenitiesCount)
             GROUP BY h
             HAVING (:minRating IS NULL
                     OR (:minRating = 0.0 AND COUNT(r) > 0)
@@ -93,7 +96,12 @@ public interface HouseRepository extends JpaRepository<House, Long> {
             @Param("minRating") Double minRating,
             @Param("active") Boolean active,
             @Param("filterFavorites") boolean filterFavorites,
-            @Param("favIds") Collection<Long> favIds
+            @Param("favIds") Collection<Long> favIds,
+            @Param("maxGuests") Integer maxGuests,
+            @Param("filterRented") boolean filterRented,
+            @Param("rentedIds") Collection<Long> rentedIds,
+            @Param("amenityIds") Collection<Long> amenityIds,
+            @Param("amenitiesCount") Long amenitiesCount
     );
 
     //FILTRAR REVIEW CON MEJORES RESEÑAS

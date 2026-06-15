@@ -38,11 +38,11 @@ public class SecurityConfig {
 
                         // separado de una en una
                         .requestMatchers(HttpMethod.GET, "/houses").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/houses/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/houses").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/houses/deactivate/*").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/houses/new").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/houses/edit/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/houses/deactivate/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/houses/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/houses").hasRole("ADMIN")
 //
                         .requestMatchers(HttpMethod.GET, "/panel-control/*").authenticated()
 
