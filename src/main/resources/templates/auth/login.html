@@ -22,10 +22,17 @@
                     <h1 class="h5 mt-3 fw-normal text-secondary">Entra con tu cuenta</h1>
                 </div>
 
-                <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                <div th:if="${param.error}" class="alert alert-danger">
+                    Usuario o contraseña incorrectos.
+                </div>
+                <div th:if="${param.logout}" class="alert alert-info">
+                    Has cerrado sesión correctamente.
+                </div>
+                <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
 
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="username" name="username"
+                           th:value="${registeredUsername}"
                            placeholder="pepe666" required autofocus min="3" maxlength="100">
                     <label for="username">Username</label>
                 </div>

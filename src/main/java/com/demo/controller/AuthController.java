@@ -29,14 +29,15 @@ public class AuthController {
 
     // @PostMapping /register
     @PostMapping("register")
-    public String register(@ModelAttribute RegisterForm form, RedirectAttributes redirectAttributes) {
+    public String register(@ModelAttribute("user") RegisterForm form, Model model, RedirectAttributes redirectAttributes) {
         try {
             userService.register(form);
             redirectAttributes.addFlashAttribute("message", "Cuenta creada correctamente, inicia sesión.");
+            redirectAttributes.addFlashAttribute("registeredUsername", form.getUsername());
             return "redirect:/login";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/register";
+            model.addAttribute("error", e.getMessage());
+            return "auth/register";
         }
     }
 
@@ -47,7 +48,6 @@ public class AuthController {
     // NO hace falta
     // @PostMapping /login   porque Spring Security lo hace automaticamente
     // @PostMapping /logout   Spring security lo hace automatico
-
 
 
 }
