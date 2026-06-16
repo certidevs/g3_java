@@ -1,6 +1,5 @@
 package com.demo.service;
 
-import com.demo.dto.UserRecommendationsDto;
 import com.demo.model.HouseRecommended;
 import com.demo.repository.HouseRecommendedRepository;
 import lombok.AllArgsConstructor;
@@ -48,4 +47,4 @@ public class RecommendedService {
         return recommendedRepository.existsByUserFromIdAndHouseRecommendedId(userFromId, houseId);
     }
 
-}
+}

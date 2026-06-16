@@ -21,7 +21,7 @@ public class SecurityConfig {
     //SecurityFilterChain PROTEGER ACCESOS A RUTAS
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http){
 
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
 

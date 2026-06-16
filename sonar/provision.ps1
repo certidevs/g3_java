@@ -2,7 +2,7 @@
 # cobertura) asignado a este proyecto, y token de analisis. Idempotente.
 #   Ejecutar desde la raiz del repo:  .\sonar\provision.ps1
 $ErrorActionPreference = 'Stop'
-$Sonar      = 'http://localhost:9000'
+$Sonar      = 'http://127.0.0.1:9000'
 $NEWPASS    = 'Adecco.Sonar.2026'
 $ProjectKey = 'g3_java'
 $GateName   = 'Curso Java'
@@ -17,7 +17,7 @@ function Wait-Sonar {
       $s = Invoke-RestMethod "$Sonar/api/system/status" -TimeoutSec 5
       if ($s.status -eq 'UP') { Write-Host "SonarQube UP."; return }
       Write-Host "  estado: $($s.status) ..."
-    } catch { Write-Host "  arrancando ..." }
+    } catch { Write-Host "  arrancando ... ($($_.Exception.Message))" }
     Start-Sleep -Seconds 5
   }
   throw "SonarQube no llego a UP a tiempo. Revisa: docker compose -f compose.sonar.yaml logs sonarqube"

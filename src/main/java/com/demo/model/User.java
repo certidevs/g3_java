@@ -20,6 +20,8 @@ import java.util.List;
 @Setter
 @Table(name = "users")
 public class User implements UserDetails{
+    public static final SecureRandom scr = new SecureRandom();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,7 +56,6 @@ public class User implements UserDetails{
     public User() { // TODO: QUE ES ESTO ??, debería moverse a la logica de creación desde la bdd o por el estilo, que pasa cuando un User no se crea desde aca?????
         // Creamos un token propio del usuario.
         active = true;
-        SecureRandom scr = new SecureRandom();
         StringBuilder sb = new StringBuilder(8);
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         for (int i = 0; i < 8; i++) {

@@ -38,7 +38,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // TODOS LOS USUARIOS ORDENADOS POR FIRSTNAME
     @Query("""
-        SELECT us FROM User us  WHERE us.firstName IS NOT NULL ORDER BY us.firstName ASC
+        SELECT us FROM User us
+        ORDER BY
+            CASE WHEN (us.firstName IS NOT NULL AND us.firstName <> '') THEN 0 ELSE 1 END ASC,
+            us.firstName ASC,
+            us.username ASC
     """)
     List<User> userallOrderFirstName ();
 
