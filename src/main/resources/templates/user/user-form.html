@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{layout/head :: head('Formulario de Usuario')}"></head>
+<head th:replace="~{layout/head :: head(${edit} ? 'Editar Perfil' : 'Crear Usuario')}"></head>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
