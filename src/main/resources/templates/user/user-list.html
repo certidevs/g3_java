@@ -10,8 +10,8 @@
   <style>
     .search-wrapper input:focus {
         background-color: #ffffff !important;
-        border-color: var(--brand-color, #f1461d) !important;
-        box-shadow: 0 0 0 4px rgba(241, 70, 29, 0.12) !important;
+        border-color: var(--brand-color, #003b95) !important;
+        box-shadow: 0 0 0 4px rgba(0, 59, 149, 0.12) !important;
     }
   </style>
 
@@ -56,7 +56,7 @@
               <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
               <input type="text" autofocus name="textfind" class="form-control rounded-pill"
                      placeholder="Buscar por nombre, apellido o usuario..." th:value="${param.textfind}" 
-                     style="height: 44px; border: 1.5px solid #d3cfc7; background-color: #faf9f6; box-shadow: 0 2px 8px rgba(0,0,0,0.02); padding-left: 2.75rem !important; padding-right: 8.5rem !important;">
+                     style="height: 44px; border: 1.5px solid var(--border-color); background-color: var(--surface-muted); box-shadow: 0 2px 8px rgba(0, 53, 128, 0.04); padding-left: 2.75rem !important; padding-right: 8.5rem !important;">
               <div class="position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center gap-2">
                 <button type="submit" class="btn btn-brand btn-sm rounded-pill px-4 fw-semibold" style="height: 30px; line-height: 1;">Buscar</button>
                 <a th:href="${showAdminView ? '/users' : '/agenda'}" class="btn btn-outline-secondary btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 30px; height: 30px;" title="Limpiar Búsqueda">
@@ -181,9 +181,9 @@
                 <td class="px-4 text-end position-relative" style="z-index: 2;">
                   <div class="d-inline-flex justify-content-end w-100">
                     <div class="input-group input-group-sm" style="max-width: 300px;">
-                      <span class="input-group-text bg-light border-end-0" style="border: 1px solid #d3cfc7;"><i class="fa-solid fa-key text-muted"></i></span>
+                      <span class="input-group-text bg-light border-end-0" style="border: 1px solid var(--border-color);"><i class="fa-solid fa-key text-muted"></i></span>
                       <input type="text" class="form-control bg-light border-start-0 font-monospace small"
-                             th:value="${contacto.tokenforRecommended}" th:id="'tokenInput-' + ${contacto.id}" readonly style="border: 1px solid #d3cfc7; border-left: none;">
+                             th:value="${contacto.tokenforRecommended}" th:id="'tokenInput-' + ${contacto.id}" readonly style="border: 1px solid var(--border-color); border-left: none;">
                       <button class="btn btn-outline-brand btn-sm" type="button" 
                               th:data-token="${contacto.tokenforRecommended}"
                               th:data-target-id="'tokenInput-' + ${contacto.id}"

@@ -79,9 +79,9 @@
           <div class="col-12">
             <label class="text-muted small fw-semibold text-uppercase d-block mb-1">Token de Recomendación</label>
             <div class="input-group input-group-sm mt-1" style="max-width: 380px;">
-              <span class="input-group-text bg-light border-end-0" style="border: 1px solid #d3cfc7;"><i class="fa-solid fa-key text-muted"></i></span>
+              <span class="input-group-text bg-light border-end-0" style="border: 1px solid var(--border-color);"><i class="fa-solid fa-key text-muted"></i></span>
               <input type="text" class="form-control bg-light border-start-0 font-monospace small"
-                     th:value="${user.tokenforRecommended}" id="tokenInput" readonly style="border: 1px solid #d3cfc7; border-left: none;">
+                     th:value="${user.tokenforRecommended}" id="tokenInput" readonly style="border: 1px solid var(--border-color); border-left: none;">
               <button class="btn btn-outline-brand fw-semibold" type="button"
                       onclick="copyTokenToClipboard(document.getElementById('tokenInput').value, 'tokenInput')"
                       title="Copiar Token">

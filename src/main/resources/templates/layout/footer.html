@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <body>
-<footer th:fragment="footer" class="bg-dark text-light mt-auto py-5">
+<footer th:fragment="footer" class="app-footer text-light mt-auto py-5">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                 <a th:href="@{/}" class="mb-2">
                     <th:block
-                            th:replace="~{layout/logo :: logo(color='#f1461d', size='24px', titlePosition='right', titleClass='logo-text fw-bold fs-5 text-white')}"></th:block>
+                            th:replace="~{layout/logo :: logo(color='#ffffff', size='24px', titlePosition='right', titleClass='logo-text fw-bold fs-5 text-white')}"></th:block>
                 </a>
                 <p class="text-secondary small mb-0">
                     <i class="fa-regular fa-copyright"></i> 2026 Rods — Fundación Adecco. Todos los derechos reservados.
@@ -36,7 +36,7 @@
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
         <div id="copyTokenToast" class="toast align-items-center bg-white border-0 shadow-lg rounded-3" role="alert"
              aria-live="assertive" aria-atomic="true" data-bs-delay="2000"
-             style="border-left: 4px solid var(--brand-color, #f1461d) !important;">
+             style="border-left: 4px solid var(--brand-color, #003b95) !important;">
             <div class="d-flex">
                 <div class="toast-body fw-semibold text-dark">
                     <i class="fa-solid fa-circle-check text-brand me-2"></i> Token copiado al portapapeles.

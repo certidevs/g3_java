@@ -3,63 +3,137 @@
 
 <head th:replace="~{layout/head :: head(${viewTitle})}"></head>
 
-<body>
+<body class="d-flex flex-column min-vh-100 bg-light">
 <nav th:replace="~{layout/navbar :: navbar}"></nav>
-<div class="ms-3">
-    <h2 th:text="${viewTitle}">Reservas</h2>
-</div>
-<br>
-<div th:if="${bookings.isEmpty()}" class="ms-3" >
-    <h4>No hay datos actualmente para esta vista en concreto</h4>
-</div>
-<div th:each="booking : ${bookings}" class="card w-75 mb-3" style="margin-left: 50px;">
-    <h5><i class="fa-solid fa-house"></i><span class="card-title" th:text="| ${booking.userHouse.title} : ${booking.userHouse.location} |" >Titulo</span></h5>
-    <p class="card-text" th:text="| ${booking.userHouse.description} , ${booking.userHouse.maxGuests} personas |">Texto de explicaciones.</p>
-    <p class="card-text" th:text="| Precio por noche : ${booking.userHouse.pricePerNight} . Provincia : ${booking.userHouse.province}|">Texto de explicaciones.</p>
-    
-    <h5><i class="fa-regular fa-user"></i><span class="card-title" th:text="| Usuario : ${booking.userBooking.username} . ${booking.userBooking.email} |">Titulo</span></h5>
-    <p class="card-text" th:text="| ${booking.userBooking.firstName} ${booking.userBooking.lastName} |">Texto de explicaciones.</p>
-    
-    <h5><i class="fa-solid fa-place-of-worship"></i><span class="card-title">Datos reserva :</span></h5>
-    
-    <!-- Pending / Cancelled logic uses estimated dates -->
-    <div th:if="${booking.statusbooking.name() == 'PENDING' or booking.statusbooking.name() == 'CANCELLED'}">
-        <p class="card-text" th:text="| Estimado checkin y checkout : ${booking.estimatedCheckin} / ${booking.estimatedCheckout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
-    </div>
-    
-    <!-- Confirmed / Completed logic uses actual dates -->
-    <div th:if="${booking.statusbooking.name() == 'CONFIRMED' or booking.statusbooking.name() == 'COMPLETED'}">
-        <p class="card-text" th:text="| Checkin y checkout : ${booking.checkin} / ${booking.checkout}  . Nro. de noches : ${booking.numberNights}|">Datos reserva</p>
-    </div>
-    
-    <p class="card-text" th:text="| Precio total : ${booking.totalPrice} |">Datos reserva</p>
-    <p class="card-title" th:text="| Estado de la reserva : ${booking.statusbooking}|">Datos reserva</p>
 
-    <!-- Actions for HOST -->
-    <div th:if="${viewRole == 'HOST'}">
-        <div th:if="${booking.statusbooking.name() == 'PENDING'}">
-            <form th:action="@{/booking/update-dates}" method="post">
-                <input type="hidden" name="id" th:value="${booking.id}"/>
-                <input type="hidden" name="userid" th:value="${user.id}"/>
-                <input type="datetime-local" name="checkin" th:value="${booking.checkin}" required>
-                <input type="datetime-local" name="checkout" th:value="${booking.checkout}" required>
-                <button type="submit" class="btn btn-success ms-2"><i class="fa-solid fa-floppy-disk"></i>Guardar reserva </button>
-                <a th:href="@{/booking/from-pending-to-cancelled/{id}(id=${booking.id})}" class="btn btn-primary ms-2">Cancelar reserva</a>
-            </form>
-        </div>
-        <div th:if="${booking.statusbooking.name() == 'CONFIRMED'}">
-            <a th:href="@{/booking/from-confirmed-to-cancelled/{id}(id=${booking.id})}" class="btn btn-primary me-2">Cancelar reserva</a>
-            <a th:href="@{/booking/from-confirmed-to-completed/{id}(id=${booking.id})}" class="btn btn-primary">Completado</a>
+<main class="container-xl flex-grow-1 my-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">
+                <i class="fa-solid fa-calendar-check text-brand me-2"></i>
+                <span th:text="${viewTitle}">Reservas</span>
+            </h1>
+            <p class="text-muted mb-0">Consulta y gestiona las reservas asociadas a tus alojamientos.</p>
         </div>
     </div>
 
-    <!-- Actions for GUEST -->
-    <div th:if="${viewRole == 'GUEST'}">
-        <div th:if="${booking.statusbooking.name() == 'PENDING'}">
-            <a th:href="@{/booking/from-pending-to-cancelled-guest/{id}(id=${booking.id})}" class="btn btn-primary">Cancelar reserva</a>
+    <div th:if="${bookings.isEmpty()}" class="card border-0 shadow-sm rounded-4">
+        <div class="card-body text-center py-5">
+            <i class="fa-solid fa-calendar-xmark fs-1 text-muted mb-3"></i>
+            <h4 class="h5 fw-bold text-dark">No hay reservas en esta vista</h4>
+            <p class="text-muted mb-0">Cuando haya actividad, aparecerá aquí con su estado y acciones disponibles.</p>
         </div>
     </div>
-</div>
+
+    <div class="row g-4" th:unless="${bookings.isEmpty()}">
+        <div class="col-12" th:each="booking : ${bookings}">
+            <article class="card border-0 shadow-sm rounded-4 property-card overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="row g-4 align-items-start">
+                        <div class="col-lg-5">
+                            <span class="text-muted small text-uppercase fw-bold letter-spacing-sm">Alojamiento</span>
+                            <h2 class="h5 fw-bold text-dark mt-1 mb-2">
+                                <i class="fa-solid fa-house-chimney text-brand me-2"></i>
+                                <span th:text="${booking.userHouse.title}">Título</span>
+                            </h2>
+                            <p class="text-muted mb-2">
+                                <i class="fa-solid fa-location-dot me-1"></i>
+                                <span th:text="${booking.userHouse.location}">Localización</span>
+                                <span class="mx-1">·</span>
+                                <span th:text="${booking.userHouse.province}">Provincia</span>
+                            </p>
+                            <p class="text-muted small mb-0" th:text="|${booking.userHouse.description} · ${booking.userHouse.maxGuests} personas|">
+                                Texto de explicaciones.
+                            </p>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <span class="text-muted small text-uppercase fw-bold letter-spacing-sm">Huésped</span>
+                            <h3 class="h6 fw-bold text-dark mt-1 mb-1">
+                                <i class="fa-regular fa-user text-brand me-2"></i>
+                                <span th:text="${booking.userBooking.username}">Usuario</span>
+                            </h3>
+                            <p class="text-muted small mb-0" th:text="${booking.userBooking.email}">correo@correo.com</p>
+                            <p class="text-muted small mb-0" th:text="|${booking.userBooking.firstName} ${booking.userBooking.lastName}|">
+                                Nombre completo
+                            </p>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <span class="text-muted small text-uppercase fw-bold letter-spacing-sm">Reserva</span>
+                            <div class="d-flex flex-column gap-2 mt-2">
+                                <div th:if="${booking.statusbooking.name() == 'PENDING' or booking.statusbooking.name() == 'CANCELLED'}"
+                                     class="small text-muted">
+                                    <i class="fa-regular fa-calendar me-1 text-brand"></i>
+                                    <span th:text="|Estimado: ${booking.estimatedCheckin} / ${booking.estimatedCheckout}|">Fechas estimadas</span>
+                                </div>
+                                <div th:if="${booking.statusbooking.name() == 'CONFIRMED' or booking.statusbooking.name() == 'COMPLETED'}"
+                                     class="small text-muted">
+                                    <i class="fa-regular fa-calendar-check me-1 text-brand"></i>
+                                    <span th:text="|Confirmado: ${booking.checkin} / ${booking.checkout}|">Fechas confirmadas</span>
+                                </div>
+                                <div class="d-flex flex-wrap align-items-center gap-2">
+                                    <span class="badge bg-light text-dark border px-3 py-2">
+                                        <i class="fa-solid fa-moon me-1"></i>
+                                        <span th:text="${booking.numberNights}">1</span> noches
+                                    </span>
+                                    <span class="badge bg-light text-dark border px-3 py-2">
+                                        <i class="fa-solid fa-euro-sign me-1"></i>
+                                        <span th:text="${booking.totalPrice}">0</span>
+                                    </span>
+                                    <span class="badge bg-brand text-white px-3 py-2" th:text="${booking.statusbooking}">
+                                        Estado
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-top mt-4 pt-4" th:if="${viewRole == 'HOST'}">
+                        <div th:if="${booking.statusbooking.name() == 'PENDING'}">
+                            <form th:action="@{/booking/update-dates}" method="post" class="row g-3 align-items-end">
+                                <input type="hidden" name="id" th:value="${booking.id}"/>
+                                <input type="hidden" name="userid" th:value="${user.id}"/>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Check-in</label>
+                                    <input class="form-control" type="datetime-local" name="checkin" th:value="${booking.checkin}" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Check-out</label>
+                                    <input class="form-control" type="datetime-local" name="checkout" th:value="${booking.checkout}" required>
+                                </div>
+                                <div class="col-md-4 d-flex flex-wrap gap-2">
+                                    <button type="submit" class="btn btn-brand flex-grow-1">
+                                        <i class="fa-solid fa-floppy-disk me-1"></i>Guardar
+                                    </button>
+                                    <a th:href="@{/booking/from-pending-to-cancelled/{id}(id=${booking.id})}" class="btn btn-outline-danger flex-grow-1">
+                                        Cancelar
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                        <div th:if="${booking.statusbooking.name() == 'CONFIRMED'}" class="d-flex flex-wrap gap-2 justify-content-end">
+                            <a th:href="@{/booking/from-confirmed-to-cancelled/{id}(id=${booking.id})}" class="btn btn-outline-danger">
+                                Cancelar reserva
+                            </a>
+                            <a th:href="@{/booking/from-confirmed-to-completed/{id}(id=${booking.id})}" class="btn btn-brand">
+                                Marcar como completada
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="border-top mt-4 pt-4 d-flex justify-content-end" th:if="${viewRole == 'GUEST'}">
+                        <div th:if="${booking.statusbooking.name() == 'PENDING'}">
+                            <a th:href="@{/booking/from-pending-to-cancelled-guest/{id}(id=${booking.id})}" class="btn btn-outline-danger">
+                                Cancelar reserva
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</main>
 
 <footer th:replace="~{layout/footer :: footer}"></footer>
 <script th:replace="~{layout/footer :: scripts}"></script>

@@ -105,7 +105,7 @@
             <label for="pricePerNight" class="form-label-custom">Precio por noche</label>
             <div class="input-group">
               <input type="number" id="pricePerNight" th:field="*{pricePerNight}" class="form-control" placeholder="75" min="1" required style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
-              <span class="input-group-text bg-light border-start-0" style="border: 1px solid #d3cfc7; border-radius: 0 0.75rem 0.75rem 0; font-weight: 500;">€ / noche</span>
+              <span class="input-group-text bg-light border-start-0" style="border: 1px solid var(--border-color); border-radius: 0 0.75rem 0.75rem 0; font-weight: 500;">€ / noche</span>
             </div>
           </div>
 
@@ -113,7 +113,7 @@
           <div class="col-md-3">
             <label for="capacity" class="form-label-custom">Capacidad máxima</label>
             <div class="input-group">
-              <span class="input-group-text bg-light border-end-0" style="border: 1px solid #d3cfc7; border-radius: 0.75rem 0 0 0.75rem;"><i class="fa-solid fa-users text-muted"></i></span>
+              <span class="input-group-text bg-light border-end-0" style="border: 1px solid var(--border-color); border-radius: 0.75rem 0 0 0.75rem;"><i class="fa-solid fa-users text-muted"></i></span>
               <input type="number" id="capacity" th:field="*{maxGuests}" class="form-control" placeholder="4" min="1" required style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
             </div>
           </div>
@@ -185,4 +185,4 @@
 </script>
 
 </body>
-</html>
+</html>
