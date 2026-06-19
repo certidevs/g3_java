@@ -77,8 +77,8 @@ h1, h2, h3, .navbar-brand {
 
 /* Logo Text styling to match branding */
 .logo-text {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-weight: 800;
+    font-family: 'Anton', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-weight: 400 !important;
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
@@ -263,7 +263,7 @@ h1, h2, h3, .navbar-brand {
 
 /* --- NUEVOS ESTILOS ALQUILAYA --- */
 body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     background-color: var(--bg-main);
 }
 
