@@ -82,7 +82,7 @@ El acceso a las distintas rutas y operaciones de la plataforma está segmentado 
 
 #### 1. Clonación del Repositorio
 ```bash
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/certidevs/g3_java
 cd g3_java
 ```
 
