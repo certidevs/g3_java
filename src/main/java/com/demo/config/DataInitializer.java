@@ -25,6 +25,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
+    private static final String PLACEHOLDER_IMAGE = "placeholder.jpg";
+
     private final HouseRepository houseRepository;
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
@@ -32,6 +34,8 @@ public class DataInitializer implements CommandLineRunner {
     private final AmenityRepository amenityRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final FavoriteRepository favoriteRepository;
+    private final HouseRecommendedRepository houseRecommendedRepository;
 
     @Override
     public void run(String... args) {
@@ -118,8 +122,8 @@ public class DataInitializer implements CommandLineRunner {
 
         // Casa propiedad de Host1
         House house_test_booking = houseRepository.save(House.builder()
-                .title("Parcela el Viso")
-                .description("con piscina")
+                .title("Chalet el Viso con Piscina")
+                .description("Amplio chalet con piscina privada y jardín, ideal para familias.")
                 .pricePerNight(145.0)
                 .location("Fuenlabrada")
                 .province(Province.MADRID)
@@ -133,8 +137,8 @@ public class DataInitializer implements CommandLineRunner {
 
         // Casa propiedad de Host1
         House house_test_booking1 = houseRepository.save(House.builder()
-                .title("Parcela Carranque")
-                .description("con pista de tenis")
+                .title("Villa Carranque con Pista de Tenis")
+                .description("Magnífica villa con pista de tenis privada, barbacoa y amplias zonas verdes.")
                 .pricePerNight(220.0)
                 .location("Carranque")
                 .province(Province.TOLEDO)
@@ -188,15 +192,15 @@ public class DataInitializer implements CommandLineRunner {
 
         // Casa propiedad de Host1
         House house_test_booking11 = houseRepository.save(House.builder()
-                .title("Apartamento Barcelona")
-                .description("céntrico")
+                .title("Apartamento Moderno en el Centro de Barcelona")
+                .description("Elegante y luminoso apartamento situado en el corazón de Barcelona, a pocos pasos de los principales puntos de interés.")
                 .pricePerNight(105.0)
                 .location("Barcelona")
                 .province(Province.BARCELONA)
                 .maxGuests(5)
                 .host(host_test_booking)
                 .houseType(HouseType.APARTAMENTO)
-                .imageUrl("h1.jpg")
+                .imageUrl("h9.jpg")
                 .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
                 .host(host1)
                 .build()
@@ -204,15 +208,15 @@ public class DataInitializer implements CommandLineRunner {
 
         // Casa propiedad de Host1
         House house_test_booking12 = houseRepository.save(House.builder()
-                .title("Hostal el Limón")
-                .description("Barrio El Casar")
+                .title("Habitación en Hostal el Limón")
+                .description("Habitación acogedora y totalmente equipada en una zona tranquila de Getafe, excelente conexión de transporte.")
                 .pricePerNight(25.0)
                 .location("Getafe")
                 .province(Province.MADRID)
                 .maxGuests(3)
                 .host(host1)
                 .houseType(HouseType.HABITACION)
-                .imageUrl("h1.jpg")
+                .imageUrl("carrusel2.jpg")
                 .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
                 .build()
         );
@@ -319,8 +323,8 @@ public class DataInitializer implements CommandLineRunner {
 
         // Crear casas con host asignados
         House house1 = houseRepository.save(House.builder()
-                .title("tu Casa")
-                .description("Casa 1 descripción")
+                .title("Chalet de Diseño en Chamartín")
+                .description("Exclusiva vivienda unifamiliar en una de las mejores zonas de Madrid, con excelentes calidades y jardín.")
                 .pricePerNight(100d)
                 .location("Calle Principe Vergara 108")
                 .province(Province.MADRID)
@@ -333,8 +337,8 @@ public class DataInitializer implements CommandLineRunner {
                 .build());
 
         House house2 = houseRepository.save(House.builder()
-                .title("tu Casita")
-                .description("Casa 2 descripción")
+                .title("Estudio Acogedor en Gracia")
+                .description("Encantador estudio en el bohemio barrio de Gracia, perfecto para parejas y escapadas de fin de semana.")
                 .pricePerNight(100d)
                 .location("Barcelona")
                 .province(Province.BARCELONA)
@@ -348,8 +352,8 @@ public class DataInitializer implements CommandLineRunner {
 
 
         House house1_booking = houseRepository.save(House.builder()
-                        .title("Parcela el Viso")
-                        .description("con piscina")
+                        .title("Chalet Rural El Viso")
+                        .description("Precioso chalet rural con piscina en el Viso de San Juan, ideal para desconectar de la ciudad.")
                         .pricePerNight(145.0)
                         .location("Viso de San Juan")
                         .province(Province.TOLEDO)
@@ -363,8 +367,8 @@ public class DataInitializer implements CommandLineRunner {
 
 
         House house2_booking = houseRepository.save(House.builder()
-                .title("Apartamento")
-                .description("Playa cercana")
+                .title("Apartamento Luminoso Cerca de la Playa")
+                .description("Precioso apartamento reformado con vistas laterales al mar, ideal para disfrutar de tus vacaciones en Alicante.")
                 .pricePerNight(145.0)
                 .location("Alicante")
                 .province(Province.ALICANTE)
@@ -378,8 +382,8 @@ public class DataInitializer implements CommandLineRunner {
 
 //
         House house3_booking = houseRepository.save(House.builder()
-                .title("Rural Torres")
-                .description("senderismo sierra")
+                .title("Casa Rural Torres en la Sierra")
+                .description("Casa rural con encanto, rodeada de naturaleza. Perfecta para amantes del senderismo y el turismo activo.")
                 .pricePerNight(45.0)
                 .location("Genave")
                 .province(Province.JAEN)
@@ -393,13 +397,13 @@ public class DataInitializer implements CommandLineRunner {
 
 
         House house4_booking = houseRepository.save(House.builder()
-                .title("Camping")
-                .description("en playa con piscina")
+                .title("Bungalow en Camping Resort Gavà")
+                .description("Moderno bungalow a pie de playa con acceso a piscina comunitaria, ideal para unas vacaciones familiares.")
                 .pricePerNight(105.0)
                 .location("Gava")
                 .province(Province.BARCELONA)
                 .maxGuests(4)
-                .imageUrl("h1.jpg")
+                .imageUrl("h10.jpg")
                 .houseType(HouseType.CASA)
                 .amenities(Set.of( piscina, parking,mascotas,cocina))
                 .host(host4_booking)
@@ -408,13 +412,13 @@ public class DataInitializer implements CommandLineRunner {
         houseRepository.save(house4_booking);
 
         House house5_booking = houseRepository.save(House.builder()
-                .title("Ático")
-                .description("centro ciudad")
-                .pricePerNight(250.6)
+                .title("Ático Exclusivo con Terraza en el Centro")
+                .description("Espectacular ático con gran terraza privada y vistas panorámicas, en pleno centro de la ciudad.")
+                .pricePerNight(125.6)
                 .location("Calle Madrid,8")
                 .province(Province.ASTURIAS)
                 .maxGuests(2)
-                .imageUrl("h2.jpg")
+                .imageUrl("h13.jpg")
                 .houseType(HouseType.CASA)
                 .amenities(Set.of(wifi, parking,mascotas,cocina))
                 .host(host5_booking)
@@ -423,8 +427,8 @@ public class DataInitializer implements CommandLineRunner {
         houseRepository.save(house5_booking);
 
         House house6_booking = houseRepository.save(House.builder()
-                .title("Ático1")
-                .description("centro ciudad1")
+                .title("Ático Histórico en el Barrio de Santa Cruz")
+                .description("Elegante ático reformado conservando el encanto tradicional sevillano, ubicado a minutos de la Giralda.")
                 .pricePerNight(167.6)
                 .location("Calle Herreros,9")
                 .province(Province.SEVILLA)
@@ -438,14 +442,13 @@ public class DataInitializer implements CommandLineRunner {
         houseRepository.save(house6_booking);
 
         House house7_booking = houseRepository.save(House.builder()
-                .title("Ático2")
-                .description("centro ciudad2")
+                .title("Ático Dúplex Moderno con Vistas")
+                .description("Amplio ático dúplex con todas las comodidades modernas, aire acondicionado y excelente comunicación.")
                 .pricePerNight(280.6)
                 .location("Plaza el Bierzo,9")
                 .province(Province.BARCELONA)
                 .maxGuests(4)
-                .imageUrl("h5.jpg")
-                .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
+                .imageUrl("h12.jpg")
                 .houseType(HouseType.CASA)
                 .host(host5_booking)
                 .build()
@@ -454,12 +457,12 @@ public class DataInitializer implements CommandLineRunner {
 
         // Crear casa sin host asignado
         House h1 = houseRepository.save(House.builder()
-                .title("prueba 100")
-                .description("Casa 1 descripción")
-                .pricePerNight(100d)
+                .title("Habitación Premium en el Centro de Valencia")
+                .description("Habitación de diseño en piso compartido premium, con todos los servicios y excelente ambiente.")
+                .pricePerNight(300.0)
                 .location("Calle Principe Vergara 108")
                 .province(Province.VALENCIA)
-                .imageUrl("h3.jpg")
+                .imageUrl("h11.jpg")
                 .maxGuests(3)
                 .amenities(Set.of(wifi, piscina, parking,mascotas,cocina))
                 .houseType(HouseType.HABITACION)
@@ -508,12 +511,20 @@ public class DataInitializer implements CommandLineRunner {
                 .user(guest5_booking)
                 .build();
 
-        reviewRepository.saveAll(List.of(review1, review2, review3, review4,  review5));
+        Review review6 = Review.builder()
+                .comment("Una casa rural excelente, rodeada de senderos preciosos. Totalmente recomendable para desconectar de la ciudad.")
+                .house(house3_booking)
+                .title("Estancia perfecta en la naturaleza")
+                .rating(5)
+                .user(guest1_booking)
+                .build();
+
+        reviewRepository.saveAll(List.of(review1, review2, review3, review4, review5, review6));
 
         // Reserva pendiente
 
-        LocalDateTime timeIn =  LocalDateTime.of(2026,4,12,12,0);
-        LocalDateTime timeOut =  LocalDateTime.of(2026,4,15,12,0);
+        LocalDateTime timeIn =  LocalDateTime.of(2026,7,10,12,0);
+        LocalDateTime timeOut =  LocalDateTime.of(2026,7,15,12,0);
         Booking reserva1 = new Booking(guest1_booking,house1_booking,timeIn,timeOut);
         bookingRepository.save(reserva1);
 
@@ -551,17 +562,43 @@ public class DataInitializer implements CommandLineRunner {
 //        // y guardamos
         bookingRepository.save(reserva5);
 //
-//        // Reserva pendiente
-        LocalDateTime timeIn5 =  LocalDateTime.of(2026,4,12,12,0);
-        LocalDateTime timeOut5 =  LocalDateTime.of(2026,4,15,12,0);
-        Booking reserva6 = new Booking(guest1_booking,house2_booking,timeIn,timeOut);
+//        // Reserva pendiente (cancelada)
+        LocalDateTime timeIn5 =  LocalDateTime.of(2026,5,10,12,0);
+        LocalDateTime timeOut5 =  LocalDateTime.of(2026,5,15,12,0);
+        Booking reserva6 = new Booking(guest1_booking,house2_booking,timeIn5,timeOut5);
+        reserva6.cancelledBooking();
         bookingRepository.save(reserva6);
 //
-//        // Reserva pendiente
-        LocalDateTime timeIn6 =  LocalDateTime.of(2026,4,12,12,0);
-        LocalDateTime timeOut6 =  LocalDateTime.of(2026,4,15,12,0);
-        Booking reserva7 = new Booking(guest1_booking,house3_booking,timeIn,timeOut);
+//        // Reserva de tipo confirmada
+        LocalDateTime timeIn6 =  LocalDateTime.of(2026,8,15,12,0);
+        LocalDateTime timeOut6 =  LocalDateTime.of(2026,8,20,12,0);
+        Booking reserva7 = new Booking(guest1_booking,house3_booking,timeIn6,timeOut6);
+        reserva7.confirmedBooking();
         bookingRepository.save(reserva7);
+
+        // Favoritos para luis1 (guest1_booking)
+        favoriteRepository.save(Favorite.builder().user(guest1_booking).house(house1).build());
+        favoriteRepository.save(Favorite.builder().user(guest1_booking).house(house2_booking).build());
+
+        // Recomendaciones recibidas por luis1
+        houseRecommendedRepository.save(HouseRecommended.builder()
+                .userFrom(guest2_booking)
+                .userTo(guest1_booking)
+                .houseRecommended(house2_booking)
+                .message("Hola Luis, esta casa cerca de la playa te va a encantar para tus próximas vacaciones.")
+                .timeRecommended(LocalDateTime.now().minusDays(2))
+                .viewed(true)
+                .build());
+
+        // Recomendaciones enviadas por luis1
+        houseRecommendedRepository.save(HouseRecommended.builder()
+                .userFrom(guest1_booking)
+                .userTo(guest2_booking)
+                .houseRecommended(house3_booking)
+                .message("Alba, mira esta casa rural en Jaén, es perfecta para hacer senderismo en otoño.")
+                .timeRecommended(LocalDateTime.now().minusDays(1))
+                .viewed(true)
+                .build());
 
     }
 
